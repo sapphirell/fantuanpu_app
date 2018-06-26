@@ -14,20 +14,12 @@ import {
     TextInput,
     YellowBox,
     Button,
-    ImageBackground
+    ImageBackground,
+    AsyncStorage,//持久化存储
+
 } from 'react-native';
 import root from '../model/root'
-YellowBox.ignoreWarnings(['Warning:']);
-YellowBox.ignoreWarnings(['T']);
-YellowBox.ignoreWarnings(['M']);
 
-// YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated in plain JavaScript React classes. Instead, make sure to clean up subscriptions and pending requests in componentWillUnmount to prevent memory leaks.']);
-const instructions = Platform.select({
-    ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-    android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
 
 type Props = {};
 export default class login extends Component  {
@@ -37,39 +29,48 @@ export default class login extends Component  {
         //     visible:false
         // }
     };
-    getHttpData = () => {
-        alert(1);
-        const url = "http://localhost:8000/app/test";
-        fetch(url,{
-            method:'GET'
-        }).then((response)=>response.json()).then((jsonStr) => {});
+    state = {
+        email:'',
+        password:'',
     };
     userLogin = (navigate) => {
         // navigate('user_center',{
         //     id:123
         // })
+        //检查是否填写
+        // if(!this.state.email || !this.state.password)
+        // {
+        //     alert('尚未填写账号或密码');
+        //     return false;
+        // }
         loginUrl = global.webServer + 'do-login';
+        // formData = 'email='+this.state.email+'&password='+this.state.password+'&form=app';
+        formData = 'email=1745247379@qq.com&password=asdasdasd&form=app';
         console.log(loginUrl);
+        console.log(formData);
             fetch(loginUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: 'email=1745247379@qq.com&password=asdasdasd&form=app'
+                body: formData
             })  .then((response) => response.json())
                 .then((responseJson) => {
-                    // console.log(responseJson)
                     if (responseJson.ret == 200)
                     {
-                        navigate('user_center',{
-                            response:responseJson
-                        })
+                        AsyncStorage.setItem('user_token', responseJson.data.token).then(
+                            () => {
+                                navigate('user_center',{
+                                    response:responseJson,
+                                    display:1
+                                })
+                            }
+                        );
                     }
                     else
                     {
                         alert(responseJson.msg)
                     }
-
                 })
                 .catch((error) => {
                     console.error(error);
@@ -90,12 +91,12 @@ export default class login extends Component  {
                 >
                     <TextInput
                         style={styles.TextInputTop}
-                        onChangeText={(text) => this.setState({text})}
+                        onChangeText={(text) => this.setState({email:text})}
                     />
                     <TextInput
                         password={true}
                         style={styles.TextInputBottom}
-                        onChangeText={ (text) => this.setState({text}) }
+                        onChangeText={ (text) => this.setState({password:text}) }
 
                     />
                 </ImageBackground>

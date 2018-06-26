@@ -5,7 +5,11 @@ import {
 
 import login from './src/view/login';
 import user_center from './src/view/user_center';
+import {YellowBox} from "react-native";
 
+YellowBox.ignoreWarnings(['Warning:']);
+YellowBox.ignoreWarnings(['T']);
+YellowBox.ignoreWarnings(['M']);
 global.webServer = 'http://localhost:8000/';
 
 const Tab = TabNavigator({
