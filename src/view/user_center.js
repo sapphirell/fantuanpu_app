@@ -32,14 +32,14 @@ export default class user_center extends Component {
         // UserToken ? this.setState({is_login : true}) : '';
         if (UserToken)
         {
-
             //如果有token状态则取用户信息
             UserCenterData = await AsyncStorage.getItem('user_center_data'+UserToken);
 
             if (!UserCenterData)
             {
                 UserCenterUrl = global.webServer + '/app/user_center';
-                FormData = 'token='+UserToken+'&form=app';
+                FormData = 'token='+UserToken+'&form=app&rand='+Math.random();
+                // alert(FormData);
                 fetch(UserCenterUrl, {
                     method: 'POST',
                     headers: {
@@ -49,8 +49,9 @@ export default class user_center extends Component {
                 }).then((response) => response.json()).then((responseJson) =>
                 {
                     this.setState({user_center_data : responseJson.data,is_login:true,user_token:UserToken});
+                    // alert(JSON.stringify(responseJson.data));
                     AsyncStorage.setItem('user_center_data'+UserToken,JSON.stringify(responseJson.data));
-                    console.log(this.state.user_center_data.user_avatar)
+                    // console.log(this.state.user_center_data.user_avatar)
                 });
             }
             else
@@ -63,7 +64,7 @@ export default class user_center extends Component {
 
     }
     getHttpData = () => {
-        alert(1);
+        // alert(1);
         // const url = "http://localhost:8000/app/test";
         // fetch(url,{
         //     method:'GET'
@@ -73,8 +74,11 @@ export default class user_center extends Component {
 
     };
     logout =() => {
+        // UserCenterData = await AsyncStorage.getItem('user_center_data'+UserToken);
+        // alert(this.state.user_token);
+        AsyncStorage.removeItem("user_token");
         AsyncStorage.removeItem("user_center_data" + this.state.user_token);
-        AsyncStorage.removeItem("UserToken");
+
         this.setState({
             is_login : false,
             user_center_data : {},
@@ -83,7 +87,7 @@ export default class user_center extends Component {
     };
     render() {
         const {state , goBack ,navigate} = this.props.navigation;
-        console.log(state.params);
+        // console.log(state.params);
         return (
             <View style={styles.container}>
                 {this.state.is_login ?
@@ -159,15 +163,5 @@ const styles = StyleSheet.create({
         paddingTop:20,
         alignItems: 'center',
         backgroundColor: '#FFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
     },
 });

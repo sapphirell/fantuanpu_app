@@ -6,7 +6,9 @@ import {
 import login from './src/view/login';
 import user_center from './src/view/user_center';
 import forum from './src/view/forum';
+import message from './src/view/message';
 import {YellowBox} from "react-native";
+import friends from "./src/view/firends";
 
 YellowBox.ignoreWarnings(['Warning:']);
 YellowBox.ignoreWarnings(['T']);
@@ -16,8 +18,8 @@ global.webServer = 'http://localhost:8000/';
 const Tab = TabNavigator({
     // "登录": {screen: login},
     "论坛" : {screen: forum},
-    "消息" : {screen: forum},
-    "好友" : {screen: forum},
+    "消息" : {screen: message},
+    "好友" : {screen: friends},
     "用户中心": {screen: user_center},
 
 },{

@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     },
     option : {
         flexDirection:'row',
-        textAlign: "center",
+        // textAlign: "center",
         padding:12,
 
     },
