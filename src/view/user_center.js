@@ -19,6 +19,7 @@ import {
 
 import UserCenterButton from '../model/UserCenterButton';
 type Props = {};
+
 export default class user_center extends Component {
     state = {
         is_login : false,
@@ -64,11 +65,6 @@ export default class user_center extends Component {
 
     }
     getHttpData = () => {
-        // alert(1);
-        // const url = "http://localhost:8000/app/test";
-        // fetch(url,{
-        //     method:'GET'
-        // }).then((response)=>response.json()).then((jsonStr) => {});
     };
     void = () => {
 

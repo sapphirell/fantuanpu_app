@@ -16,11 +16,12 @@ import {
     Button,
     ImageBackground,
     AsyncStorage,//持久化存储
-    FlatList
+    FlatList,
+    Image, Dimensions
 
 } from 'react-native';
 import root from '../model/root'
-
+let {height, width} = Dimensions.get('window');
 
 type Props = {};
 const Block = () => {
@@ -31,36 +32,39 @@ const BottomForum = (bottomData) => {
         <FlatList
             data={bottomData.bottom}
             keyExtractor = { _keyExtractor }
+            style={{ flexDirection:'row',width:width,padding:5}}
             renderItem= {
                 ({item}) => {
                     return (
-                        <View style={{paddingLeft:20}}>
-                            <Text>{item.name}</Text>
-                        </View>
+                        <TouchableOpacity style={{paddingLeft:20}}>
+
+                            <Image
+
+                                source={{
+                                uri: 'https://fantuanpu.com/Image/user_ava/images/000/00/00/01_avatar_middle.jpg',
+                            }}
+                                   style={{width: 50, height: 50,borderRadius:5}} />
+                            <Text style={{fontSize:10,width:50,overflow:"hidden" ,textAlign:"center",paddingTop:5}}>{item.name}</Text>
+                        </TouchableOpacity>
                     )
                 }
             }
         />
     );
 };
-const _keyExtractor = (item, index) => {
-    // console.log(item)
-    return item.name +Math.random();
-};
+const _keyExtractor = (item) =>  item.name ;
 export default class forum extends Component  {
     async componentDidMount() {
         if (!this.state.forum_data.data)
         {
             let forum_list = await AsyncStorage.getItem('forum_list');
-            if (forum_list && 1==2)
+            if (forum_list)
             {
-
                 this.setState({forum_data : forum_list});
             }
             else
             {
                 let dataUrl = global.webServer + 'app/forum_list';
-                // let formData = 'email='+this.state.email+'&password='+this.state.password+'&form=app';
                 let data = await fetch(dataUrl, {
                     method: 'POST',
                     headers: {
@@ -68,15 +72,10 @@ export default class forum extends Component  {
                     },
                     body: ""
                 }).then((response)=> {return response.json()});
-
                 if (data.ret != 200)
-                {
                     alert(data.msg);
-                }
                 else
-                {
                     this.setState({forum_data : data.data});
-                }
             }
         }
     }
@@ -95,8 +94,8 @@ export default class forum extends Component  {
                           renderItem= {
                               ({item}) => {
                                   return (
-                                        <View>
-                                            <Text>{item.name}</Text>
+                                        <View style={{}}>
+                                            <Text style={{flexDirection:'row'}}>{item.name}</Text>
                                             <BottomForum bottom={item.bottomforum} />
                                         </View>
                                   )

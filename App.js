@@ -9,6 +9,7 @@ import forum from './src/view/forum';
 import message from './src/view/message';
 import {YellowBox} from "react-native";
 import friends from "./src/view/firends";
+import user_forum from "./src/view/user_forum";
 
 YellowBox.ignoreWarnings(['Warning:']);
 YellowBox.ignoreWarnings(['T']);
@@ -17,10 +18,10 @@ global.webServer = 'http://localhost:8000/';
 
 const Tab = TabNavigator({
     // "登录": {screen: login},
-    "论坛" : {screen: forum},
+    "看看" : {screen: user_forum},
     "消息" : {screen: message},
     "好友" : {screen: friends},
-    "用户中心": {screen: user_center},
+    "我的": {screen: user_center},
 
 },{
     tabBarPosition : 'bottom',
