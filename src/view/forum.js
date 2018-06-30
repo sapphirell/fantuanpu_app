@@ -39,7 +39,6 @@ const BottomForum = (bottomData) => {
                         <TouchableOpacity style={{paddingLeft:20}}>
 
                             <Image
-
                                 source={{
                                 uri: 'https://fantuanpu.com/Image/user_ava/images/000/00/00/01_avatar_middle.jpg',
                             }}
@@ -86,22 +85,23 @@ export default class forum extends Component  {
 
     render() {
         const { navigate } = this.props.navigation;
-        // console.log(this.state.forum_data)
+
         return (
             <View style={{paddingTop:20}}>
                 <FlatList data={this.state.forum_data}
                           keyExtractor = {_keyExtractor}
+                          style={{flexDirection:"row"}}
+                          // numColumns={10}
                           renderItem= {
                               ({item}) => {
                                   return (
                                         <View style={{}}>
-                                            <Text style={{flexDirection:'row'}}>{item.name}</Text>
+                                            <Text style={{}}>{item.name}</Text>
                                             <BottomForum bottom={item.bottomforum} />
                                         </View>
                                   )
                               }
                           }
-
                 >
 
                 </FlatList>
