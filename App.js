@@ -20,6 +20,7 @@ import user_forum from "./src/view/user_forum";
 YellowBox.ignoreWarnings(['Warning:']);
 YellowBox.ignoreWarnings(['T']);
 YellowBox.ignoreWarnings(['M']);
+YellowBox.ignoreWarnings(['R']);
 global.webServer = 'http://localhost:8000/';
 
 const Tab = TabNavigator({
@@ -27,7 +28,7 @@ const Tab = TabNavigator({
     "主页": { screen: user_forum,
         navigationOptions: {
             tabBarIcon: () => ( <Image source={require('./image/look.png')} style={{width:25,height:25,margin:10}}/> ),
-            activeTintColor : '#000',
+            activeTintColor : '#78d3e9',
             inactiveTintColor : '#6d6d6d',
         }
     },
@@ -35,21 +36,21 @@ const Tab = TabNavigator({
     "消息" : { screen: message,
         navigationOptions: {
             tabBarIcon: () => ( <Image source={require('./image/message.png')} style={{width:25,height:25,margin:10}}/> ),
-            activeTintColor : '#000',
+            activeTintColor : '#78d3e9',
             inactiveTintColor : '#6d6d6d',
         }
     },
     "好友" :  { screen: friends,
         navigationOptions: {
             tabBarIcon: () => ( <Image source={require('./image/friend.png')} style={{width:25,height:25,margin:10}}/> ),
-            activeTintColor : '#000',
+            activeTintColor : '#78d3e9',
             inactiveTintColor : '#6d6d6d',
         }
     },
     "我的":  { screen: user_center,
         navigationOptions: {
             tabBarIcon: () => ( <Image source={require('./image/mine.png')} style={{width:25,height:25,margin:10}}/> ),
-            activeTintColor : '#000',
+            activeTintColor : '#78d3e9',
             inactiveTintColor : '#6d6d6d',
         }
     },
@@ -71,7 +72,7 @@ const Tab = TabNavigator({
         },
 
         style : {
-            backgroundColor:'#eee',
+            backgroundColor:'#ffffff',
             height:60,
             paddingBottom:0,
             marginBottom:0,

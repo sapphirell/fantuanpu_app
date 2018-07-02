@@ -21,8 +21,10 @@ import {
 
 } from 'react-native';
 import root from '../model/root'
-let _keyExtractor = (item) =>  item.name ;
+let _keyExtractor = (item) =>  item.subject + item.tid  + item.name;
 let {height, width} = Dimensions.get('window');
+
+YellowBox.ignoreWarnings(['M']);
 const MyLike = (myLikeData) => {
     return (
         <View style={{flexDirection:"row",backgroundColor:"#fff"}}>
@@ -40,10 +42,10 @@ const MyLike = (myLikeData) => {
                             <TouchableOpacity style={{paddingLeft:20}}>
                                 <Image
                                     source={{
-                                        uri: 'https://fantuanpu.com/Image/user_ava/images/000/00/00/01_avatar_middle.jpg',
+                                        uri: global.webServer +item.appimage,
                                     }}
-                                    style={{width: 50, height: 50,borderRadius:5}} />
-                                <Text style={{fontSize:10,width:50,overflow:"hidden" ,textAlign:"center",paddingTop:5}}>{item.name}</Text>
+                                    style={{width: 45, height: 45,borderRadius:10,marginTop:5}} />
+                                <Text numberOfLines={1} style={{fontSize:10,width:50,overflow:"hidden" ,textAlign:"center",paddingTop:5}}>{item.name}</Text>
 
                             </TouchableOpacity>
                         )
@@ -66,40 +68,57 @@ const ThreadList = (data) => {
     // console.log(data.data)
     // return (<View/>);
     return (
-        <View>
+        <View style={{ paddingBottom:165,backgroundColor:"#eee" }}>
             {/*<Text>主题</Text>*/}
             <FlatList
                 data={data.data}
                 keyExtractor = { _keyExtractor }
-                style={{ flexDirection:'row',height:height-51}}
+
                 // numColumns={5}
-                showsHorizontalScrollIndicator= {false}//隐藏水平滚动条
-                showsVerticalScrollIndicator= {true}//显示竖直滚动条
+                // showsHorizontalScrollIndicator= {false}//隐藏水平滚动条
+                // showsVerticalScrollIndicator = {false}//显示竖直滚动条
                 // horizontal={true} //水平布局
                 renderItem= {
                     ({item}) => {
                         return (
-                            <TouchableOpacity style={{backgroundColor:"#fff",marginBottom:8,width:width,margin:5,padding:5}}>
-                                <View
-                                    style={{flexDirection:"row",overflow:"hidden" ,paddingTop:5,}}
-                                >
-                                    <Image
-                                        source={{
-                                            uri: item.avatar,
-                                        }}
-                                        style={{width:width*0.14,height:width*0.14}}
-                                    />
+                            <TouchableOpacity style={{backgroundColor:"#fff",marginLeft:5,marginRight:8,marginTop:5,width:width-10,padding:5,
+                                // borderTopLeftRadius:5,borderTopRightRadius:5,
+                                borderRadius:5,
+                                borderLeftWidth:1,borderTopWidth:1,borderRightWidth:1,
+                                borderColor:"#eed1de"
+                            }}>
+                                <View style={{overflow:"hidden" ,paddingTop:5}} >
+                                    <View style={{width:width-10,flexDirection:"row"}}>
+                                        {item.avatar ?
+                                            <Image
+                                                source={{
+                                                    uri: item.avatar,
+                                                }}
+                                                style={{width:width*0.08,height:width*0.08,borderRadius:15, marginLeft:8}}
+                                            />
+                                            :
+                                            <Image source={source=require('../../image/noavatar_middle.gif')}/>
+
+                                        }
+
+                                        <Text
+                                            numberOfLines={1}
+                                            style={{fontSize:12,width:width*0.9,overflow:"hidden" ,textAlign:"left",paddingLeft:15,paddingTop:5,flexDirection:"row"}}>
+                                            {item.subject}
+                                        </Text>
+                                    </View>
+
                                     <Text
                                         numberOfLines={1}
-                                        style={{fontSize:12,width:width*0.68,overflow:"hidden" ,textAlign:"left",paddingTop:5,flexDirection:"row"}}>
-
-                                        {item.subject}
+                                        style={{fontSize:10,width:width-10,overflow:"hidden" ,textAlign:"left",paddingTop:5}}
+                                    >
+                                        {item.last_post_date}
                                     </Text>
                                     <Text
                                         numberOfLines={1}
-                                        style={{fontSize:10,width:width*0.2,overflow:"hidden" ,textAlign:"left",paddingTop:5}}
+                                        style={{fontSize:10,width:width*0.8,overflow:"hidden" ,textAlign:"left",paddingTop:5}}
                                     >
-                                        {item.last_post_date}
+                                        跟帖
                                     </Text>
                                 </View>
 
@@ -157,24 +176,21 @@ export default class user_forum extends Component  {
 
     render() {
         const { navigate } = this.props.navigation;
-        console.log(this.state.thread_list)
+        // console.log(this.state.thread_list)
         // console.log(this.state.forum_data)
         return (
-            <View style={{paddingTop:20,width:width,height:height}}>
+            <View style={{paddingTop:20,width:width,backgroundColor:"#fff"}}>
 
                 {
                     this.state.isLogin ?
                     <View style={styles.myLike}>
-                        <Text>我的板块</Text>
+
                         <MyLike myLikeData={this.state.myLikeData} />
                     </View>
                 :
                     <View/>
                 }
-
-                        <ThreadList data={this.state.thread_list} />
-
-
+                <ThreadList data={this.state.thread_list} />
 
 
             </View>
@@ -189,8 +205,12 @@ const styles = StyleSheet.create({
     myLike : {
         // height:100,
         width: width,
-        borderBottomWidth:1,
-        borderBottomColor:"#ccc"
+        // borderBottomWidth:1,
+        // borderBottomColor:"#ccc"
+        shadowOffset: {width: 0, height: 10},
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+        shadowColor: "#000",
 
     }
 });

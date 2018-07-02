@@ -6,36 +6,19 @@
 // import '../model/root' ;
 import React, { Component } from 'react';
 import {
-    Platform,
     StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    TextInput,
-    YellowBox,
-    Button,
-    ImageBackground,
     AsyncStorage,//持久化存储
-    FlatList
+    Image,
 
 } from 'react-native';
 import root from '../model/root'
 
-export default class message extends Component  {
+export default class forum extends Component  {
     async componentDidMount() {
-
     }
-
-    state = {
-        forum_data : {}
-    };
-
     render() {
-        const { navigate } = this.props.navigation;
-        // console.log(this.state.forum_data)
         return (
-            <View style={{paddingTop:10}}>
-            </View>
+            <Image></Image>
         );
     }
 }

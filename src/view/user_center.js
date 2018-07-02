@@ -14,12 +14,12 @@ import {
     ImageBackground,
     ScrollView,
     AsyncStorage,
-    Image
+    Image, YellowBox
 } from 'react-native';
 
 import UserCenterButton from '../model/UserCenterButton';
 type Props = {};
-
+YellowBox.ignoreWarnings(['M']);
 export default class user_center extends Component {
     state = {
         is_login : false,
@@ -90,7 +90,7 @@ export default class user_center extends Component {
                     <View  style={styles.container}>
 
                         <Image source={{uri: this.state.user_center_data.user_avatar}} style={{width: 100, height: 100,borderRadius:50,}} />
-                        <Text style={{margin:10, color:"#555555"}}>
+                        <Text style={{margin:10, color:"#fff"}}>
                             {/*{state.params && state.params.response.data.username}*/}
                             {this.state.user_center_data && this.state.user_center_data.user_info.username}
                         </Text>
@@ -158,6 +158,6 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         paddingTop:20,
         alignItems: 'center',
-        backgroundColor: '#FFF',
+        backgroundColor: '#78d3e9',
     },
 });
