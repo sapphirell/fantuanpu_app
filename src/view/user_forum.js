@@ -66,10 +66,10 @@ const MyLike = (myLikeData) => {
 
 const ThreadList = (data) => {
     // console.log(data.data)
+    // alert(JSON.stringify(data.data))
     // return (<View/>);
     return (
         <View style={{ paddingBottom:165,backgroundColor:"#eee" }}>
-            {/*<Text>主题</Text>*/}
             <FlatList
                 data={data.data}
                 keyExtractor = { _keyExtractor }
@@ -92,7 +92,7 @@ const ThreadList = (data) => {
                                         {item.avatar ?
                                             <Image
                                                 source={{
-                                                    uri: item.avatar,
+                                                    uri: global.webServer + item.avatar,
                                                 }}
                                                 style={{width:width*0.08,height:width*0.08,borderRadius:15, marginLeft:8}}
                                             />
@@ -154,7 +154,7 @@ export default class user_forum extends Component  {
                     },
                     body: forumData
                 }).then((response)=> {return response.json()});
-                // console.log(data);
+                console.log(data.data.thread_list);
                 if (data.ret != 200)
                     alert(data.msg);
                 else

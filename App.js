@@ -21,7 +21,8 @@ YellowBox.ignoreWarnings(['Warning:']);
 YellowBox.ignoreWarnings(['T']);
 YellowBox.ignoreWarnings(['M']);
 YellowBox.ignoreWarnings(['R']);
-global.webServer = 'http://localhost:8000/';
+// global.webServer = 'http://localhost:8000/';
+global.webServer = 'https://fantuanpu.com/';
 
 const Tab = TabNavigator({
     // "登录": {screen: login},

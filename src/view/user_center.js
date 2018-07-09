@@ -89,7 +89,7 @@ export default class user_center extends Component {
                 {this.state.is_login ?
                     <View  style={styles.container}>
 
-                        <Image source={{uri: this.state.user_center_data.user_avatar}} style={{width: 100, height: 100,borderRadius:50,}} />
+                        <Image source={{uri: global.webServer + this.state.user_center_data.user_avatar}} style={{width: 100, height: 100,borderRadius:50,}} />
                         <Text style={{margin:10, color:"#fff"}}>
                             {/*{state.params && state.params.response.data.username}*/}
                             {this.state.user_center_data && this.state.user_center_data.user_info.username}

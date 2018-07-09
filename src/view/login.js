@@ -46,8 +46,8 @@ export default class login extends Component  {
         loginUrl = global.webServer + 'do-login';
         formData = 'email='+this.state.email+'&password='+this.state.password+'&form=app';
         // formData = 'email=1745247379@qq.com&password=asdasdasd&form=app';
-        console.log(loginUrl);
-        console.log(formData);
+        // console.log(loginUrl);
+        // console.log(formData);
             fetch(loginUrl, {
                 method: 'POST',
                 headers: {
