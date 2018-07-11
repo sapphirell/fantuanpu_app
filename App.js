@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {
-    Image
+    Image,
+    AsyncStorage
 } from  'react-native';
 
 import {
     StackNavigator,
     TabNavigator,
-
 } from 'react-navigation';
 
 import login from './src/view/login';
@@ -21,9 +21,14 @@ YellowBox.ignoreWarnings(['Warning:']);
 YellowBox.ignoreWarnings(['T']);
 YellowBox.ignoreWarnings(['M']);
 YellowBox.ignoreWarnings(['R']);
-// global.webServer = 'http://localhost:8000/';
-global.webServer = 'https://fantuanpu.com/';
-
+YellowBox.ignoreWarnings(['C']);
+global.webServer = 'http://localhost:8000/';
+// global.webServer = 'https://fantuanpu.com/';
+global.logout = (token) => {
+    if (!token) return false;
+    AsyncStorage.removeItem("user_token");
+    AsyncStorage.removeItem("user_center_data" + token);
+};
 const Tab = TabNavigator({
     // "登录": {screen: login},
     "主页": { screen: user_forum,

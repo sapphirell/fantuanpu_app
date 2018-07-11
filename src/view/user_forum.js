@@ -69,7 +69,7 @@ const ThreadList = (data) => {
     // alert(JSON.stringify(data.data))
     // return (<View/>);
     return (
-        <View style={{ paddingBottom:165,backgroundColor:"#eee" }}>
+        <View style={{ paddingBottom:data.isLogin ? 157 : 0,backgroundColor:"#eee" }}>
             <FlatList
                 data={data.data}
                 keyExtractor = { _keyExtractor }
@@ -78,6 +78,9 @@ const ThreadList = (data) => {
                 // showsHorizontalScrollIndicator= {false}//隐藏水平滚动条
                 // showsVerticalScrollIndicator = {false}//显示竖直滚动条
                 // horizontal={true} //水平布局
+
+                onRefresh={data.onRefresh}
+                refreshing={data.refreshing}
                 renderItem= {
                     ({item}) => {
                         return (
@@ -85,19 +88,21 @@ const ThreadList = (data) => {
                                 // borderTopLeftRadius:5,borderTopRightRadius:5,
                                 borderRadius:5,
                                 borderLeftWidth:1,borderTopWidth:1,borderRightWidth:1,
-                                borderColor:"#eed1de"
+                                borderColor:"#e5e2ee"
                             }}>
                                 <View style={{overflow:"hidden" ,paddingTop:5}} >
                                     <View style={{width:width-10,flexDirection:"row"}}>
-                                        {item.avatar ?
+                                        {item.avatar && item.avatar.indexOf("noavatar") == -1 ?
                                             <Image
                                                 source={{
-                                                    uri: global.webServer + item.avatar,
+                                                    uri:  item.avatar,
                                                 }}
                                                 style={{width:width*0.08,height:width*0.08,borderRadius:15, marginLeft:8}}
                                             />
                                             :
-                                            <Image source={source=require('../../image/noavatar_middle.gif')}/>
+                                            <Image
+                                                style={{width:width*0.08,height:width*0.08,borderRadius:15, marginLeft:8}}
+                                                source={source=require('../../image/noavatar_middle.gif')}/>
 
                                         }
 
@@ -132,6 +137,37 @@ const ThreadList = (data) => {
     );
 };
 export default class user_forum extends Component  {
+
+    // async getThreadList()
+    getThreadList = async () =>
+    {
+
+        //判断是否登录。
+        let isLogin = await AsyncStorage.getItem('user_token');
+        // console.log(isLogin);
+        let forumData = isLogin ? "token=" +  isLogin : '';
+        let dataUrl = global.webServer + '/app/look_look';
+        let data = await fetch(dataUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: forumData
+        }).then((response)=> {return response.json()});
+        // console.log(data.data.thread_list);
+        if (data.ret != 200)
+            alert(data.msg);
+        else
+        {
+            if (isLogin)
+                this.setState({myLikeData : data.data.user_like_forum, isLogin :isLogin ,thread_list :data.data.thread_list});
+            else
+                this.setState({isLogin :isLogin ,thread_list :data.data.thread_list});
+            // console.log(this.state)
+
+        }
+
+    };
     async componentDidMount() {
         if (JSON.stringify(this.state.myLikeData) == '[]')
         {
@@ -142,27 +178,7 @@ export default class user_forum extends Component  {
             }
             else
             {
-                //判断是否登录。
-                let isLogin = await AsyncStorage.getItem('user_token');
-                // console.log(isLogin);
-                let forumData = isLogin ? "token=" +  isLogin : '';
-                let dataUrl = global.webServer + '/app/look_look';
-                let data = await fetch(dataUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: forumData
-                }).then((response)=> {return response.json()});
-                console.log(data.data.thread_list);
-                if (data.ret != 200)
-                    alert(data.msg);
-                else
-                {
-                    this.setState({myLikeData : data.data.user_like_forum, isLogin :isLogin ,thread_list :data.data.thread_list});
-                    // console.log(this.state)
-                }
-
+                this.getThreadList()
             }
         }
     }
@@ -171,7 +187,8 @@ export default class user_forum extends Component  {
         myLikeData : [],
         thread_list : [],
         forum_data : {},
-        isLogin : false //false或user_token
+        isLogin : false ,//false或user_token
+        isRefresh :false
     };
 
     render() {
@@ -184,13 +201,26 @@ export default class user_forum extends Component  {
                 {
                     this.state.isLogin ?
                     <View style={styles.myLike}>
-
                         <MyLike myLikeData={this.state.myLikeData} />
                     </View>
                 :
-                    <View/>
+                    <View style={{
+                        // height:100,
+                        // width: width,
+                        // borderBottomWidth:1,
+                        // borderBottomColor:"#ccc"
+                        // shadowOffset: {width: 0, height: 10},
+                        // shadowOpacity: 0.5,
+                        // shadowRadius: 5,
+                        // shadowColor: "#000",
+
+                    }}/>
                 }
-                <ThreadList data={this.state.thread_list} />
+                <ThreadList
+                    onRefresh={this . getThreadList}
+                    refreshing={this.state.isRefresh}
+                    isLogin={this.state.isLogin}
+                    data={this.state.thread_list} />
 
 
             </View>

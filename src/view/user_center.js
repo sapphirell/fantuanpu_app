@@ -14,19 +14,22 @@ import {
     ImageBackground,
     ScrollView,
     AsyncStorage,
-    Image, YellowBox
+    Image, YellowBox,
+    Dimensions
 } from 'react-native';
-
+import Login from './login'
 import UserCenterButton from '../model/UserCenterButton';
 type Props = {};
 YellowBox.ignoreWarnings(['M']);
+let {height, width} = Dimensions.get('window');
 export default class user_center extends Component {
     state = {
         is_login : false,
         user_center_data : {},
         user_token : false,
+        login_status : false,//子组件登录状态通知
     };
-    async componentDidMount() {
+    async getUserCenterData ()  {
         UserToken = await AsyncStorage.getItem("user_token");
 
         //如果token不存在则登录状态为false
@@ -62,7 +65,9 @@ export default class user_center extends Component {
         }
 
 
-
+    };
+    async componentDidMount() {
+        this.getUserCenterData();
     }
     getHttpData = () => {
     };
@@ -72,25 +77,28 @@ export default class user_center extends Component {
     logout =() => {
         // UserCenterData = await AsyncStorage.getItem('user_center_data'+UserToken);
         // alert(this.state.user_token);
-        AsyncStorage.removeItem("user_token");
-        AsyncStorage.removeItem("user_center_data" + this.state.user_token);
-
+        // AsyncStorage.removeItem("user_token");
+        // AsyncStorage.removeItem("user_center_data" + this.state.user_token);
+        global.logout(this.state.user_token);
         this.setState({
             is_login : false,
             user_center_data : {},
             user_token : false,
         });
     };
+
     render() {
         const {state , goBack ,navigate} = this.props.navigation;
         // console.log(state.params);
+        // console.log(this.state.user_center_data.user_info);
         return (
+
             <View style={styles.container}>
                 {this.state.is_login ?
                     <View  style={styles.container}>
 
-                        <Image source={{uri: global.webServer + this.state.user_center_data.user_avatar}} style={{width: 100, height: 100,borderRadius:50,}} />
-                        <Text style={{margin:10, color:"#fff"}}>
+                        <Image source={{uri: this.state.user_center_data.user_avatar}} style={{width: 100, height: 100,borderRadius:50,}} />
+                        <Text style={{margin:10, color:"#000"}}>
                             {/*{state.params && state.params.response.data.username}*/}
                             {this.state.user_center_data && this.state.user_center_data.user_info.username}
                         </Text>
@@ -131,13 +139,18 @@ export default class user_center extends Component {
                     :
                     <View>
                         <TouchableOpacity
-                            onPress={() => navigate('login', {
-                                id: 123
-                            })}
+                            onPress={() => navigate('login',{
+                                    id: 123,
+                                    callback : () => { this.getUserCenterData(); }
+                                })
+                            }
                         >
-                            <Text>登录</Text>
+                            <Image
+                                style={{borderRadius:10,width:width,height:height}}
+                                source={source=require('../../image/notlogin.png')}/>
                         </TouchableOpacity>
                     </View>
+
                 }
                 {/*<ImageBackground*/}
                     {/*style={styles.container}*/}
@@ -158,6 +171,7 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         paddingTop:20,
         alignItems: 'center',
-        backgroundColor: '#78d3e9',
+        // backgroundColor: '#78d3e9',
+        backgroundColor: '#fff',
     },
 });

@@ -16,24 +16,24 @@ import {
     Button,
     ImageBackground,
     AsyncStorage,//持久化存储
-
+    Alert
 } from 'react-native';
 import root from '../model/root'
 
 
 type Props = {};
 export default class login extends Component  {
-    static navigationOptions = {
-        // title : '登录',
-        // header : {
-        //     visible:false
-        // }
-    };
+    // static navigationOptions = {
+    //     title : '登录',
+    //     header : {
+    //         visible:false
+    //     }
+    // };
     state = {
         email:'',
         password:'',
     };
-    userLogin = (navigate) => {
+    userLogin = (navigate,goBack,callBack) => {
         // navigate('user_center',{
         //     id:123
         // })
@@ -44,8 +44,9 @@ export default class login extends Component  {
         //     return false;
         // }
         loginUrl = global.webServer + 'do-login';
-        formData = 'email='+this.state.email+'&password='+this.state.password+'&form=app';
-        // formData = 'email=1745247379@qq.com&password=asdasdasd&form=app';
+        // formData = 'email='+this.state.email+'&password='+this.state.password+'&form=app';
+        formData = 'email=1745247379@qq.com&password=asdasdasd&form=app';
+        // formData = 'email=1745247379@qq.com&password=56921ff6&form=app';
         // console.log(loginUrl);
         // console.log(formData);
             fetch(loginUrl, {
@@ -60,10 +61,16 @@ export default class login extends Component  {
                     {
                         AsyncStorage.setItem('user_token', responseJson.data.token).then(
                             () => {
-                                navigate('user_center',{
-                                    response:responseJson,
-                                    display:1
+                                Alert.alert("","登录成功~🎉",() => {
+                                    callBack()
+                                    goBack()
                                 })
+
+                                // navigate.back();
+                                // navigate('user_center',{
+                                //     response:responseJson,
+                                //     display:1
+                                // })
                             }
                         );
                     }
@@ -79,7 +86,7 @@ export default class login extends Component  {
     };
 
     render() {
-        const { navigate } = this.props.navigation;
+        const { state , navigate, goBack } = this.props.navigation;
         return (
             <ImageBackground
                 style={styles.container}
@@ -91,24 +98,36 @@ export default class login extends Component  {
                 >
                     <TextInput
                         style={styles.TextInputTop}
+                        autoCapitalize = "none"
+                        autoCorrect={false}
                         onChangeText={(text) => this.setState({email:text})}
                     />
                     <TextInput
                         password={true}
                         style={styles.TextInputBottom}
+                        autoCapitalize = "none"
+                        autoCorrect={false}
                         onChangeText={ (text) => this.setState({password:text}) }
 
                     />
                 </ImageBackground>
+                <View>
+                    <TouchableOpacity onPress={this.getHttpData}>
+                        <Text>注册</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={ () => {
+                        // alert(JSON.stringify(state.params))
+                        // alert(state.params.id)
+                        // state.params.callback()
+                        // console.log(123)
+                        //     console.log(JSON.stringify(state.params))
+                            this.userLogin(navigate,goBack,state.params.callback)
+                        }
+                    } >
+                        <Text>登录</Text>
+                    </TouchableOpacity>
+                </View>
 
-                <TouchableOpacity onPress={this.getHttpData}>
-                    <Text>注册</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={ () => { this.userLogin(navigate) } }
-                >
-                    <Text>登录</Text>
-                </TouchableOpacity>
             </ImageBackground>
         );
     }
