@@ -21,6 +21,7 @@ import {
 
 } from 'react-native';
 import root from '../model/root'
+import thread_view from "./thread_view";
 let _keyExtractor = (item) =>  item.subject + item.tid  + item.name;
 let {height, width} = Dimensions.get('window');
 
@@ -39,7 +40,9 @@ const MyLike = (myLikeData) => {
                 renderItem= {
                     ({item}) => {
                         return (
-                            <TouchableOpacity style={{paddingLeft:20}}>
+                            <TouchableOpacity
+
+                                style={{paddingLeft:20}}>
                                 <Image
                                     source={{
                                         uri: global.webServer +item.appimage,
@@ -69,7 +72,7 @@ const ThreadList = (data) => {
     // alert(JSON.stringify(data.data))
     // return (<View/>);
     return (
-        <View style={{ paddingBottom:data.isLogin ? 157 : 0,backgroundColor:"#eee" }}>
+        <View style={{ paddingBottom:data.isLogin ? 157 : 0,backgroundColor:"#fafafa" }}>
             <FlatList
                 data={data.data}
                 keyExtractor = { _keyExtractor }
@@ -84,7 +87,16 @@ const ThreadList = (data) => {
                 renderItem= {
                     ({item}) => {
                         return (
-                            <TouchableOpacity style={{backgroundColor:"#fff",marginLeft:5,marginRight:8,marginTop:5,width:width-10,padding:5,
+                            <TouchableOpacity
+                                onPress={
+                                    () => {
+                                        data.navigate('thread_view',{
+                                            tid: 123,
+                                            // callback : () => { this.getUserCenterData(); }
+                                        })
+                                    }}
+
+                                style={{backgroundColor:"#fff",marginLeft:5,marginRight:8,marginTop:5,width:width-10,padding:5,
                                 // borderTopLeftRadius:5,borderTopRightRadius:5,
                                 borderRadius:5,
                                 borderLeftWidth:1,borderTopWidth:1,borderRightWidth:1,
@@ -220,7 +232,10 @@ export default class user_forum extends Component  {
                     onRefresh={this . getThreadList}
                     refreshing={this.state.isRefresh}
                     isLogin={this.state.isLogin}
-                    data={this.state.thread_list} />
+                    data={this.state.thread_list}
+                    navigate={navigate}
+                />
+
 
 
             </View>

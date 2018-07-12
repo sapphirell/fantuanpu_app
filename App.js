@@ -12,6 +12,7 @@ import {
 import login from './src/view/login';
 import user_center from './src/view/user_center';
 import forum from './src/view/forum';
+import thread_view from './src/view/thread_view';
 import message from './src/view/message';
 import {YellowBox} from "react-native";
 import friends from "./src/view/firends";
@@ -30,7 +31,7 @@ global.logout = (token) => {
     AsyncStorage.removeItem("user_center_data" + token);
 };
 const Tab = TabNavigator({
-    // "登录": {screen: login},
+    // "论坛" : {screen: thread_view},
     "主页": { screen: user_forum,
         navigationOptions: {
             tabBarIcon: () => ( <Image source={require('./image/look.png')} style={{width:25,height:25,margin:10}}/> ),
@@ -38,7 +39,8 @@ const Tab = TabNavigator({
             inactiveTintColor : '#6d6d6d',
         }
     },
-    // "论坛" : {screen: forum},
+
+
     "消息" : { screen: message,
         navigationOptions: {
             tabBarIcon: () => ( <Image source={require('./image/message.png')} style={{width:25,height:25,margin:10}}/> ),
@@ -60,6 +62,7 @@ const Tab = TabNavigator({
             inactiveTintColor : '#6d6d6d',
         }
     },
+
 
 },{
     tabBarPosition : 'bottom',
@@ -92,6 +95,7 @@ const Tab = TabNavigator({
 
 const App = StackNavigator({
         tab: {screen : Tab},
+        thread_view : { screen: thread_view},
         login: {screen: login},
         user_center: {screen: user_center},
     }
