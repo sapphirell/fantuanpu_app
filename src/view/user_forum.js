@@ -91,7 +91,7 @@ const ThreadList = (data) => {
                                 onPress={
                                     () => {
                                         data.navigate('thread_view',{
-                                            tid: 123,
+                                            tid: item.tid,
                                             // callback : () => { this.getUserCenterData(); }
                                         })
                                     }}
@@ -131,6 +131,7 @@ const ThreadList = (data) => {
                                     >
                                         {item.last_post_date}
                                     </Text>
+                                    {/*<Text>{item.tid}</Text>*/}
                                     <Text
                                         numberOfLines={1}
                                         style={{fontSize:10,width:width*0.8,overflow:"hidden" ,textAlign:"left",paddingTop:5}}
@@ -209,7 +210,6 @@ export default class user_forum extends Component  {
         // console.log(this.state.forum_data)
         return (
             <View style={{paddingTop:20,width:width,backgroundColor:"#fff"}}>
-
                 {
                     this.state.isLogin ?
                     <View style={styles.myLike}>

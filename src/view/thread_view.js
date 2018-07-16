@@ -15,49 +15,88 @@ import Login from './login'
 import UserCenterButton from '../model/UserCenterButton';
 
 let {height, width} = Dimensions.get('window');
+//图文列表
+
+const imageTextList = (data) => {
+    if(data)
+    {
+
+        data.dataArr= data.message.split(/(\[img\].+?\[\/img\])/g);
+        console.log(data.dataArr)
+        data.reg = new RegExp("/\[img\].+?\[\/img\]/");
+
+    }
+
+    // JSON.stringify(data) == '[]' ?
+    // return (<View/>);
+
+    //{content.match(/\[img\](.*?)\[\/img\]/)}
+    return (
+        <View style={{}}>
+            {
+                data ?  data.dataArr.map((content) => {
+                    return (
+                        data.reg.test(content) == true ?
+
+                            <Text>图片：{content}</Text>
+
+                            :
+                            <Text>文本：{content}</Text>
+                    )
+
+                })
+                : ""
+            }
+        </View>
+
+    );
+};
 export default class thread_view extends Component {
 
     async componentWillMount() {
         await this.setState({tid:this.props.navigation.state.params.tid});
-        // let forumData = isLogin ? "token=" +  isLogin : '';
-        // let dataUrl = global.webServer + '/app/look_look';
-        // let data = await fetch(dataUrl, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/x-www-form-urlencoded',
-        //     },
-        //     body: forumData
-        // }).then((response)=> {return response.json()});
-        // // console.log(data.data.thread_list);
-        // if (data.ret != 200)
-        //     alert(data.msg);
-        // else
-        // {
-        //     if (isLogin)
-        //         this.setState({myLikeData : data.data.user_like_forum, isLogin :isLogin ,thread_list :data.data.thread_list});
-        //     else
-        //         this.setState({isLogin :isLogin ,thread_list :data.data.thread_list});
-        //     // console.log(this.state)
-        //
-        // }
+        let forumData = "tid=" + this.props.navigation.state.params.tid ;
+        let dataUrl = global.webServer + '/app/view_thread';
+        let data = await fetch(dataUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: forumData
+        }).then((response)=> {return response.json()});
+        // alert(this.props.navigation.state.params.tid)
+        // console.log(data.data);
+        if (data.ret != 200)
+            alert(data.msg);
+        else
+        {
+            this.setState({
+                thread_data : data.data.thread.thread_subject,
+                post_data : data.data.thread.thread_post,
+                forum_data : data.data.forum,
+            })
+        }
 
     }
 
     componentDidMount() {
-        alert(this.state.tid)
+
+
     }
     state = {
         is_login : false,
         tid:0,
         user_token : false,
         thread_data : {},
-        post_data :[]
+        post_data :[],
+        forum_data : {}
     };
 
     render() {
         const { state , navigate, goBack ,props} = this.props.navigation;
         return (
             <View style={styles.container}>
+
                 <View
                     style={{
                         width:width,
@@ -88,13 +127,15 @@ export default class thread_view extends Component {
                     </TouchableOpacity>
 
                 </View>
-                <View style={{
+                <ScrollView style={{
+                    height:height-300,
                     margin:5,
                     width:width,
-                    flexDirection:"row",
+                    // flexDirection:"row",
                     flexWrap:"wrap",
                     padding:15
                 }}>
+
                     {JSON.stringify(this.state.thread_data) == '{}' ?
                         <Image
                             source={source=require('../../image/noavatar_middle.gif')}
@@ -105,32 +146,34 @@ export default class thread_view extends Component {
                     }
                     {
                         <View
-                            style={{height:50,flexDirection:"row",width:width-90,flexWrap:"wrap",paddingTop:5,marginLeft:8}}
+                            style={{flexDirection:"row",width:width-90,flexWrap:"wrap",paddingTop:5,marginLeft:8}}
                         >
-                            <Text style={{width:width-80, fontSize:16}}>[发帖人] : 帖子标题</Text>
+                            <Text style={{width:width-80, fontSize:16}}>[{this.state.thread_data && this.state.thread_data.author}] : {this.state.thread_data && this.state.thread_data.subject}</Text>
                             <View style={{flexDirection:"row",paddingTop:5,}}>
                                 <Text style={{ color:"#545454"}}>2018-09-04</Text>
                                 <Image
                                     source={source=require('../../image/post.png')}
                                     style={styles.smImage}
                                 />
-                                <Text style={{ color:"#545454"}}>红茶馆</Text>
+                                <Text style={{ color:"#545454"}}>{this.state.forum_data && this.state.forum_data.name }</Text>
                                 <Image
                                     source={source=require('../../image/history.png')}
                                     style={styles.smImage}
                                 />
-                                <Text style={{ color:"#545454"}}>22</Text>
+                                <Text style={{ color:"#545454"}}>{ this.state.thread_data && this.state.thread_data.views}</Text>
                                 <Image
                                     source={source=require('../../image/reply.png')}
                                     style={styles.smImage}
                                 />
-                                <Text style={{ color:"#545454"}}>33</Text>
+                                <Text style={{ color:"#545454"}}>{ this.state.thread_data && this.state.thread_data.replies}</Text>
                             </View>
-
+                            {
+                                this.state.post_data && imageTextList(this.state.post_data[0])
+                            }
                         </View>
                     }
 
-                </View>
+                </ScrollView>
             </View>
         )
     };
@@ -138,10 +181,11 @@ export default class thread_view extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        // flex: 1,
         // justifyContent: 'center',
+        height:height,
         paddingTop:40,
-        alignItems: 'center',
+        // alignItems: 'center',
         // backgroundColor: '#78d3e9',
         backgroundColor: '#fff',
     },
