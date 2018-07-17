@@ -23,6 +23,7 @@ YellowBox.ignoreWarnings(['T']);
 YellowBox.ignoreWarnings(['M']);
 YellowBox.ignoreWarnings(['R']);
 YellowBox.ignoreWarnings(['C']);
+YellowBox.ignoreWarnings(['F']);
 global.webServer = 'http://localhost:8000/';
 // global.webServer = 'https://fantuanpu.com/';
 global.logout = (token) => {

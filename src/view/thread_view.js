@@ -13,39 +13,31 @@ import {
 } from 'react-native';
 import Login from './login'
 import UserCenterButton from '../model/UserCenterButton';
-
+import WebImage from '../model/WebImage'
 let {height, width} = Dimensions.get('window');
 //图文列表
-
 const imageTextList = (data) => {
     if(data)
     {
-
-        data.dataArr= data.message.split(/(\[img\].+?\[\/img\])/g);
+        data.dataArr= data.message.split(/(\[img.+?\[\/img\])/g);
         console.log(data.dataArr)
-        data.reg = new RegExp("/\[img\].+?\[\/img\]/");
-
+        data.reg = new RegExp(/^\[img.+?\[\/img\]$/);
     }
 
-    // JSON.stringify(data) == '[]' ?
-    // return (<View/>);
-
-    //{content.match(/\[img\](.*?)\[\/img\]/)}
     return (
-        <View style={{}}>
+        <View style={{width:width}}>
             {
-                data ?  data.dataArr.map((content) => {
-                    return (
-                        data.reg.test(content) == true ?
+                data ? data.dataArr.map(
+                    (content) => {
+                        return (
+                            data.reg.test(content) == true ?
+                                <WebImage uri = { content.replace(/\[img.*?\]/,'').replace(/\[\/img\]/,'')} />
+                                :
+                                <Text style={{width:width,paddingRight:30,}}>{content}</Text>
+                        )
+                    }
+                ) : <Text>帖子不存在</Text>
 
-                            <Text>图片：{content}</Text>
-
-                            :
-                            <Text>文本：{content}</Text>
-                    )
-
-                })
-                : ""
             }
         </View>
 
@@ -130,10 +122,11 @@ export default class thread_view extends Component {
                 <ScrollView style={{
                     height:height-300,
                     margin:5,
-                    width:width,
+                    // width:width-20,
                     // flexDirection:"row",
+                    width:width,paddingRight:30,
                     flexWrap:"wrap",
-                    padding:15
+                    // padding:15,
                 }}>
 
                     {JSON.stringify(this.state.thread_data) == '{}' ?
@@ -148,9 +141,9 @@ export default class thread_view extends Component {
                         <View
                             style={{flexDirection:"row",width:width-90,flexWrap:"wrap",paddingTop:5,marginLeft:8}}
                         >
-                            <Text style={{width:width-80, fontSize:16}}>[{this.state.thread_data && this.state.thread_data.author}] : {this.state.thread_data && this.state.thread_data.subject}</Text>
-                            <View style={{flexDirection:"row",paddingTop:5,}}>
-                                <Text style={{ color:"#545454"}}>2018-09-04</Text>
+                            <Text style={{width:width-80, fontSize:16,paddingLeft:2,marginBottom:8}}>[{this.state.thread_data && this.state.thread_data.author}] : {this.state.thread_data && this.state.thread_data.subject}</Text>
+                            <View style={{flexDirection:"row",paddingBottom:5,paddingLeft:2,}}>
+                                <Text style={{ color:"#545454",fontSize:13}}>2018-09-04</Text>
                                 <Image
                                     source={source=require('../../image/post.png')}
                                     style={styles.smImage}
