@@ -94,14 +94,15 @@ export default class user_center extends Component {
         return (
 
             <View style={styles.container}>
-                {this.state.is_login ?
+                {this.state.is_login || 1==1 ?
                     <View  style={styles.container}>
 
-                        <Image source={{uri: this.state.user_center_data.user_avatar}} style={{width: 100, height: 100,borderRadius:50,}} />
+                        {this.state.user_center_data && <Image source={{uri: this.state.user_center_data.user_avatar}} style={{width: 100, height: 100,borderRadius:50,}} />}
                         <Text style={{margin:10, color:"#000"}}>
                             {/*{state.params && state.params.response.data.username}*/}
-                            {this.state.user_center_data && this.state.user_center_data.user_info.username}
+                            {this.state.user_center_data.user_info && this.state.user_center_data.user_info.username}
                         </Text>
+                        {this.state.is_login ?
                         <ScrollView style={{backgroundColor:"#eeeeee",height:400}}>
 
                             <UserCenterButton name={this.state.user_center_data.user_count.extcredits.extcredits1}
@@ -130,8 +131,17 @@ export default class user_center extends Component {
 
                             <UserCenterButton name="退出登录" onPress={()=>{return this.logout}}  />
 
-                        </ScrollView>
 
+                        </ScrollView>
+                            :
+                            <UserCenterButton name="登录账号" onPress={
+                                    () => navigate('login',{
+                                        id: 123,
+                                        callback : () => { this.getUserCenterData(); }
+                                    })
+                                }
+                            />
+                        }
 
 
                         <TouchableOpacity/>

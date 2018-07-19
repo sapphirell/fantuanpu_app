@@ -17,7 +17,8 @@ import {
     Button,
     ImageBackground,
     AsyncStorage,//持久化存储
-    FlatList, Dimensions
+    FlatList, Dimensions,
+    ActionButton
 
 } from 'react-native';
 import root from '../model/root'
@@ -28,7 +29,10 @@ let {height, width} = Dimensions.get('window');
 YellowBox.ignoreWarnings(['M']);
 const MyLike = (myLikeData) => {
     return (
-        <View style={{flexDirection:"row",backgroundColor:"#fff"}}>
+        <View style={{flexDirection:"row",backgroundColor:"#fff",width:width,height:height}}>
+            <TouchableOpacity style={{bottom:50, right:50,width:130,height:130,position:"absolute",backgroundColor:"#dd8d82"}}>
+                <Text>发帖</Text>
+            </TouchableOpacity>
             <FlatList
                 data={myLikeData.myLikeData}
                 keyExtractor = { _keyExtractor }
@@ -62,6 +66,8 @@ const MyLike = (myLikeData) => {
                 <Text style={{fontSize:10,width:50,overflow:"hidden" ,textAlign:"center",paddingTop:5}}>添加常去</Text>
 
             </TouchableOpacity>
+
+
         </View>
 
     );
@@ -72,9 +78,13 @@ const ThreadList = (data) => {
     // alert(JSON.stringify(data.data))
     // return (<View/>);
     return (
-        <View style={{ paddingBottom:data.isLogin ? 157 : 0,backgroundColor:"#fafafa" }}>
+        <View style={{ paddingBottom:data.isLogin ? 157 : 0,backgroundColor:"#fafafa",width:width,height:height }}>
+            <TouchableOpacity style={{bottom:150, right:20,width:50,height:50,position:"absolute",backgroundColor:"#57f2ff",zIndex:99}}>
+                <Text>发帖</Text>
+            </TouchableOpacity>
             <FlatList
                 data={data.data}
+                style={{zIndex:1}}
                 keyExtractor = { _keyExtractor }
 
                 // numColumns={5}

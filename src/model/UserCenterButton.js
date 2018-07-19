@@ -17,7 +17,7 @@ export default class UserCenterButton extends Component {
     render () {
         return (
             <View style={styles.view}>
-                <TouchableOpacity onPress={this.props.onPress()} style={styles.option}>
+                <TouchableOpacity onPress={this.props.onPress} style={styles.option}>
                     <Text style={{textAlign:"center", flex: 1,}}>{this.props.name}
                         <Text>  {this.props.value}</Text>
                     </Text>
