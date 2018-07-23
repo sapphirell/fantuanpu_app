@@ -30,9 +30,9 @@ YellowBox.ignoreWarnings(['M']);
 const MyLike = (myLikeData) => {
     return (
         <View style={{flexDirection:"row",backgroundColor:"#fff",width:width,height:height}}>
-            <TouchableOpacity style={{bottom:50, right:50,width:130,height:130,position:"absolute",backgroundColor:"#dd8d82"}}>
-                <Text>发帖</Text>
-            </TouchableOpacity>
+            {/*<TouchableOpacity style={{bottom:50, right:50,width:130,height:130,position:"absolute",backgroundColor:"#dd8d82"}}>*/}
+                {/*<Text>发帖</Text>*/}
+            {/*</TouchableOpacity>*/}
             <FlatList
                 data={myLikeData.myLikeData}
                 keyExtractor = { _keyExtractor }
@@ -108,7 +108,7 @@ const ThreadList = (data) => {
 
                                 style={{backgroundColor:"#fff",marginLeft:5,marginRight:8,marginTop:5,width:width-10,padding:5,
                                 // borderTopLeftRadius:5,borderTopRightRadius:5,
-                                borderRadius:5,
+                                // borderRadius:5,
                                 borderLeftWidth:1,borderTopWidth:1,borderRightWidth:1,
                                 borderColor:"#e5e2ee"
                             }}>
@@ -235,7 +235,6 @@ export default class user_forum extends Component  {
                         // shadowOpacity: 0.5,
                         // shadowRadius: 5,
                         // shadowColor: "#000",
-
                     }}/>
                 }
                 <ThreadList

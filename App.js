@@ -17,6 +17,7 @@ import message from './src/view/message';
 import {YellowBox} from "react-native";
 import friends from "./src/view/firends";
 import user_forum from "./src/view/user_forum";
+import not_logged from "./src/view/not_logged";
 
 YellowBox.ignoreWarnings(['Warning:']);
 YellowBox.ignoreWarnings(['T']);
@@ -99,6 +100,7 @@ const App = StackNavigator({
         thread_view : { screen: thread_view},
         login: {screen: login},
         user_center: {screen: user_center},
+        not_logged: {screen: not_logged},
     }
     ,{
         //screen模式才可以隐藏导航header,none为全局隐藏
