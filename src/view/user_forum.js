@@ -79,9 +79,6 @@ const ThreadList = (data) => {
     // return (<View/>);
     return (
         <View style={{ paddingBottom:data.isLogin ? 157 : 0,backgroundColor:"#fafafa",width:width,height:height }}>
-            <TouchableOpacity style={{bottom:150, right:20,width:50,height:50,position:"absolute",backgroundColor:"#57f2ff",zIndex:99}}>
-                <Text>发帖</Text>
-            </TouchableOpacity>
             <FlatList
                 data={data.data}
                 style={{zIndex:1}}
@@ -222,20 +219,32 @@ export default class user_forum extends Component  {
             <View style={{paddingTop:20,width:width,backgroundColor:"#fff"}}>
                 {
                     this.state.isLogin ?
+
                     <View style={styles.myLike}>
+
                         <MyLike myLikeData={this.state.myLikeData} />
                     </View>
                 :
-                    <View style={{
-                        // height:100,
-                        // width: width,
-                        // borderBottomWidth:1,
-                        // borderBottomColor:"#ccc"
-                        // shadowOffset: {width: 0, height: 10},
-                        // shadowOpacity: 0.5,
-                        // shadowRadius: 5,
-                        // shadowColor: "#000",
-                    }}/>
+                    <View style={{height:0}}/>
+                }
+                { this.state.isLogin &&
+                    <TouchableOpacity
+                        onPress={
+                            () => navigate('new_thread',{
+                                id: 123,
+                                callback : () => {  }
+                            })
+                        }
+                        style={{bottom:250,alignItems:"center", right:20,
+                        shadowOffset: {width: 2, height: 3},
+                        shadowOpacity: 0.5,
+                        shadowRadius: 3,
+                        shadowColor: "#ff5b5a",
+                        width:50,height:50,borderRadius:25,position:"absolute",backgroundColor:"#ff706d",zIndex:99}}>
+                        <Image
+                            style={{width:35,height:35,borderRadius:15,marginTop:7.5}}
+                            source={source=require('../../image/post.png')}/>
+                    </TouchableOpacity>
                 }
                 <ThreadList
                     onRefresh={this . getThreadList}
@@ -257,14 +266,14 @@ const styles = StyleSheet.create({
 
     },
     myLike : {
-        // height:100,
+        height:80,
         width: width,
         // borderBottomWidth:1,
         // borderBottomColor:"#ccc"
         shadowOffset: {width: 0, height: 10},
         shadowOpacity: 0.5,
         shadowRadius: 5,
-        shadowColor: "#000",
+        shadowColor: "#ee7489",
 
     }
 });

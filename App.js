@@ -18,6 +18,7 @@ import {YellowBox} from "react-native";
 import friends from "./src/view/firends";
 import user_forum from "./src/view/user_forum";
 import not_logged from "./src/view/not_logged";
+import new_thread from "./src/view/new_thread";
 
 YellowBox.ignoreWarnings(['Warning:']);
 YellowBox.ignoreWarnings(['T']);
@@ -33,7 +34,7 @@ global.logout = (token) => {
     AsyncStorage.removeItem("user_center_data" + token);
 };
 const Tab = TabNavigator({
-    // "论坛" : {screen: thread_view},
+    "论坛" : {screen: new_thread},
     "主页": { screen: user_forum,
         navigationOptions: {
             tabBarIcon: () => ( <Image source={require('./image/look.png')} style={{width:25,height:25,margin:10}}/> ),
@@ -101,6 +102,7 @@ const App = StackNavigator({
         login: {screen: login},
         user_center: {screen: user_center},
         not_logged: {screen: not_logged},
+        new_thread : {screen : new_thread}
     }
     ,{
         //screen模式才可以隐藏导航header,none为全局隐藏

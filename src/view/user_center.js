@@ -101,7 +101,7 @@ export default class user_center extends Component {
 
     render() {
         const {state , goBack ,navigate} = this.props.navigation;
-       
+
         // console.log(state.params);
         // console.log(this.state.user_center_data.user_info);
         return (
