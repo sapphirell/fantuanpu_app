@@ -239,8 +239,8 @@ export default class user_forum extends Component  {
                         shadowOffset: {width: 2, height: 3},
                         shadowOpacity: 0.5,
                         shadowRadius: 3,
-                        shadowColor: "#ff5b5a",
-                        width:50,height:50,borderRadius:25,position:"absolute",backgroundColor:"#ff706d",zIndex:99}}>
+                        shadowColor: "#ff6888",
+                        width:50,height:50,borderRadius:25,position:"absolute",backgroundColor:"#ee7489",zIndex:99}}>
                         <Image
                             style={{width:35,height:35,borderRadius:15,marginTop:7.5}}
                             source={source=require('../../image/post.png')}/>

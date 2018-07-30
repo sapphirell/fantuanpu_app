@@ -93,11 +93,12 @@ export default class thread_view extends Component {
                     style={{
                         width:width,
                         paddingBottom:8,
-                        paddingTop:8,
+                        paddingTop:38,
                         borderBottomWidth:1,
                         borderColor:"#cccccc",
                         flexDirection:"row",
-                        flexWrap:"wrap"
+                        flexWrap:"wrap",
+                        backgroundColor:"#ff6888"
                     }}
                 >
                     <TouchableOpacity
@@ -113,7 +114,7 @@ export default class thread_view extends Component {
                             style={{width: 14, height: 14,borderRadius:5, marginLeft:10}} />
 
                         <Text
-                            style={{fontSize:16, paddingBottom:5,color:"#dd6e73"}}
+                            style={{fontSize:16, paddingBottom:5,color:"#fff"}}
                         >返回</Text>
 
                     </TouchableOpacity>
@@ -177,7 +178,7 @@ const styles = StyleSheet.create({
         // flex: 1,
         // justifyContent: 'center',
         height:height,
-        paddingTop:40,
+        // paddingTop:40,
         // alignItems: 'center',
         // backgroundColor: '#78d3e9',
         backgroundColor: '#fff',

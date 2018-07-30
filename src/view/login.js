@@ -102,6 +102,7 @@ export default class login extends Component  {
                     />
                     <TextInput
                         password={true}
+                        secureTextEntry={true}
                         style={styles.TextInputBottom}
                         autoCapitalize = "none"
                         autoCorrect={false}
