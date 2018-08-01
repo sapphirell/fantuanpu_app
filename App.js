@@ -34,7 +34,7 @@ global.logout = (token) => {
     AsyncStorage.removeItem("user_center_data" + token);
 };
 const Tab = TabNavigator({
-    // "论坛" : {screen: new_thread},
+    // "论坛" : {screen: forum},
     "主页": { screen: user_forum,
         navigationOptions: {
             tabBarIcon: () => ( <Image source={require('./image/look.png')} style={{width:25,height:25,margin:10}}/> ),

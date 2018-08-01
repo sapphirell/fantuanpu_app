@@ -54,7 +54,7 @@ export default class upload_image extends Component  {
             }
         };
         ImagePicker.showImagePicker(options, (response) => {
-            this.props.update_upload_status('uploading...');
+
             if (response.didCancel) {
                 console.log('User cancelled video picker');
             }
@@ -68,7 +68,7 @@ export default class upload_image extends Component  {
                 let params = {
                     path:response.uri    //本地文件地址
                 };
-
+                this.props.update_upload_status('uploading...');
                 this.uploadImage(params )
                     .then( res=>{
                         this.props.update_upload_status('success',"https://image.fantuanpu.com/"+res.data.url);

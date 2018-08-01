@@ -172,19 +172,6 @@ export default class user_center extends Component {
                     }
 
 
-                    <TouchableOpacity/>
-
-
-
-                }
-                {/*<ImageBackground*/}
-                    {/*style={styles.container}*/}
-                    {/*source={require('../../data/image/user_center_background.png')} resizeMode='cover'*/}
-                {/*>*/}
-
-                {/*</ImageBackground>*/}
-                {/*<Text>id:{state.params.id}</Text>*/}
-                {/*<Text onPress={()=>goBack()}>返回</Text>*/}
             </View>
         );
     }

@@ -5,11 +5,13 @@ import {
     View,
     TouchableOpacity,
     navigate,
+    FlatList,
     ImageBackground,
     ScrollView,
     AsyncStorage,
     Image, YellowBox,
-    Dimensions
+    Dimensions,
+    TextInput
 } from 'react-native';
 import Login from './login'
 import UserCenterButton from '../model/UserCenterButton';
@@ -19,9 +21,19 @@ let {height, width} = Dimensions.get('window');
 const imageTextList = (data) => {
     if(data)
     {
-        data.dataArr= data.message.split(/(\[img.+?\[\/img\])/g);
-        console.log(data.dataArr)
-        data.reg = new RegExp(/^\[img.+?\[\/img\]$/);
+        // data.dataArr= data.message.split(/(\[img.+?\[\/img\])/g);
+        console.log(data.message);
+        regArr = data.message.split(/(\[img.+?\[\/img\])|(\[quote[\w\W]+?\[\/quote\])|(\[blockquote[\w\W]+?\[\/blockquote\])/);
+        dataArr = [];
+        regArr.map((data,key)=>{if(data !== undefined) {
+            dataArr.push(data)
+        }});
+        data.dataArr = dataArr;
+        // console.log(data.dataArr);
+        data.regImg = new RegExp(/^\[img.+?\[\/img\]$/);
+        data.regQuote = new RegExp(/^\[.*?quote.*?\][\w\W]*?\[\/.*?quote\]$/);
+
+
     }
 
     return (
@@ -30,10 +42,15 @@ const imageTextList = (data) => {
                 data ? data.dataArr.map(
                     (content) => {
                         return (
-                            data.reg.test(content) == true ?
+                            data.regImg.test(content) === true ?
                                 <WebImage uri = { content.replace(/\[img.*?\]/,'').replace(/\[\/img\]/,'')} />
                                 :
-                                <Text style={{width:width,paddingRight:30,}}>{content}</Text>
+                                (data.regQuote.test(content) === true ?
+                                        <Text style={{width:width,paddingRight:30,fontStyle:"italic",fontSize:11,fontColor:"#ccc"}}> 回复 @ {content.replace(/\[blockquote[\w\W]*?\]/,'').replace(/\[\/blockquote\]/,'').replace(/\[quote[\w\W]*?\]/,'').replace(/\[\/quote\]/,'')}</Text>
+                                    :
+                                        <Text style={{width:width,paddingRight:30,}}>{content}</Text>
+                                )
+                               
                         )
                     }
                 ) : <Text>帖子不存在</Text>
@@ -43,6 +60,7 @@ const imageTextList = (data) => {
 
     );
 };
+
 export default class thread_view extends Component {
 
     async componentWillMount() {
@@ -74,7 +92,8 @@ export default class thread_view extends Component {
     componentDidMount() {
 
 
-    }
+    };
+
     state = {
         is_login : false,
         tid:0,
@@ -86,6 +105,9 @@ export default class thread_view extends Component {
 
     render() {
         const { state , navigate, goBack ,props} = this.props.navigation;
+        // console.log(this.state.post_data);
+        let _keyExtractor = (item) =>  item.dateline;
+
         return (
             <View style={styles.container}>
 
@@ -94,8 +116,6 @@ export default class thread_view extends Component {
                         width:width,
                         paddingBottom:8,
                         paddingTop:38,
-                        borderBottomWidth:1,
-                        borderColor:"#cccccc",
                         flexDirection:"row",
                         flexWrap:"wrap",
                         backgroundColor:"#ff6888"
@@ -121,7 +141,7 @@ export default class thread_view extends Component {
 
                 </View>
                 <ScrollView style={{
-                    height:height-300,
+                    height:height,
                     margin:5,
                     // width:width-20,
                     // flexDirection:"row",
@@ -140,10 +160,10 @@ export default class thread_view extends Component {
                     }
                     {
                         <View
-                            style={{flexDirection:"row",width:width-90,flexWrap:"wrap",paddingTop:5,marginLeft:8}}
+                            style={{flexDirection:"row",width:width-90,flexWrap:"wrap",marginLeft:8}}
                         >
                             <Text style={{width:width-80, fontSize:16,paddingLeft:2,marginBottom:8}}>[{this.state.thread_data && this.state.thread_data.author}] : {this.state.thread_data && this.state.thread_data.subject}</Text>
-                            <View style={{flexDirection:"row",paddingBottom:5,paddingLeft:2,}}>
+                            <View style={{flexDirection:"row",paddingBottom:15,paddingLeft:2,}}>
                                 <Text style={{ color:"#545454",fontSize:13}}>2018-09-04</Text>
                                 <Image
                                     source={source=require('../../image/post.png')}
@@ -156,7 +176,7 @@ export default class thread_view extends Component {
                                 />
                                 <Text style={{ color:"#545454"}}>{ this.state.thread_data && this.state.thread_data.views}</Text>
                                 <Image
-                                    source={source=require('../../image/reply.png')}
+                                    source={source=require('../../image/message.png')}
                                     style={styles.smImage}
                                 />
                                 <Text style={{ color:"#545454"}}>{ this.state.thread_data && this.state.thread_data.replies}</Text>
@@ -166,8 +186,64 @@ export default class thread_view extends Component {
                             }
                         </View>
                     }
+                    {
+                        this.state.post_data &&
+                        <FlatList
+                            data={this.state.post_data}
+                            style={{zIndex:1, borderTopWidth:1,borderColor:"#f4f4f4",paddingTop:5,marginTop:5 }}
+                            keyExtractor = { _keyExtractor }
+                            renderItem= {
+                                ({item}) => {
+                                    return (
+                                        <View style={{marginBottom:15}} >
+                                            {item.position !== 1 ?
+                                                <View style={{width:width,paddingLeft:20}}>
+                                                    <View style={{flexDirection:"row",width:width}} >
+                                                        <Image source={{uri: item.avatar}}
+                                                               style={{width: 35, height: 35, borderRadius: 17.5,marginRight:10}}/>
+                                                        <View style={{marginLeft:5,width:width-50,}}>
+                                                            <Text style={{textAlign:"left",width:width}}>{item.author}</Text>
+                                                            <Text style={{fontSize:12,color:"#b0b0b0",marginTop:5,flexDirection:"row",width:width}}>
+                                                                {item.postdate}
+                                                                <TouchableOpacity style={{flexDirection:"row",width:40}}>
+                                                                    <Image source={source=require('../../image/reply-b.png')}
+                                                                           style={{width:12,height:12,marginLeft:7,position:"relative",top:2}} />
+                                                                    <Text style={{fontSize:12,color:"#b0b0b0",marginLeft:3,position:"relative",top:2}}>回复</Text>
+                                                                </TouchableOpacity>
+                                                            </Text>
 
+                                                        </View>
+                                                    </View>
+                                                    <View style={{marginTop:10}}>
+                                                        { imageTextList(item) }
+                                                    </View>
+
+                                                </View>
+                                                :
+                                                ""
+                                            }
+                                        </View>
+                                    )
+                                }
+                            }
+                        />
+                    }
                 </ScrollView>
+                <View style={styles.floatBar}>
+
+                    <TextInput style={{width:250,backgroundColor:"#fff",height:30, marginTop:7,borderRadius:3,paddingLeft:10,marginLeft:5,
+                        borderColor:"#ccc",
+                        borderWidth:1,
+                    }}/>
+                    <TouchableOpacity style={{width:35,marginLeft:3,alignItems:"center"}}>
+                        <Image  source={source=require('../../image/reply.png')}
+                                style={styles.floatButton}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{width:35,marginLeft:5,alignItems:"center"}}>
+                        <Image  source={source=require('../../image/upimage.png')}
+                                style={{width: 18, height:18, marginTop:9.5,}}/>
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     };
@@ -187,5 +263,19 @@ const styles = StyleSheet.create({
         width: 14, height:14,
         marginLeft:5,
         marginRight:5
+    },
+    floatButton : {
+        width: 20, height:20, marginTop:7.5,
+    },
+    floatBar : {
+        backgroundColor:"#fafafa",
+        borderTopColor:"#ccc",
+        borderTopWidth:1,
+        width:width,
+        height:45,
+        bottom:0,
+        // left:(width-180)/2,
+        // borderRadius:5,
+        flexDirection:"row"
     }
 });

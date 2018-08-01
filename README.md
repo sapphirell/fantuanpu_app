@@ -1,1 +1,2 @@
 # fantuanpu_app
+使用react-native开发的ios+Android论坛App
