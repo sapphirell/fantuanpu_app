@@ -43,7 +43,7 @@ export default class message extends Component  {
         }
 
     };
-    postThread = () => {
+    postThread = async (goBack) => {
         if (this.state.content === "")
         {
             alert ('必须输入帖子内容'); return false;
@@ -56,18 +56,27 @@ export default class message extends Component  {
         {
             alert ('必须选择板块'); return false;
         }
-        let formData = 'fname='+this.state.fname+'&title='+this.state.title+'&content='+this.state.content;
+        let token = await AsyncStorage.getItem('user_token');
+        let formData = 'fname='+this.state.fname+'&title='+this.state.title+'&content='+this.state.content + "&token=" + token;
         // console.log(loginUrl);
         // console.log(formData);
-        fetch(loginUrl, {
+        let postUrl = global.webServer + "app/new_thread" ;
+        fetch(postUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: formData
-        })  .then((response) => response.json())
+        })
+            // .then((response) => console.log(response))
+            .then((response) => response.json())
             .then((responseJson)=>{
                 console.log(responseJson)
+                if (responseJson.ret === 200)
+                {
+                    alert("发帖成功!~");
+                    goBack();
+                }
             })
             .catch((error) => {
                 console.error(error);
@@ -76,7 +85,7 @@ export default class message extends Component  {
     _textAreaOnChange = (data) => {
         this.setState({content:data});
     };
-    _textInputOnChange = (data) => {this.state.setState({title : data})};
+    _textInputOnChange = (data) => {this.setState({title : data})};
     render() {
         const { navigate ,goBack} = this.props.navigation;
         // console.log(this.state.forum_data)
@@ -115,7 +124,7 @@ export default class message extends Component  {
                     <Text style={{width:width-130,textAlign:"center",fontWeight:"700",color:"#fff",fontSize:16,position:"relative",bottom:2}}>
                         发表主题
                     </Text>
-                    <TouchableOpacity style={{position:"absolute", right:10, top:40,}} onPress={this.postThread} >
+                    <TouchableOpacity style={{position:"absolute", right:10, top:40,}} onPress={()=>this.postThread(goBack)} >
                         <Text style={{fontSize:13,color:"#f5f5f5"}}>发射！</Text>
                     </TouchableOpacity>
                 </View>

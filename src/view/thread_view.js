@@ -11,11 +11,13 @@ import {
     AsyncStorage,
     Image, YellowBox,
     Dimensions,
-    TextInput
+    TextInput,
+    KeyboardAvoidingView
 } from 'react-native';
 import Login from './login'
 import UserCenterButton from '../model/UserCenterButton';
 import WebImage from '../model/WebImage'
+import UploadImage from '../model/upload_image'
 let {height, width} = Dimensions.get('window');
 //图文列表
 const imageTextList = (data) => {
@@ -88,7 +90,18 @@ export default class thread_view extends Component {
         }
 
     }
+    _textAreaOnChange = (data) => {this.setState({"message":data})};
+    update_upload_status = (status,url) => {
+        if (url)
+        {
+            this.setState({upload_status:status,content:this.state.content+"[img]"+url+"[/img]"});
+        }
+        else
+        {
+            this.setState({upload_status:status});
+        }
 
+    };
     componentDidMount() {
 
 
@@ -100,7 +113,9 @@ export default class thread_view extends Component {
         user_token : false,
         thread_data : {},
         post_data :[],
-        forum_data : {}
+        forum_data : {},
+        message : "",
+
     };
 
     render() {
@@ -127,7 +142,7 @@ export default class thread_view extends Component {
                         // textAlign: "left",
                         flexDirection:"row",
                         width:70,
-                            marginRight:width-130
+                            marginRight:width-180
                     }}>
                         <Image
                             source={source=require('../../image/arrow-left.png')}
@@ -138,6 +153,14 @@ export default class thread_view extends Component {
                         >返回</Text>
 
                     </TouchableOpacity>
+                    <View style={{flexDirection:"row",width:70}}>
+                        <Text style={{color:"#fff",fontSize:13,}}>上传中...</Text>
+
+                        <Image
+                            source={source=require('../../image/loading.gif')}
+                            style={{width: 15, height: 15,borderRadius:5, marginLeft:10}} />
+                        />
+                    </View>
 
                 </View>
                 <ScrollView style={{
@@ -229,12 +252,17 @@ export default class thread_view extends Component {
                         />
                     }
                 </ScrollView>
-                <View style={styles.floatBar}>
 
-                    <TextInput style={{width:250,backgroundColor:"#fff",height:30, marginTop:7,borderRadius:3,paddingLeft:10,marginLeft:5,
-                        borderColor:"#ccc",
-                        borderWidth:1,
+                <KeyboardAvoidingView style={styles.floatBar}  behavior="padding" keyboardVerticalOffset="45" >
+
+                    <TextInput
+                        multiline={true}
+                        value={this.state.message}
+                        onChangeText={this._textAreaOnChange}
+                        style={{width:250,backgroundColor:"#fff",height:30, marginTop:7,borderRadius:3,paddingLeft:10,marginLeft:5,borderColor:"#ccc",borderWidth:1,
                     }}/>
+
+                    <UploadImage  style={{width:35,marginLeft:3,alignItems:"center"}} />
                     <TouchableOpacity style={{width:35,marginLeft:3,alignItems:"center"}}>
                         <Image  source={source=require('../../image/reply.png')}
                                 style={styles.floatButton}/>
@@ -243,7 +271,7 @@ export default class thread_view extends Component {
                         <Image  source={source=require('../../image/upimage.png')}
                                 style={{width: 18, height:18, marginTop:9.5,}}/>
                     </TouchableOpacity>
-                </View>
+                </KeyboardAvoidingView>
             </View>
         )
     };
