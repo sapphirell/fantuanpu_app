@@ -173,7 +173,7 @@ export default class message extends Component  {
 
                 </ScrollView>
                 <View style={{position:"relative",zIndex:99,bottom:30,}}>
-                    <UploadImage update_upload_status={this.update_upload_status} />
+                    <UploadImage style={{alignItems:"flex-start"}} update_upload_status={this.update_upload_status} />
 
                 </View>
             </View>

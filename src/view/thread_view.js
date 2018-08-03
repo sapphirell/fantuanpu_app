@@ -90,16 +90,24 @@ export default class thread_view extends Component {
         }
 
     }
-    _textAreaOnChange = (data) => {this.setState({"message":data})};
+    _textAreaOnChange = (data) => {
+        // this.setState({"message":data});
+        console.log(data)
+        // console.log(data.nativeEvent.contentSize)
+    };
     update_upload_status = (status,url) => {
         if (url)
         {
-            this.setState({upload_status:status,content:this.state.content+"[img]"+url+"[/img]"});
+            this.setState({upload_status:status,message:this.state.message+"[img]"+url+"[/img]"});
+            this.refs["INPUT"].focus();
         }
         else
         {
             this.setState({upload_status:status});
         }
+
+    };
+    submitMessage = () => {
 
     };
     componentDidMount() {
@@ -115,7 +123,8 @@ export default class thread_view extends Component {
         post_data :[],
         forum_data : {},
         message : "",
-
+        keyboardVerticalOffset : 50 ,//键盘抬起高度
+        textInputHeight : 30 ,// 输入框高度
     };
 
     render() {
@@ -253,24 +262,33 @@ export default class thread_view extends Component {
                     }
                 </ScrollView>
 
-                <KeyboardAvoidingView style={styles.floatBar}  behavior="padding" keyboardVerticalOffset="45" >
+                <KeyboardAvoidingView style={styles.floatBar}  behavior="padding" keyboardVerticalOffset={this.state.keyboardVerticalOffset} >
 
                     <TextInput
                         multiline={true}
                         value={this.state.message}
-                        onChangeText={this._textAreaOnChange}
-                        style={{width:250,backgroundColor:"#fff",height:30, marginTop:7,borderRadius:3,paddingLeft:10,marginLeft:5,borderColor:"#ccc",borderWidth:1,
+                        ref={"INPUT"}
+                        onContentSizeChange={(event) => {
+                            if( event.nativeEvent.contentSize.height  > 30 && event.nativeEvent.contentSize.height  < 60 )
+                            {
+                                // maxHeight = event.nativeEvent.contentSize.height > 50 ? 50 :event.nativeEvent.contentSize.height
+                                this.setState({
+                                    textInputHeight: event.nativeEvent.contentSize.height,
+                                    keyboardVerticalOffset : this.state.keyboardVerticalOffset + event.nativeEvent.contentSize.height - 30
+                                })
+                            }
+                        }}
+                        onChangeText={(text) => { this.setState({ message:text })}}
+                        style={{width:250,backgroundColor:"#fff",height:this.state.textInputHeight, maxHeight:60,marginTop:7,borderRadius:3,paddingLeft:10,marginLeft:5,borderColor:"#ccc",borderWidth:1,
                     }}/>
 
-                    <UploadImage  style={{width:35,marginLeft:3,alignItems:"center"}} />
-                    <TouchableOpacity style={{width:35,marginLeft:3,alignItems:"center"}}>
+
+                    <TouchableOpacity style={{width:35,marginLeft:3,alignItems:"center"}} onPress={this.submitMessage}>
                         <Image  source={source=require('../../image/reply.png')}
                                 style={styles.floatButton}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{width:35,marginLeft:5,alignItems:"center"}}>
-                        <Image  source={source=require('../../image/upimage.png')}
-                                style={{width: 18, height:18, marginTop:9.5,}}/>
-                    </TouchableOpacity>
+
+                    <UploadImage  style={{width:25,height:25,marginLeft:3,paddingTop:5,alignItems:"center",}}  update_upload_status={this.update_upload_status} />
                 </KeyboardAvoidingView>
             </View>
         )

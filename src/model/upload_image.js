@@ -82,11 +82,15 @@ export default class upload_image extends Component  {
     };
     render() {
         return (
-            <View>
+            <View style={{alignItems:this.props.style.alignItems ?this.props.style.alignItems : "center"}} >
 
-                <TouchableOpacity onPress={this.pickImage}>
+                <TouchableOpacity onPress={this.pickImage}
+                                  style={{
+                                      alignItems:"center",
+                                      paddingTop: this.props.style.paddingTop ? this.props.style.paddingTop : 0
+                                  }} >
                     <Image   source={source=require('../../image/upload-image.png')}
-                             style={{width: 30, height: 30, marginLeft:10}} />
+                             style={{width: this.props.style.width?this.props.style.width:30, height: this.props.style.height ?this.props.style.height:30,  marginLeft:10}} />
 
                 </TouchableOpacity>
             </View>
