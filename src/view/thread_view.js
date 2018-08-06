@@ -24,12 +24,14 @@ const imageTextList = (data) => {
     if(data)
     {
         // data.dataArr= data.message.split(/(\[img.+?\[\/img\])/g);
-        console.log(data.message);
+        // console.log(data.message);
         regArr = data.message.split(/(\[img.+?\[\/img\])|(\[quote[\w\W]+?\[\/quote\])|(\[blockquote[\w\W]+?\[\/blockquote\])/);
         dataArr = [];
-        regArr.map((data,key)=>{if(data !== undefined) {
-            dataArr.push(data)
-        }});
+        regArr.map((data,key)=>{
+            if(data !== undefined) {
+                dataArr.push(data)
+            }
+        });
         data.dataArr = dataArr;
         // console.log(data.dataArr);
         data.regImg = new RegExp(/^\[img.+?\[\/img\]$/);
@@ -44,18 +46,24 @@ const imageTextList = (data) => {
                 data ? data.dataArr.map(
                     (content) => {
                         return (
-                            data.regImg.test(content) === true ?
-                                <WebImage uri = { content.replace(/\[img.*?\]/,'').replace(/\[\/img\]/,'')} />
-                                :
-                                (data.regQuote.test(content) === true ?
-                                        <Text style={{width:width,paddingRight:30,fontStyle:"italic",fontSize:11,fontColor:"#ccc"}}> 回复 @ {content.replace(/\[blockquote[\w\W]*?\]/,'').replace(/\[\/blockquote\]/,'').replace(/\[quote[\w\W]*?\]/,'').replace(/\[\/quote\]/,'')}</Text>
-                                    :
-                                        <Text style={{width:width,paddingRight:30,}}>{content}</Text>
-                                )
-                               
+                            <View key={()=> { return content.toString()+Math.random() }}  >
+                                {
+                                    data.regImg.test(content) === true ?
+                                        <WebImage key={Math.random()} uri = { content.replace(/\[img.*?\]/,'').replace(/\[\/img\]/,'')} />
+                                        :
+                                        (data.regQuote.test(content) === true ?
+                                                <Text key={Math.random()} style={{width:width,paddingRight:30,fontStyle:"italic",fontSize:11,fontColor:"#ccc"}}> 回复 @ {content.replace(/\[blockquote[\w\W]*?\]/,'').replace(/\[\/blockquote\]/,'').replace(/\[quote[\w\W]*?\]/,'').replace(/\[\/quote\]/,'')}</Text>
+                                                :
+                                                <Text key={Math.random()} style={{width:width,paddingRight:30,}}>{content}</Text>
+                                        )
+                                }
+                            </View>
+
+
                         )
                     }
-                ) : <Text>帖子不存在</Text>
+                ) :
+                    <Text>帖子不存在</Text>
 
             }
         </View>
@@ -63,11 +71,16 @@ const imageTextList = (data) => {
     );
 };
 
+let message ;
 export default class thread_view extends Component {
 
     async componentWillMount() {
         await this.setState({tid:this.props.navigation.state.params.tid});
         let forumData = "tid=" + this.props.navigation.state.params.tid ;
+        this.getThreadData(forumData);
+
+    }
+    getThreadData = async (forumData) => {
         let dataUrl = global.webServer + '/app/view_thread';
         let data = await fetch(dataUrl, {
             method: 'POST',
@@ -86,19 +99,18 @@ export default class thread_view extends Component {
                 thread_data : data.data.thread.thread_subject,
                 post_data : data.data.thread.thread_post,
                 forum_data : data.data.forum,
+                fid : data.data.thread.thread_subject.fid,
+                tid : data.data.thread.thread_subject.tid,
+                subject : data.data.thread.thread_subject.subject,
             })
         }
-
-    }
-    _textAreaOnChange = (data) => {
-        // this.setState({"message":data});
-        console.log(data)
-        // console.log(data.nativeEvent.contentSize)
     };
     update_upload_status = (status,url) => {
         if (url)
         {
-            this.setState({upload_status:status,message:this.state.message+"[img]"+url+"[/img]"});
+            // alert(message)
+            this.setState({upload_status:status,message:message+"[img]"+url+"[/img]"});
+            message = message +"[img]"+url+"[/img]";
             this.refs["INPUT"].focus();
         }
         else
@@ -107,14 +119,74 @@ export default class thread_view extends Component {
         }
 
     };
-    submitMessage = () => {
+    submitMessage = async () => {
+        console.log(message);
+        // return false;
+        let token = await AsyncStorage.getItem('user_token');
+        if (!this.state.fid) {
+            alert('未获取到板块信息');
+            return false;
+        }
+        if (!this.state.tid) {
+            alert('未获取到帖子id');
+            return false;
+        }
+        if (!this.state.subject)
+        {
+            alert ('未获取到帖子主题'); return false;
+        }
+        if ( message === '')
+        {
+            alert ('发帖数据为空'); return false;
+        }
+        if (!token)
+        {
+            alert ('未登录'); return false;
+        }
+        this.refs["INPUT"].blur();
+        let formData =  'fid='+this.state.fid
+                        +'&tid='+this.state.tid
+                        +'&subject='+this.state.subject
+                        +'&message='+ message
+                        +"&token=" + token;
 
+        let postUrl = global.webServer + "app/reply_thread" ;
+        fetch(postUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData
+        })
+        // .then((response) => console.log(response))
+            .then((response) => response.json())
+            .then((responseJson)=>{
+                console.log(responseJson)
+                if (responseJson.ret === 200)
+                {
+
+                    alert("回帖成功!~");
+                    this.setState({'message':''});
+                    this.getThreadData("tid=" + this.state.tid);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     };
     componentDidMount() {
 
 
     };
+    layoutSetState = (key,value,time=500) => {
+        layfn = value
+        // clearTimeout(layfn);
+        // layfn = setTimeout (() => {
+        //     console.log(value);
+        //     this.setState({key:value})
+        // }, time) ;
 
+    };
     state = {
         is_login : false,
         tid:0,
@@ -123,14 +195,18 @@ export default class thread_view extends Component {
         post_data :[],
         forum_data : {},
         message : "",
+        fid:0,
+        tid:0,
+        subject:'',
         keyboardVerticalOffset : 50 ,//键盘抬起高度
         textInputHeight : 30 ,// 输入框高度
+        upload_status : 'free',
     };
 
     render() {
         const { state , navigate, goBack ,props} = this.props.navigation;
         // console.log(this.state.post_data);
-        let _keyExtractor = (item) =>  item.dateline;
+        let _keyExtractor = (item) =>  item.dateline +Math.random();
 
         return (
             <View style={styles.container}>
@@ -162,14 +238,18 @@ export default class thread_view extends Component {
                         >返回</Text>
 
                     </TouchableOpacity>
-                    <View style={{flexDirection:"row",width:70}}>
-                        <Text style={{color:"#fff",fontSize:13,}}>上传中...</Text>
+                    {
+                        this.state.upload_status === 'uploading...' &&
+                        <View style={{flexDirection:"row",width:70}}>
+                            <Text style={{color:"#fff",fontSize:13,}}>上传中...</Text>
 
-                        <Image
-                            source={source=require('../../image/loading.gif')}
-                            style={{width: 15, height: 15,borderRadius:5, marginLeft:10}} />
-                        />
-                    </View>
+                            <Image
+                                source={source=require('../../image/loading.gif')}
+                                style={{width: 15, height: 15,borderRadius:5, marginLeft:10}} />
+                            />
+                        </View>
+                    }
+
 
                 </View>
                 <ScrollView style={{
@@ -223,7 +303,7 @@ export default class thread_view extends Component {
                         <FlatList
                             data={this.state.post_data}
                             style={{zIndex:1, borderTopWidth:1,borderColor:"#f4f4f4",paddingTop:5,marginTop:5 }}
-                            keyExtractor = { _keyExtractor }
+                            keyExtractor = {  (item) => item.pid }
                             renderItem= {
                                 ({item}) => {
                                     return (
@@ -237,7 +317,12 @@ export default class thread_view extends Component {
                                                             <Text style={{textAlign:"left",width:width}}>{item.author}</Text>
                                                             <Text style={{fontSize:12,color:"#b0b0b0",marginTop:5,flexDirection:"row",width:width}}>
                                                                 {item.postdate}
-                                                                <TouchableOpacity style={{flexDirection:"row",width:40}}>
+                                                                <TouchableOpacity style={{flexDirection:"row",width:40}}
+                                                                                  onPress={()=>{
+                                                                                      // console.log(item)
+                                                                                      // item.map();
+                                                                                      // this.setState({'message':})
+                                                                                  }}>
                                                                     <Image source={source=require('../../image/reply-b.png')}
                                                                            style={{width:12,height:12,marginLeft:7,position:"relative",top:2}} />
                                                                     <Text style={{fontSize:12,color:"#b0b0b0",marginLeft:3,position:"relative",top:2}}>回复</Text>
@@ -278,7 +363,7 @@ export default class thread_view extends Component {
                                 })
                             }
                         }}
-                        onChangeText={(text) => { this.setState({ message:text })}}
+                        onChangeText={(text) => {message = text}}
                         style={{width:250,backgroundColor:"#fff",height:this.state.textInputHeight, maxHeight:60,marginTop:7,borderRadius:3,paddingLeft:10,marginLeft:5,borderColor:"#ccc",borderWidth:1,
                     }}/>
 
