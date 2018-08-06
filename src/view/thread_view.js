@@ -33,7 +33,7 @@ const imageTextList = (data) => {
             }
         });
         data.dataArr = dataArr;
-        console.log(data.dataArr);
+        // console.log(data.dataArr);
         data.regImg = new RegExp(/^\[img.+?\[\/img\]$/);
         data.regQuote = new RegExp(/^\[.*?quote.*?\][\w\W]*?\[\/.*?quote\]$/);
 
@@ -320,9 +320,9 @@ export default class thread_view extends Component {
                                                                 {item.postdate}
                                                                 <TouchableOpacity style={{flexDirection:"row",width:40}}
                                                                                   onPress={()=>{
-                                                                                      // console.log(item)
+                                                                                      this.refs["INPUT"].focus();
                                                                                       // item.map();
-                                                                                      // this.setState({'message':})
+                                                                                      this.setState({'message':"[quote]"+item.message+"[/quote]"})
                                                                                   }}>
                                                                     <Image source={source=require('../../image/reply-b.png')}
                                                                            style={{width:12,height:12,marginLeft:7,position:"relative",top:2}} />
