@@ -28,12 +28,12 @@ const imageTextList = (data) => {
         regArr = data.message.split(/(\[img.+?\[\/img\])|(\[quote[\w\W]+?\[\/quote\])|(\[blockquote[\w\W]+?\[\/blockquote\])/);
         dataArr = [];
         regArr.map((data,key)=>{
-            if(data !== undefined) {
+            if(data !== undefined && data !== "" ) {
                 dataArr.push(data)
             }
         });
         data.dataArr = dataArr;
-        // console.log(data.dataArr);
+        console.log(data.dataArr);
         data.regImg = new RegExp(/^\[img.+?\[\/img\]$/);
         data.regQuote = new RegExp(/^\[.*?quote.*?\][\w\W]*?\[\/.*?quote\]$/);
 
@@ -45,11 +45,12 @@ const imageTextList = (data) => {
             {
                 data ? data.dataArr.map(
                     (content) => {
+                        // console.log(content)
                         return (
-                            <View key={()=> { return content.toString()+Math.random() }}  >
+                            <View key={ typeof(content)=== 'string' ? content  + Math.random() : content.toString()+ Math.random() }  >
                                 {
                                     data.regImg.test(content) === true ?
-                                        <WebImage key={Math.random()} uri = { content.replace(/\[img.*?\]/,'').replace(/\[\/img\]/,'')} />
+                                        <WebImage uri = { content.replace(/\[img.*?\]/,'').replace(/\[\/img\]/,'')} />
                                         :
                                         (data.regQuote.test(content) === true ?
                                                 <Text key={Math.random()} style={{width:width,paddingRight:30,fontStyle:"italic",fontSize:11,fontColor:"#ccc"}}> 回复 @ {content.replace(/\[blockquote[\w\W]*?\]/,'').replace(/\[\/blockquote\]/,'').replace(/\[quote[\w\W]*?\]/,'').replace(/\[\/quote\]/,'')}</Text>
