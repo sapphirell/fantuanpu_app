@@ -85,6 +85,23 @@ export default class user_center extends Component {
         }
 
     }
+    checkVersion = () => {
+        fetch('https://image.fantuanpu.com/upload_file', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'multipart/form-data;charset=utf-8',
+            },
+            body: formData,
+        }).then((response) => response.json())
+            .then((responseData)=> {
+                console.log('uploadImage', responseData);
+                resolve(responseData);
+            })
+            .catch((err)=> {
+                console.log('err', err);
+                reject(err);
+            });
+    };
     logout =() => {
         // UserCenterData = await AsyncStorage.getItem('user_center_data'+UserToken);
         // alert(this.state.user_token);
@@ -107,69 +124,77 @@ export default class user_center extends Component {
         return (
 
             <View style={styles.container}>
-                    <ImageBackground
-                        // style={styles.headerView}
-                        style={{width:width,height:190,alignItems:"center",paddingTop:35}}
-                        source={source=require('../../image/ucbg.jpg')} >
-                        {this.state.user_center_data && <Image source={{uri: this.state.user_center_data.user_avatar}} style={{width: 80, height: 80,borderRadius:40,}} />}
-                        <Text style={{margin:10,
-                            fontSize:18,
-                            color:"#fff",
-                            textShadowOffset:{height:1},
-                            textShadowRadius:2,
-                            textShadowColor:'grey',
-                            fontWeight:'700',
-                            }}>
-                            {this.state.user_center_data.user_info && this.state.user_center_data.user_info.username}
-                        </Text>
-                        <Text style={{
-                            fontSize:19,
-                            color:"#fff",
-                            textShadowOffset:{width:5},
-                            textShadowRadius:2,
-                            textShadowColor:'grey'
-                        }}>签名档</Text>
-                    </ImageBackground>
-                    {this.state.is_login ?
-                    <ScrollView style={{backgroundColor:"#eeeeee",height:400}}>
+                <ImageBackground
+                    // style={styles.headerView}
+                    style={{width:width,height:190,alignItems:"center",paddingTop:35}}
+                    source={source=require('../../image/13889176.png')} >
+                    <TouchableOpacity style={{position:"absolute",right:30,top:30}}>
+                        <Image source={source = require('../../image/edit.png')} style={{width:18,height:18}} />
+                    </TouchableOpacity>
 
-                        <UserCenterButton name={this.state.user_center_data.user_count.extcredits.extcredits1}
-                                          value={this.state.user_center_data.user_count.extcredits1} onPress={()=>{return this.void}}/>
+                    {this.state.user_center_data && <Image source={{uri: this.state.user_center_data.user_avatar}} style={{width: 80, height: 80,borderRadius:40,}} />}
+                    <Text style={{margin:10,
+                        fontSize:18,
+                        color:"#fff",
+                        textShadowOffset:{height:1},
+                        textShadowRadius:2,
+                        textShadowColor:'grey',
+                        fontWeight:'700',
+                        }}>
+                        {this.state.user_center_data.user_info && this.state.user_center_data.user_info.username}
+                    </Text>
+                    <Text style={{
+                        fontSize:19,
+                        color:"#fff",
+                        textShadowOffset:{width:5},
+                        textShadowRadius:2,
+                        textShadowColor:'grey'
+                    }}>签名档</Text>
+                </ImageBackground>
+                <View style={{flexDirection:"row",backgroundColor:"#fff",width:width-20,marginLeft:10,marginRight:10,
+                    borderRadius:5,marginTop:10,marginBottom:5,
+                    alignItems:"flex-start",justifyContent:"space-around",paddingTop:15,paddingBottom:10}}>
+                    <TouchableOpacity style={{alignItems:"center"}}>
+                        <Image source={source=require('../../image/score.png')} style={styles.listButton}/>
+                        <Text style={styles.listButtonText}>积分</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{alignItems:"center"}}>
+                        <Image source={source=require('../../image/my_thread.png')} style={styles.listButton}/>
+                        <Text style={styles.listButtonText}>帖子</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{alignItems:"center"}}>
+                        <Image source={source=require('../../image/like.png')} style={styles.listButton}/>
+                        <Text style={styles.listButtonText}>喜欢</Text>
+                    </TouchableOpacity>
+                </View>
+                {this.state.is_login ?
+                <ScrollView style={{backgroundColor:"#eeeeee",height:400}}>
 
-                        <UserCenterButton name={this.state.user_center_data.user_count.extcredits.extcredits2}
-                                          value={this.state.user_center_data.user_count.extcredits2} onPress={()=>{return this.void}}/>
+                    <UserCenterButton name="意见反馈"
+                                      image="report"
+                                      value={this.state.user_center_data.user_count.extcredits1} onPress={()=>{return this.void}}/>
+                    <UserCenterButton name="版本检查"
+                                      image="report"
+                                      value="" onPress={()=>{return this.void}}/>
+                    {/*<UserCenterButton name={this.state.user_center_data.user_count.extcredits.extcredits2}*/}
+                                      {/*value={this.state.user_center_data.user_count.extcredits2} onPress={()=>{return this.void}}/>*/}
 
-                        <UserCenterButton name={this.state.user_center_data.user_count.extcredits.extcredits3}
-                                          value={this.state.user_center_data.user_count.extcredits3} onPress={()=>{return this.void}}/>
+                    {/*<UserCenterButton name={this.state.user_center_data.user_count.extcredits.extcredits8}*/}
+                                      {/*value={this.state.user_center_data.user_count.extcredits8} onPress={()=>{return this.void}}/>*/}
 
-                        <UserCenterButton name={this.state.user_center_data.user_count.extcredits.extcredits4}
-                                          value={this.state.user_center_data.user_count.extcredits4} onPress={()=>{return this.void}}/>
-
-                        <UserCenterButton name={this.state.user_center_data.user_count.extcredits.extcredits5}
-                                          value={this.state.user_center_data.user_count.extcredits5} onPress={()=>{return this.void}}/>
-
-                        <UserCenterButton name={this.state.user_center_data.user_count.extcredits.extcredits6}
-                                          value={this.state.user_center_data.user_count.extcredits6} onPress={()=>{return this.void}}/>
-
-                        <UserCenterButton name={this.state.user_center_data.user_count.extcredits.extcredits7}
-                                          value={this.state.user_center_data.user_count.extcredits7} onPress={()=>{return this.void}}/>
-
-                        <UserCenterButton name={this.state.user_center_data.user_count.extcredits.extcredits8}
-                                          value={this.state.user_center_data.user_count.extcredits8} onPress={()=>{return this.void}}/>
-
-                        <UserCenterButton name="退出登录" onPress={ ()=>{ this.logout() }}  />
+                    <UserCenterButton name="退出登录" onPress={ ()=>{ this.logout() }} image="logout" />
 
 
-                    </ScrollView>
-                        :
-                        <UserCenterButton name="登录账号" onPress={
-                                () => navigate('login',{
-                                    id: 123,
-                                    callback : () => { this.getUserCenterData(); }
-                                })
-                            }
-                        />
-                    }
+                </ScrollView>
+                    :
+                    <UserCenterButton name="登录账号" onPress={
+                            () => navigate('login',{
+                                id: 123,
+                                callback : () => { this.getUserCenterData(); }
+                            })
+                        }
+                    />
+                }
 
 
             </View>
@@ -181,7 +206,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: '#eee',
     },
     headerView :{
         flex: 1,
@@ -194,5 +219,7 @@ const styles = StyleSheet.create({
     hitokoto :{
         color:"#fff",width:width,textAlign:"center",lineHeight:22, paddingLeft:20,paddingRight:20,position:"relative",
         top:-20
-    }
+    },
+    listButton : {width:30,height:30,marginBottom:15},
+    listButtonText : {fontSize:12,color:"#5d5d5d",textAlign:"center",width:50}
 });

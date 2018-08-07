@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     navigate,
     FlatList,
+    ActivityIndicator,
     ImageBackground,
     ScrollView,
     AsyncStorage,
@@ -15,7 +16,7 @@ import {
     KeyboardAvoidingView
 } from 'react-native';
 import Login from './login'
-import UserCenterButton from '../model/UserCenterButton';
+
 import WebImage from '../model/WebImage'
 import UploadImage from '../model/upload_image'
 let {height, width} = Dimensions.get('window');
@@ -39,6 +40,7 @@ const imageTextList = (data) => {
 
 
     }
+    // return (<View><Text>?</Text></View>);
 
     return (
         <View style={{width:width}}>
@@ -216,7 +218,8 @@ export default class thread_view extends Component {
                     style={{
                         width:width,
                         paddingBottom:8,
-                        paddingTop:38,
+                        paddingTop:18,
+                        height:60,
                         flexDirection:"row",
                         flexWrap:"wrap",
                         backgroundColor:"#ff6888"
@@ -225,11 +228,12 @@ export default class thread_view extends Component {
                     <TouchableOpacity
                         onPress={()=>goBack()}
                         style={{
-                        // textAlign: "left",
-                        flexDirection:"row",
-                        width:70,
-                            marginRight:width-180
-                    }}>
+                            // textAlign: "left",
+                            flexDirection:"row",
+                            width:70,
+                            marginRight:width-180,
+                            // marginTop:10
+                        }}>
                         <Image
                             source={source=require('../../image/arrow-left.png')}
                             style={{width: 14, height: 14,borderRadius:5, marginLeft:10}} />
@@ -299,6 +303,7 @@ export default class thread_view extends Component {
                             }
                         </View>
                     }
+
                     {
                         this.state.post_data &&
                         <FlatList
@@ -309,15 +314,15 @@ export default class thread_view extends Component {
                                 ({item}) => {
                                     return (
                                         <View style={{marginBottom:15}} >
-                                            {item.position !== 1 ?
+                                            {item.position !== 1 &&
                                                 <View style={{width:width,paddingLeft:20}}>
                                                     <View style={{flexDirection:"row",width:width}} >
                                                         <Image source={{uri: item.avatar}}
                                                                style={{width: 35, height: 35, borderRadius: 17.5,marginRight:10}}/>
                                                         <View style={{marginLeft:5,width:width-50,}}>
                                                             <Text style={{textAlign:"left",width:width}}>{item.author}</Text>
-                                                            <Text style={{fontSize:12,color:"#b0b0b0",marginTop:5,flexDirection:"row",width:width}}>
-                                                                {item.postdate}
+                                                            <View style={{fontSize:12,color:"#b0b0b0",marginTop:5,flexDirection:"row",width:width}}>
+                                                                <Text>{item.postdate}</Text>
                                                                 <TouchableOpacity style={{flexDirection:"row",width:40}}
                                                                                   onPress={()=>{
                                                                                       this.refs["INPUT"].focus();
@@ -328,17 +333,13 @@ export default class thread_view extends Component {
                                                                            style={{width:12,height:12,marginLeft:7,position:"relative",top:2}} />
                                                                     <Text style={{fontSize:12,color:"#b0b0b0",marginLeft:3,position:"relative",top:2}}>回复</Text>
                                                                 </TouchableOpacity>
-                                                            </Text>
-
+                                                            </View>
                                                         </View>
                                                     </View>
                                                     <View style={{marginTop:10}}>
                                                         { imageTextList(item) }
                                                     </View>
-
                                                 </View>
-                                                :
-                                                ""
                                             }
                                         </View>
                                     )
@@ -346,8 +347,9 @@ export default class thread_view extends Component {
                             }
                         />
                     }
-                </ScrollView>
 
+                </ScrollView>
+                {/*<View style={{position:"absolute",bottom:50,width:width,height:50,backgroundColor:"#ccc"}}/>*/}
                 <KeyboardAvoidingView style={styles.floatBar}  behavior="padding" keyboardVerticalOffset={this.state.keyboardVerticalOffset} >
 
                     <TextInput
@@ -405,7 +407,7 @@ const styles = StyleSheet.create({
         borderTopWidth:1,
         width:width,
         height:45,
-        bottom:0,
+        bottom:10,
         // left:(width-180)/2,
         // borderRadius:5,
         flexDirection:"row"

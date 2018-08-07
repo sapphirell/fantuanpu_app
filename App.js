@@ -19,6 +19,7 @@ import friends from "./src/view/firends";
 import user_forum from "./src/view/user_forum";
 import not_logged from "./src/view/not_logged";
 import new_thread from "./src/view/new_thread";
+// const ExtraDimensions = require('react-native-extra-dimensions-android');
 
 YellowBox.ignoreWarnings(['Warning:']);
 YellowBox.ignoreWarnings(['T']);
@@ -26,13 +27,17 @@ YellowBox.ignoreWarnings(['M']);
 YellowBox.ignoreWarnings(['R']);
 YellowBox.ignoreWarnings(['C']);
 YellowBox.ignoreWarnings(['F']);
-global.webServer = 'http://localhost:8000/';
-// global.webServer = 'https://fantuanpu.com/';
+// global.webServer = 'http://localhost:8000/';
+global.webServer = 'https://fantuanpu.com/';
 global.logout = (token) => {
     if (!token) return false;
     AsyncStorage.removeItem("user_token");
     AsyncStorage.removeItem("user_center_data" + token);
 };
+global.version = 1.0;
+// const STATUS_BAR_HEIGHT = ExtraDimensions.get('STATUS_BAR_HEIGHT');
+// const SOFT_MENU_BAR_HEIGHT = ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT');
+// alert(STATUS_BAR_HEIGHT);
 const Tab = TabNavigator({
     // "论坛" : {screen: forum},
     "主页": { screen: user_forum,

@@ -83,7 +83,8 @@ const ThreadList = (data) => {
                 data={data.data}
                 style={{zIndex:1}}
                 keyExtractor = { _keyExtractor }
-
+                onEndReached={data.onEndReached}
+                onEndReachedThreshold={data.onEndReachedThreshold}
                 // numColumns={5}
                 // showsHorizontalScrollIndicator= {false}//隐藏水平滚动条
                 // showsVerticalScrollIndicator = {false}//显示竖直滚动条
@@ -159,13 +160,13 @@ const ThreadList = (data) => {
 export default class user_forum extends Component  {
 
     // async getThreadList()
-    getThreadList = async () =>
-    {
+    getThreadList = async () =>{
 
         //判断是否登录。
         let isLogin = await AsyncStorage.getItem('user_token');
         // console.log(isLogin);
         let forumData = isLogin ? "token=" +  isLogin : '';
+        forumData += "&page=" + this.state.page;
         let dataUrl = global.webServer + '/app/look_look';
         let data = await fetch(dataUrl, {
             method: 'POST',
@@ -175,14 +176,17 @@ export default class user_forum extends Component  {
             body: forumData
         }).then((response)=> {return response.json()});
         // console.log(data.data.thread_list);
-        if (data.ret != 200)
+        if (data.ret !== 200)
             alert(data.msg);
         else
         {
+            let thread_list =  this.state.thread_list;
+            thread_list = thread_list.concat(data.data.thread_list);
+
             if (isLogin)
-                this.setState({myLikeData : data.data.user_like_forum, isLogin :isLogin ,thread_list :data.data.thread_list});
+                this.setState({myLikeData : data.data.user_like_forum, isLogin :isLogin ,thread_list : thread_list ,page:this.state.page + 1});
             else
-                this.setState({isLogin :isLogin ,thread_list :data.data.thread_list});
+                this.setState({isLogin :isLogin ,thread_list :thread_list});
             // console.log(this.state)
 
         }
@@ -208,7 +212,8 @@ export default class user_forum extends Component  {
         thread_list : [],
         forum_data : {},
         isLogin : false ,//false或user_token
-        isRefresh :false
+        isRefresh :false,
+        page:1
     };
 
     render() {
@@ -247,7 +252,16 @@ export default class user_forum extends Component  {
                     </TouchableOpacity>
                 }
                 <ThreadList
-                    onRefresh={this . getThreadList}
+                    onRefresh={() => {
+                        this.setState({'page':1,'thread_list':[]});
+                        this.getThreadList()
+                    }}
+
+                    onEndReached={()=>{
+                            this.getThreadList()
+                        }}
+                    onEndReachedThreshold={0.01}
+
                     refreshing={this.state.isRefresh}
                     isLogin={this.state.isLogin}
                     data={this.state.thread_list}
