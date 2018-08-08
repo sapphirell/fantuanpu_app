@@ -18,19 +18,18 @@ export default class UserCenterButton extends Component {
         return (
             <View style={styles.view}>
                 <TouchableOpacity onPress={this.props.onPress} style={styles.option}>
-
-
                     <Text style={{textAlign:"left",paddingLeft:15, flex:1,flexDirection:"row"}}>
-                        <Text style={{}}>{this.props.name}</Text>
-
-
-                    </Text>
+                    {this.props.name}</Text>
                     {
-                        this.props.value &&
-                        <View style={{backgroundColor:"#dd6567",color:"#FFF",borderRadius:5,width:20,height:17,marginRight:10}}>
-                            <Text style={{color:"#fff",width:20,textAlign:"center",}}>{this.props.value}</Text>
+                        this.props.value ?
+                        <View style={{backgroundColor:"#dd6567",borderRadius:5,width:20,height:17,marginRight:10}}>
+                            <Text style={{color:"#fff",width:20,textAlign:"center"}}>{this.props.value}</Text>
                         </View>
+                        :
+                        <View/>
                     }
+
+
                     <Image source={source=require('../../image/ucgoto.png')} style={{width:13,height:13}} />
                 </TouchableOpacity>
             </View>

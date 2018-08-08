@@ -13,12 +13,18 @@ import {
     Image, YellowBox,
     Dimensions,
     TextInput,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Platform,
 } from 'react-native';
 import Login from './login'
 
 import WebImage from '../model/WebImage'
 import UploadImage from '../model/upload_image'
+
+import {StatusBar} from 'react-native';
+console.log('statusBarHeight: ', StatusBar.currentHeight);
+
+
 let {height, width} = Dimensions.get('window');
 //图文列表
 const imageTextList = (data) => {
@@ -154,6 +160,7 @@ export default class thread_view extends Component {
                         +"&token=" + token;
 
         let postUrl = global.webServer + "app/reply_thread" ;
+        this.setState({'message':''});
         fetch(postUrl, {
             method: 'POST',
             headers: {
@@ -169,7 +176,7 @@ export default class thread_view extends Component {
                 {
 
                     alert("回帖成功!~");
-                    this.setState({'message':''});
+
                     this.getThreadData("tid=" + this.state.tid);
                 }
             })
@@ -366,7 +373,14 @@ export default class thread_view extends Component {
                                 })
                             }
                         }}
-                        onChangeText={(text) => {message = text}}
+                        // onChangeText={(text) => {message = text}}
+                        onChangeText={(text) => {
+                            if(Platform.OS==='android'){
+                                //如果是android平台
+                                this.setState({message:text});
+                            }
+                            message = text
+                        }}
                         style={{width:250,backgroundColor:"#fff",height:this.state.textInputHeight, maxHeight:60,marginTop:7,borderRadius:3,paddingLeft:10,marginLeft:5,borderColor:"#ccc",borderWidth:1,
                     }}/>
 
@@ -407,7 +421,7 @@ const styles = StyleSheet.create({
         borderTopWidth:1,
         width:width,
         height:45,
-        bottom:10,
+        bottom:0,
         // left:(width-180)/2,
         // borderRadius:5,
         flexDirection:"row"

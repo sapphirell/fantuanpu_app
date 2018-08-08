@@ -12,7 +12,8 @@ import {
     Button,
     ImageBackground,
     AsyncStorage,//持久化存储
-    FlatList, Dimensions,ScrollView
+    FlatList, Dimensions,ScrollView,
+    KeyboardAvoidingView
 
 } from 'react-native';
 import root from '../model/root'
@@ -172,10 +173,12 @@ export default class message extends Component  {
                     />
 
                 </ScrollView>
-                <View style={{position:"relative",zIndex:99,bottom:30,}}>
+                <KeyboardAvoidingView
+                    // style={{position:"relative",zIndex:99,bottom:30,}}
+                    style={styles.floatBar}  behavior="padding" keyboardVerticalOffset={50} >
                     <UploadImage style={{alignItems:"flex-start"}} update_upload_status={this.update_upload_status} />
 
-                </View>
+                </KeyboardAvoidingView>
             </View>
         );
     }
@@ -199,11 +202,12 @@ const styles = StyleSheet.create({
         paddingTop:15,
         paddingBottom:15,
         borderTopWidth:1,
-
+        textAlignVertical: "top",//安卓取消上下居中
         borderBottomWidth:1,
         borderColor:"#eee",
         marginBottom:10,
         fontSize:16,
-        height:height-200
+        height:height-200,
+        lineHeight:15
     }
 });

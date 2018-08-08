@@ -169,32 +169,28 @@ export default class user_center extends Component {
                 </View>
                 {this.state.is_login ?
                 <ScrollView style={{backgroundColor:"#eeeeee",height:400}}>
+                    <UserCenterButton name="意见反馈" image="report" value={this.state.user_center_data.user_count.extcredits1} onPress={()=>{return this.void}}/>
+                    <UserCenterButton
+                            name="版本检查"
+                            image="report"
+                            value=""
+                        onPress={()=>{return this.void}} />
 
-                    <UserCenterButton name="意见反馈"
-                                      image="report"
-                                      value={this.state.user_center_data.user_count.extcredits1} onPress={()=>{return this.void}}/>
-                    <UserCenterButton name="版本检查"
-                                      image="report"
-                                      value="" onPress={()=>{return this.void}}/>
-                    {/*<UserCenterButton name={this.state.user_center_data.user_count.extcredits.extcredits2}*/}
-                                      {/*value={this.state.user_center_data.user_count.extcredits2} onPress={()=>{return this.void}}/>*/}
-
-                    {/*<UserCenterButton name={this.state.user_center_data.user_count.extcredits.extcredits8}*/}
-                                      {/*value={this.state.user_center_data.user_count.extcredits8} onPress={()=>{return this.void}}/>*/}
-
-                    <UserCenterButton name="退出登录" onPress={ ()=>{ this.logout() }} image="logout" />
-
-
+                        <UserCenterButton name="退出登录" onPress={ ()=>{ this.logout() }} image="logout" />
                 </ScrollView>
                     :
+                <ScrollView style={{backgroundColor:"#eeeeee",height:400}}>
                     <UserCenterButton name="登录账号" onPress={
-                            () => navigate('login',{
-                                id: 123,
-                                callback : () => { this.getUserCenterData(); }
-                            })
-                        }
+                        () => navigate('login',{
+                            id: 123,
+                            callback : () => { this.getUserCenterData(); }
+                        })
+                    }
                     />
+                </ScrollView>
+
                 }
+
 
 
             </View>
