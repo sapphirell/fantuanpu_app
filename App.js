@@ -19,7 +19,8 @@ import friends from "./src/view/firends";
 import user_forum from "./src/view/user_forum";
 import not_logged from "./src/view/not_logged";
 import new_thread from "./src/view/new_thread";
-// const ExtraDimensions = require('react-native-extra-dimensions-android');
+
+
 
 YellowBox.ignoreWarnings(['Warning:']);
 YellowBox.ignoreWarnings(['T']);
