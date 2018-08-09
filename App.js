@@ -36,9 +36,7 @@ global.logout = (token) => {
     AsyncStorage.removeItem("user_center_data" + token);
 };
 global.version = 1.0;
-// const STATUS_BAR_HEIGHT = ExtraDimensions.get('STATUS_BAR_HEIGHT');
-// const SOFT_MENU_BAR_HEIGHT = ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT');
-// alert(STATUS_BAR_HEIGHT);
+
 const Tab = TabNavigator({
     // "论坛" : {screen: forum},
     "主页": { screen: user_forum,
@@ -90,7 +88,7 @@ const Tab = TabNavigator({
         },
 
         style : {
-            backgroundColor:'#ffffff',
+            backgroundColor:'#ffffff78',
             height:60,
             paddingBottom:0,
             marginBottom:0,

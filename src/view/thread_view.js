@@ -15,11 +15,13 @@ import {
     TextInput,
     KeyboardAvoidingView,
     Platform,
+    SafeAreaView
 } from 'react-native';
 import Login from './login'
 
 import WebImage from '../model/WebImage'
 import UploadImage from '../model/upload_image'
+import SmartView from '../model/SmartView'
 
 import {StatusBar} from 'react-native';
 console.log('statusBarHeight: ', StatusBar.currentHeight);
@@ -219,14 +221,14 @@ export default class thread_view extends Component {
         let _keyExtractor = (item) =>  item.dateline +Math.random();
 
         return (
-            <View style={styles.container}>
+            <SmartView style={styles.container} colorType="back" >
 
                 <View
                     style={{
                         width:width,
-                        paddingBottom:8,
+                        // paddingBottom:8,
                         paddingTop:18,
-                        height:60,
+                        height:50,
                         flexDirection:"row",
                         flexWrap:"wrap",
                         backgroundColor:"#ff6888"
@@ -392,7 +394,7 @@ export default class thread_view extends Component {
 
                     <UploadImage  style={{width:25,height:25,marginLeft:3,paddingTop:5,alignItems:"center",}}  update_upload_status={this.update_upload_status} />
                 </KeyboardAvoidingView>
-            </View>
+            </SmartView>
         )
     };
 }
@@ -401,11 +403,11 @@ const styles = StyleSheet.create({
     container: {
         // flex: 1,
         // justifyContent: 'center',
-        height:height,
+        // height:height,
         // paddingTop:40,
         // alignItems: 'center',
         // backgroundColor: '#78d3e9',
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
     },
     smImage : {
         width: 14, height:14,
@@ -417,8 +419,9 @@ const styles = StyleSheet.create({
     },
     floatBar : {
         backgroundColor:"#fafafa",
-        borderTopColor:"#ccc",
+        borderColor:"#ccc",
         borderTopWidth:1,
+        borderBottomWidth:1,
         width:width,
         height:45,
         bottom:0,

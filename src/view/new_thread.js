@@ -19,6 +19,7 @@ import {
 import root from '../model/root'
 import ModalDropdown from 'react-native-modal-dropdown';
 import UploadImage from '../model/upload_image'
+import SmartView from '../model/SmartView'
 let {height, width} = Dimensions.get('window');
 export default class message extends Component  {
     async componentDidMount() {
@@ -91,13 +92,13 @@ export default class message extends Component  {
         const { navigate ,goBack} = this.props.navigation;
         // console.log(this.state.forum_data)
         return (
-            <View style={{width:width,height:height,backgroundColor:"#fff"}}>
+            <SmartView style={{width:width,height:height,backgroundColor:"#fff"}}>
                 <View
                     style={{
                         width:width,
                         backgroundColor:"#ee7489",
                         paddingBottom:8,
-                        paddingTop:38,
+                        paddingTop:18,
                         // borderBottomWidth:1,
                         // borderColor:"#cccccc",
                         alignItems:"center",
@@ -125,7 +126,7 @@ export default class message extends Component  {
                     <Text style={{width:width-130,textAlign:"center",fontWeight:"700",color:"#fff",fontSize:16,position:"relative",bottom:2}}>
                         发表主题
                     </Text>
-                    <TouchableOpacity style={{position:"absolute", right:10, top:40,}} onPress={()=>this.postThread(goBack)} >
+                    <TouchableOpacity style={{}} onPress={()=>this.postThread(goBack)} >
                         <Text style={{fontSize:13,color:"#f5f5f5"}}>发射！</Text>
                     </TouchableOpacity>
                 </View>
@@ -179,7 +180,7 @@ export default class message extends Component  {
                     <UploadImage style={{alignItems:"flex-start"}} update_upload_status={this.update_upload_status} />
 
                 </KeyboardAvoidingView>
-            </View>
+            </SmartView>
         );
     }
 }

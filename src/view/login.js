@@ -16,10 +16,11 @@ import {
     Button,
     ImageBackground,
     AsyncStorage,//持久化存储
-    Alert
+    Alert, Dimensions,
+    Image
 } from 'react-native';
 import root from '../model/root'
-
+let {height, width} = Dimensions.get('window');
 
 type Props = {};
 export default class login extends Component  {
@@ -45,8 +46,10 @@ export default class login extends Component  {
         // }
         loginUrl = global.webServer + 'do-login';
         formData = 'email='+this.state.email+'&password='+this.state.password+'&form=app';
-        // formData = 'email=1745247379@qq.com&password=56921ff6&form=app';
+        formData = 'email=1745247379@qq.com&password=56921ff6&form=app';
+
         // formData = 'email=1745247379@qq.com&password=asdasdasd&form=app';
+        formData = 'email=imy@fantuanpu.com&password=asdasdasd&form=app';
         // console.log(loginUrl);
         // console.log(formData);
             fetch(loginUrl, {
@@ -61,12 +64,13 @@ export default class login extends Component  {
                     {
                         AsyncStorage.setItem('user_token', responseJson.data.token).then(
                             () => {
-                                Alert.alert("","登录成功~🎉",() => {
-                                    callBack()
-                                    goBack()
+                                alert("登录成功~🎉",() => {
+                                    // callBack()
+                                    // goBack()
                                     // navigate('user_center')
                                 })
-
+                                callBack()
+                                goBack()
                                 // navigate.back();
 
                             }
@@ -88,17 +92,21 @@ export default class login extends Component  {
         return (
             <ImageBackground
                 style={styles.container}
-                source={require('../../image/login.png')} resizeMode='cover'>
+                source={require('../../image/login_bg.jpg')} resizeMode='cover'>
 
-                <ImageBackground
-                    style={styles.loginBox}
-                    source={require('../../image/login_form.png')}
-                >
+                {/*<ImageBackground*/}
+                    {/*style={styles.loginBox}*/}
+                    {/*source={require('../../image/login_form.png')}*/}
+                {/*>*/}
+                    {/**/}
+                {/*</ImageBackground>*/}
+                <View style={{marginTop:170}}>
                     <TextInput
                         style={styles.TextInputTop}
                         autoCapitalize = "none"
                         autoCorrect={false}
                         onChangeText={(text) => this.setState({email:text})}
+                        placeholder="请输入账户  (Account)"
                     />
                     <TextInput
                         password={true}
@@ -107,14 +115,12 @@ export default class login extends Component  {
                         autoCapitalize = "none"
                         autoCorrect={false}
                         onChangeText={ (text) => this.setState({password:text}) }
-
+                        placeholder="请输入密码 (Password)"
                     />
-                </ImageBackground>
-                <View>
-                    <TouchableOpacity onPress={this.getHttpData}>
-                        <Text>注册</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={ () => {
+                </View>
+
+                <View style={{width:width,alignItems:"center"}}>
+                    <TouchableOpacity style={{marignTop:15,width:30,height:30,position:"relative",top:20}} onPress={ () => {
                         // alert(JSON.stringify(state.params))
                         // alert(state.params.id)
                         // state.params.callback()
@@ -123,7 +129,7 @@ export default class login extends Component  {
                             this.userLogin(navigate,goBack,state.params.callback)
                         }
                     } >
-                        <Text>登录</Text>
+                        <Image source={source=require('../../image/next.png')} style={{width:30,height:30}} />
                     </TouchableOpacity>
                 </View>
 
@@ -138,39 +144,45 @@ const styles = StyleSheet.create({
     },
     loginBox : {
         width:200,
-        height:100
+        height:100,
+
         // shadowOffset: {width: 0, height: 3},
         // shadowColor: '#6d6d6d',
         // shadowOpacity: 1,
         // shadowRadius: 5
     },
     TextInputTop :{
-        height: 47,
-        width: 140,
+        height: 35,
+        width: width-70,
         padding:9,
-        marginLeft:50,
+        marginLeft:35,
+        marginBottom:10,
         // borderWidth: 1,
         // borderTopLeftRadius:3,
         // borderTopRightRadius:3,
-        // backgroundColor:"#fff",
+        backgroundColor:"#ffffff78",
+        borderRadius:5,
         // borderColor:"#fff",
         // borderBottomColor: "#ff7586"
         // shadowOffset: {width: 0, height: 0},shadowColor: '#5db2ff',shadowOpacity: 1, shadowRadius: 5
     },
     TextInputBottom :{
-        height: 47, width: 140,padding:9,
-        marginLeft:50,
+        height: 35,
+        width: width-70,
+        padding:9,
+        marginLeft:35,
+        borderRadius:5,
         // borderColor: '#fff',
         // borderWidth: 1,
         // borderTopWidth :0,borderBottomLeftRadius:3,borderBottomRightRadius:3,
-        // backgroundColor:"#fff",
+        backgroundColor:"#ffffff78",
         // shadowOffset: {width: 0, height: 0},shadowColor: '#5db2ff',shadowOpacity: 1, shadowRadius: 5
     },
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#ff7586',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        backgroundColor: '#ff88a8',
         // backgroundImage:'http://localhost:8000/app/top.png',
     },
     welcome: {

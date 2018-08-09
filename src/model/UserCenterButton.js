@@ -19,7 +19,8 @@ export default class UserCenterButton extends Component {
             <View style={styles.view}>
                 <TouchableOpacity onPress={this.props.onPress} style={styles.option}>
                     <Text style={{textAlign:"left",paddingLeft:15, flex:1,flexDirection:"row"}}>
-                    {this.props.name}</Text>
+                        {this.props.name}
+                    </Text>
                     {
                         this.props.value ?
                         <View style={{backgroundColor:"#dd6567",borderRadius:5,width:20,height:17,marginRight:10}}>
