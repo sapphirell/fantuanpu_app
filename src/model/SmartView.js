@@ -45,7 +45,8 @@ export default class SmartView extends Component  {
         return (
             <View style={{
                 width:width,
-                height:height,
+                flex:1,
+                // height:height,
                 backgroundColor:"#ffffff",
                 borderColor:"#ee7489",
                 borderTopWidth:this.state.paddingTop,

@@ -188,7 +188,6 @@ export default class thread_view extends Component {
     };
     componentDidMount() {
 
-
     };
     layoutSetState = (key,value,time=500) => {
         layfn = value
@@ -208,9 +207,9 @@ export default class thread_view extends Component {
         forum_data : {},
         message : "",
         fid:0,
-        tid:0,
         subject:'',
-        keyboardVerticalOffset : 50 ,//键盘抬起高度
+        offsetForPlatform:50,
+        keyboardVerticalOffset : Platform.OS === 'ios' ? 50 : -190,//键盘抬起高度
         textInputHeight : 30 ,// 输入框高度
         upload_status : 'free',
     };
@@ -231,7 +230,7 @@ export default class thread_view extends Component {
                         height:50,
                         flexDirection:"row",
                         flexWrap:"wrap",
-                        backgroundColor:"#ff6888"
+                        backgroundColor:"#ee7489"
                     }}
                 >
                     <TouchableOpacity
@@ -365,6 +364,7 @@ export default class thread_view extends Component {
                         multiline={true}
                         value={this.state.message}
                         ref={"INPUT"}
+                        underlineColorAndroid="transparent"
                         onContentSizeChange={(event) => {
                             if( event.nativeEvent.contentSize.height  > 30 && event.nativeEvent.contentSize.height  < 60 )
                             {
@@ -383,7 +383,7 @@ export default class thread_view extends Component {
                             }
                             message = text
                         }}
-                        style={{width:250,backgroundColor:"#fff",height:this.state.textInputHeight, maxHeight:60,marginTop:7,borderRadius:3,paddingLeft:10,marginLeft:5,borderColor:"#ccc",borderWidth:1,
+                        style={{width:250,paddingVertical: 0,backgroundColor:"#fff",height:this.state.textInputHeight, maxHeight:60,marginTop:7,borderRadius:3,paddingLeft:10,marginLeft:5,borderColor:"#ccc",borderWidth:1,
                     }}/>
 
 

@@ -28,8 +28,8 @@ YellowBox.ignoreWarnings(['M']);
 YellowBox.ignoreWarnings(['R']);
 YellowBox.ignoreWarnings(['C']);
 YellowBox.ignoreWarnings(['F']);
-// global.webServer = 'http://localhost:8000/';
-global.webServer = 'https://fantuanpu.com/';
+global.webServer = 'http://localhost:8000/';
+// global.webServer = 'https://fantuanpu.com/';
 global.logout = (token) => {
     if (!token) return false;
     AsyncStorage.removeItem("user_token");
@@ -39,13 +39,13 @@ global.version = 1.0;
 
 const Tab = TabNavigator({
     // "论坛" : {screen: forum},
-    "主页": { screen: user_forum,
-        navigationOptions: {
-            tabBarIcon: () => ( <Image source={require('./image/look.png')} style={{width:25,height:25,margin:10}}/> ),
-            activeTintColor : '#78d3e9',
-            inactiveTintColor : '#6d6d6d',
-        }
-    },
+    //     "主页": { screen: user_forum,
+    //         navigationOptions: {
+    //             tabBarIcon: () => ( <Image source={require('./image/look.png')} style={{width:25,height:25,margin:10}}/> ),
+    //             activeTintColor : '#78d3e9',
+    //             inactiveTintColor : '#6d6d6d',
+    //         }
+    //     },
 
 
     "消息" : { screen: message,
@@ -73,7 +73,7 @@ const Tab = TabNavigator({
 
 },{
     tabBarPosition : 'bottom',
-    animationEnabled: true, // 切换页面时是否有动画效果
+    // animationEnabled: true, // 切换页面时是否有动画效果
     swipeEnabled: true, // 是否可以左右滑动切换tab
     tabBarOptions : {
         activeTintColor : '#000',
