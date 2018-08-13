@@ -169,14 +169,21 @@ export default class user_center extends Component {
                 </View>
                 {this.state.is_login ?
                 <ScrollView style={{backgroundColor:"#eeeeee",height:400}}>
-                    <UserCenterButton name="意见反馈" image="report" value={this.state.user_center_data.user_count.extcredits1} onPress={()=>{return this.void}}/>
+                    <UserCenterButton name="意见反馈" image="report" value={this.state.user_center_data.user_count.extcredits1} onPress={() => {
+                        navigate('report',{
+                            tid: 3601,
+                            // callback : () => { this.getUserCenterData(); }
+                        })
+                    }}/>
                     <UserCenterButton
                             name="版本检查"
                             image="report"
-                            value=""
-                        onPress={()=>{return this.void}} />
+                            value={global.version}
+                        onPress={()=>{return this.void}}
 
-                        <UserCenterButton name="退出登录" onPress={ ()=>{ this.logout() }} image="logout" />
+                    />
+
+                    <UserCenterButton name="退出登录" onPress={ ()=>{ this.logout() }} image="logout" />
                 </ScrollView>
                     :
                 <ScrollView style={{backgroundColor:"#eeeeee",height:400}}>

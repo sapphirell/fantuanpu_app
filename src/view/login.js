@@ -20,6 +20,7 @@ import {
     Image
 } from 'react-native';
 import root from '../model/root'
+import Notice from '../model/Notice'
 let {height, width} = Dimensions.get('window');
 
 type Props = {};
@@ -33,6 +34,8 @@ export default class login extends Component  {
     state = {
         email:'',
         password:'',
+        show_notice :false,
+        notice_fn : false,
     };
     userLogin = (navigate,goBack,callBack) => {
         // navigate('user_center',{
@@ -48,8 +51,8 @@ export default class login extends Component  {
         formData = 'email='+this.state.email+'&password='+this.state.password+'&form=app';
         formData = 'email=1745247379@qq.com&password=56921ff6&form=app';
 
-        formData = 'email=1745247379@qq.com&password=asdasdasd&form=app';
-        // formData = 'email=imy@fantuanpu.com&password=asdasdasd&form=app';
+        // formData = 'email=1745247379@qq.com&password=asdasdasd&form=app';
+        formData = 'email=imy@fantuanpu.com&password=asdasdasd&form=app';
         // console.log(loginUrl);
         // console.log(formData);
             fetch(loginUrl, {
@@ -64,13 +67,16 @@ export default class login extends Component  {
                     {
                         AsyncStorage.setItem('user_token', responseJson.data.token).then(
                             () => {
-                                alert("登录成功~🎉",() => {
-                                    // callBack()
-                                    // goBack()
-                                    // navigate('user_center')
-                                })
-                                callBack()
-                                goBack()
+                                this.setState({show_notice:"登录成功",notice_fn: () => {
+                                        callBack()
+                                        goBack()
+                                    }})
+                                // alert("登录成功~🎉",() => {
+                                //     // callBack()
+                                //     // goBack()
+                                //     // navigate('user_center')
+                                // })
+
                                 // navigate.back();
 
                             }
@@ -93,7 +99,7 @@ export default class login extends Component  {
             <ImageBackground
                 style={styles.container}
                 source={require('../../image/login_bg.jpg')} resizeMode='cover'>
-
+                { this.state.show_notice && <Notice message={this.state.show_notice} fn={this.state.notice_fn} />}
                 {/*<ImageBackground*/}
                     {/*style={styles.loginBox}*/}
                     {/*source={require('../../image/login_form.png')}*/}

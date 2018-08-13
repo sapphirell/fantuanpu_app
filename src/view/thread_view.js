@@ -63,7 +63,7 @@ const imageTextList = (data) => {
                                         <WebImage uri = { content.replace(/\[img.*?\]/,'').replace(/\[\/img\]/,'')} />
                                         :
                                         (data.regQuote.test(content) === true ?
-                                                <Text key={Math.random()} style={{width:width,paddingRight:30,fontStyle:"italic",fontSize:11,fontColor:"#ccc"}}> 回复 @ {content.replace(/\[blockquote[\w\W]*?\]/,'').replace(/\[\/blockquote\]/,'').replace(/\[quote[\w\W]*?\]/,'').replace(/\[\/quote\]/,'')}</Text>
+                                                <Text key={Math.random()} style={{width:width,paddingRight:30,fontStyle:"italic",fontSize:11,color:"#ccc"}}> 回复 @ {content.replace(/\[blockquote[\w\W]*?\]/,'').replace(/\[\/blockquote\]/,'').replace(/\[quote[\w\W]*?\]/,'').replace(/\[\/quote\]/,'')}</Text>
                                                 :
                                                 <Text key={Math.random()} style={{width:width,paddingRight:30,}}>{content}</Text>
                                         )
@@ -317,7 +317,7 @@ export default class thread_view extends Component {
                         <FlatList
                             data={this.state.post_data}
                             style={{zIndex:1, borderTopWidth:1,borderColor:"#f4f4f4",paddingTop:5,marginTop:5 }}
-                            keyExtractor = {  (item) => item.pid }
+                            keyExtractor = {  (item) => item.message + item.tid }
                             renderItem= {
                                 ({item}) => {
                                     return (
@@ -329,7 +329,7 @@ export default class thread_view extends Component {
                                                                style={{width: 35, height: 35, borderRadius: 17.5,marginRight:10}}/>
                                                         <View style={{marginLeft:5,width:width-50,}}>
                                                             <Text style={{textAlign:"left",width:width}}>{item.author}</Text>
-                                                            <View style={{fontSize:12,color:"#b0b0b0",marginTop:5,flexDirection:"row",width:width}}>
+                                                            <View style={{marginTop:5,flexDirection:"row",width:width}}>
                                                                 <Text>{item.postdate}</Text>
                                                                 <TouchableOpacity style={{flexDirection:"row",width:40}}
                                                                                   onPress={()=>{

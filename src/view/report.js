@@ -22,7 +22,7 @@ import UploadImage from '../model/upload_image'
 import SmartView from '../model/SmartView'
 import Notice from '../model/Notice'
 let {height, width} = Dimensions.get('window');
-export default class message extends Component  {
+export default class report extends Component  {
     async componentDidMount() {
 
     }
@@ -33,7 +33,7 @@ export default class message extends Component  {
         content:'',
         title:"",
         fname:"",
-        forum_list:['红茶馆','视频与音乐'],
+        forum_list:['功能完善意见','功能bug反馈','其它'],
         show_notice: false,
         notice_fn:false,
     };
@@ -53,21 +53,21 @@ export default class message extends Component  {
         if (this.state.content === "")
         {
             // alert ('必须输入帖子内容');
-            this.setState({show_notice:'必须输入帖子内容', notice_fn:()=>{
+            this.setState({show_notice:'必须输入标题', notice_fn:()=>{
                     this.setState({show_notice:false,notice_fn:false});
                 }});
             return false;
         }
         if (this.state.title === "")
         {
-            this.setState({show_notice:'必须输入帖子标题', notice_fn:()=>{
+            this.setState({show_notice:'必须输入内容', notice_fn:()=>{
                     this.setState({show_notice:false,notice_fn:false});
                 }});
-             return false;
+            return false;
         }
         if (this.state.fname === "")
         {
-            this.setState({show_notice:'必须选择板块', notice_fn:()=>{
+            this.setState({show_notice:'必须选择类型', notice_fn:()=>{
                     this.setState({show_notice:false,notice_fn:false});
                 }});
             return false;
@@ -84,7 +84,7 @@ export default class message extends Component  {
             },
             body: formData
         })
-            // .then((response) => console.log(response))
+        // .then((response) => console.log(response))
             .then((response) => response.json())
             .then((responseJson)=>{
                 console.log(responseJson)
@@ -141,10 +141,10 @@ export default class message extends Component  {
 
                     </TouchableOpacity>
                     <Text style={{width:width-130,textAlign:"center",fontWeight:"700",color:"#fff",fontSize:16,position:"relative",bottom:2}}>
-                        发表主题
+                        意见反馈
                     </Text>
                     <TouchableOpacity style={{}} onPress={()=>this.postThread(goBack)} >
-                        <Text style={{fontSize:13,color:"#f5f5f5"}}>发射！</Text>
+                        <Text style={{fontSize:13,color:"#f5f5f5"}}>提交</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{top:0,width:width,
@@ -167,7 +167,7 @@ export default class message extends Component  {
                         onSelect={(index, value)=>{
                             this.setState({fname: value})
                         }}
-                        defaultValue="选择发帖板块"
+                        defaultValue="反馈类型"
                     />
                     <TextInput
                         style={styles.TextInput}

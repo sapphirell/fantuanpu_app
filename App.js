@@ -19,6 +19,9 @@ import friends from "./src/view/firends";
 import user_forum from "./src/view/user_forum";
 import not_logged from "./src/view/not_logged";
 import new_thread from "./src/view/new_thread";
+import read_message from "./src/view/read_message";
+import report from "./src/view/report";
+
 
 
 
@@ -28,24 +31,25 @@ YellowBox.ignoreWarnings(['M']);
 YellowBox.ignoreWarnings(['R']);
 YellowBox.ignoreWarnings(['C']);
 YellowBox.ignoreWarnings(['F']);
-global.webServer = 'http://localhost:8000/';
-// global.webServer = 'https://fantuanpu.com/';
+// global.webServer = 'http://localhost:8000/';
+global.webServer = 'https://fantuanpu.com/';
 global.logout = (token) => {
     if (!token) return false;
     AsyncStorage.removeItem("user_token");
     AsyncStorage.removeItem("user_center_data" + token);
 };
-global.version = 1.0;
+
+global.version = "1.0";
 
 const Tab = TabNavigator({
     // "论坛" : {screen: forum},
-    //     "主页": { screen: user_forum,
-    //         navigationOptions: {
-    //             tabBarIcon: () => ( <Image source={require('./image/look.png')} style={{width:25,height:25,margin:10}}/> ),
-    //             activeTintColor : '#78d3e9',
-    //             inactiveTintColor : '#6d6d6d',
-    //         }
-    //     },
+    "主页": { screen: user_forum,
+        navigationOptions: {
+            tabBarIcon: () => ( <Image source={require('./image/look.png')} style={{width:25,height:25,margin:10}}/> ),
+            activeTintColor : '#78d3e9',
+            inactiveTintColor : '#6d6d6d',
+        }
+    },
 
 
     "消息" : { screen: message,
@@ -106,7 +110,9 @@ const App = StackNavigator({
         login: {screen: login},
         user_center: {screen: user_center},
         not_logged: {screen: not_logged},
-        new_thread : {screen : new_thread}
+        new_thread : {screen : new_thread},
+        read_message : {screen : read_message},
+        report : {screen : report},
     }
     ,{
         //screen模式才可以隐藏导航header,none为全局隐藏
