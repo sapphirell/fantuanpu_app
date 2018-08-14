@@ -63,7 +63,7 @@ export default class message extends Component  {
         const { navigate } = this.props.navigation;
         // console.log(this.state.forum_data)
         return (
-            <SmartView style={{paddingTop:10,width:width,height:height}}>
+            <SmartView style={{width:width,height:height}}>
                 <View style={{height:50,backgroundColor:"#ee7489",flexDirection:"row",paddingTop:20}}>
                     <Text style={{color:"#FFF",width:width,textAlign:"center",fontSize:16}}>消息</Text>
                 </View>

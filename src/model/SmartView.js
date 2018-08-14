@@ -32,7 +32,7 @@ export default class SmartView extends Component  {
             }
             else
             {
-                this.setState({paddingTop:20, paddingBottom:0})
+                this.setState({paddingTop:15, paddingBottom:0})
             }
         }
     }

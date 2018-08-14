@@ -33,7 +33,11 @@ export default class message extends Component  {
         notice_fn:false,
         message:false
     };
-
+    dump_note = (note) => {
+        note = note.replace(/\<a.*?\>|\<\/a\>|查看|&nbsp;|\s/g,'');
+        // console.log(note)
+        return note;
+    };
 
     _textInputOnChange = (data) => {this.setState({title : data})};
     render() {
@@ -68,7 +72,6 @@ export default class message extends Component  {
                         <Text
                             style={{fontSize:16, paddingBottom:5,color:"#fff"}}
                         >返回</Text>
-
                     </TouchableOpacity>
 
 
@@ -76,30 +79,24 @@ export default class message extends Component  {
                 {this.state.show_notice && <Notice message={this.state.show_notice} fn={this.state.notice_fn} />}
                 {this.state.message ?
 
-                    <View style={{width:width*0.9, marginLeft:width*0.05}}>
-                        {this.state.message.poster_avatar &&
-                            <Image source={{uri: this.state.message.poster_avatar}} style={{width: 80, height: 80,borderRadius:40,}} />
+                    <View style={{width:width*0.9, marginLeft:width*0.05,alignItems:"center",paddingTop:10}}>
+                        {
+                            this.state.message.poster_avatar ?  <Image source={{uri: this.state.message.poster_avatar}} style={{width: 80, height: 80,borderRadius:40,}} /> : null
                         }
-                        <Text style={{padding:10, fontSize:16,marginBottom:20,marginTop:20,
-                            // color:"#707070",
-                            // textShadowOffset:{height:1},
-                            // textShadowRadius:2,
-                            // textShadowColor:'grey',
-                        }}>{this.state.message.note}</Text>
                         <Text>{this.state.message.date}</Text>
+                        <Text style={{padding:10, fontSize:16,marginBottom:20,marginTop:20,}}>{this.dump_note(this.state.message.note)}</Text>
+
                         {
                             this.state.message.type === 'post' &&
                             <TouchableOpacity
                                 onPress={
                                     () => {
                                         navigate('thread_view',{
-                                            tid: this.state.message.from_id,
+                                            pid: this.state.message.from_id,
                                             // callback : () => { this.getUserCenterData(); }
                                         })
                                     }}
-                                style={{backgroundColor:"#99e7ff",padding:15,alignItems:"center",
-                                // borderWidth:2,borderColor:"#2b4b7a"
-                            }}>
+                                style={{backgroundColor:"#99e7ff",padding:15,alignItems:"center",}}>
                                 <Text style={{color:"#ffffff",fontSize:16,textAlign:"center",fontWeight:"900",width:100,
                                     }}>查看</Text>
                             </TouchableOpacity>

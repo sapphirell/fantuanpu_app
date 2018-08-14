@@ -86,9 +86,20 @@ let message ;
 export default class thread_view extends Component {
 
     async componentWillMount() {
-        await this.setState({tid:this.props.navigation.state.params.tid});
-        let forumData = "tid=" + this.props.navigation.state.params.tid ;
-        this.getThreadData(forumData);
+        if (this.props.navigation.state.params.pid)
+        {
+            await this.setState({pid:this.props.navigation.state.params.pid});
+            let forumData = "pid=" + this.props.navigation.state.params.pid ;
+            this.getThreadData(forumData);
+        }
+        else
+        {
+            await this.setState({tid:this.props.navigation.state.params.tid});
+            let forumData = "tid=" + this.props.navigation.state.params.tid ;
+            this.getThreadData(forumData);
+        }
+
+
 
     }
     getThreadData = async (forumData) => {
@@ -102,7 +113,7 @@ export default class thread_view extends Component {
         }).then((response)=> {return response.json()});
         // alert(this.props.navigation.state.params.tid)
         // console.log(data.data);
-        if (data.ret != 200)
+        if (data.ret !== 200)
             alert(data.msg);
         else
         {

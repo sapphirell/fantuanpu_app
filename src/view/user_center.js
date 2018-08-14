@@ -19,6 +19,7 @@ import {
 } from 'react-native';
 import Login from './login'
 import UserCenterButton from '../model/UserCenterButton';
+import Notice from '../model/Notice';
 type Props = {};
 YellowBox.ignoreWarnings(['M']);
 let {height, width} = Dimensions.get('window');
@@ -28,6 +29,9 @@ export default class user_center extends Component {
         user_center_data : {},
         user_token : false,
         login_status : false,//子组件登录状态通知
+        show_notice :false,
+        notice_fn : false,
+
     };
     async getUserCenterData ()  {
         UserToken = await AsyncStorage.getItem("user_token");
@@ -124,6 +128,7 @@ export default class user_center extends Component {
         return (
 
             <View style={styles.container}>
+                { this.state.show_notice && <Notice message={this.state.show_notice} fn={this.state.notice_fn} />}
                 <ImageBackground
                     // style={styles.headerView}
                     style={{width:width,height:190,alignItems:"center",paddingTop:35}}
@@ -154,7 +159,13 @@ export default class user_center extends Component {
                 <View style={{flexDirection:"row",backgroundColor:"#fff",width:width-20,marginLeft:10,marginRight:10,
                     borderRadius:5,marginTop:10,marginBottom:5,
                     alignItems:"flex-start",justifyContent:"space-around",paddingTop:15,paddingBottom:10}}>
-                    <TouchableOpacity style={{alignItems:"center"}}>
+                    <TouchableOpacity style={{alignItems:"center"}} onPress={
+                        () => {
+                            navigate('user_score',{
+                                score: this.state.user_center_data,
+                                // callback : () => { this.getUserCenterData(); }
+                            })}
+                        } >
                         <Image source={source=require('../../image/score.png')} style={styles.listButton}/>
                         <Text style={styles.listButtonText}>积分</Text>
                     </TouchableOpacity>
@@ -178,8 +189,42 @@ export default class user_center extends Component {
                     <UserCenterButton
                             name="版本检查"
                             image="report"
-                            value={global.version}
-                        onPress={()=>{return this.void}}
+                        onPress={async ()=>{
+                            fetch(global.webServer + 'app/version', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'multipart/form-data;charset=utf-8',
+                                },
+                            }).then((response) => response.json())
+                                .then((responseData)=> {
+                                    if (responseData.data === global.version)
+                                    {
+                                        this.setState({
+                                            show_notice : "您的版本为最新(" + responseData.data +")",
+                                            notice_fn : () => {
+                                                this.setState({show_notice:false,notice_fn:false})
+                                            }
+                                        });
+                                    }
+                                    else
+                                    {
+                                        this.setState({
+                                            show_notice :  "当前您安装的版本为 " + global.version + "。 最新版本为" + responseData.data,
+                                            notice_fn : () => {
+                                                this.setState({show_notice:false,notice_fn:false})
+                                            }
+                                        });
+
+                                    }
+
+                                })
+                                .catch((err)=> {
+                                    console.log('err', err);
+                                    reject(err);
+                                });
+
+                            return this.void
+                        }}
 
                     />
 

@@ -49,47 +49,47 @@ export default class login extends Component  {
         // }
         loginUrl = global.webServer + 'do-login';
         formData = 'email='+this.state.email+'&password='+this.state.password+'&form=app';
-        formData = 'email=1745247379@qq.com&password=56921ff6&form=app';
+        // formData = 'email=1745247379@qq.com&password=56921ff6&form=app';
 
-        // formData = 'email=1745247379@qq.com&password=asdasdasd&form=app';
-        formData = 'email=imy@fantuanpu.com&password=asdasdasd&form=app';
+        formData = 'email=1745247379@qq.com&password=asdasdasd&form=app';
+        // formData = 'email=imy@fantuanpu.com&password=asdasdasd&form=app';
         // console.log(loginUrl);
         // console.log(formData);
-            fetch(loginUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: formData
-            })  .then((response) => response.json())
-                .then((responseJson) => {
-                    if (responseJson.ret == 200)
-                    {
-                        AsyncStorage.setItem('user_token', responseJson.data.token).then(
-                            () => {
-                                this.setState({show_notice:"登录成功",notice_fn: () => {
-                                        callBack()
-                                        goBack()
-                                    }})
-                                // alert("登录成功~🎉",() => {
-                                //     // callBack()
-                                //     // goBack()
-                                //     // navigate('user_center')
-                                // })
+        fetch(loginUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData
+        })  .then((response) => response.json())
+        .then((responseJson) => {
+            if (responseJson.ret == 200)
+            {
+                AsyncStorage.setItem('user_token', responseJson.data.token).then(
+                    () => {
+                        this.setState({show_notice:"登录成功",notice_fn: () => {
+                                callBack()
+                                goBack()
+                            }})
+                        // alert("登录成功~🎉",() => {
+                        //     // callBack()
+                        //     // goBack()
+                        //     // navigate('user_center')
+                        // })
 
-                                // navigate.back();
+                        // navigate.back();
 
-                            }
-                        );
                     }
-                    else
-                    {
-                        alert(responseJson.msg)
-                    }
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
+                );
+            }
+            else
+            {
+                alert(responseJson.msg)
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 
     };
 

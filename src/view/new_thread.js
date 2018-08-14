@@ -165,7 +165,7 @@ export default class message extends Component  {
                         }}
                         options={this.state.forum_list}
                         onSelect={(index, value)=>{
-                            this.setState({fname: value})
+                            this.setState({type: value})
                         }}
                         defaultValue="选择发帖板块"
                     />

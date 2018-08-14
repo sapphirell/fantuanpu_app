@@ -32,7 +32,7 @@ export default class report extends Component  {
         upload_status:"free",
         content:'',
         title:"",
-        fname:"",
+        type:"",
         forum_list:['功能完善意见','功能bug反馈','其它'],
         show_notice: false,
         notice_fn:false,
@@ -65,7 +65,7 @@ export default class report extends Component  {
                 }});
             return false;
         }
-        if (this.state.fname === "")
+        if (this.state.type === "")
         {
             this.setState({show_notice:'必须选择类型', notice_fn:()=>{
                     this.setState({show_notice:false,notice_fn:false});
@@ -73,10 +73,10 @@ export default class report extends Component  {
             return false;
         }
         let token = await AsyncStorage.getItem('user_token');
-        let formData = 'fname='+this.state.fname+'&title='+this.state.title+'&content='+this.state.content + "&token=" + token;
+        let formData = 'content=' + this.state.content + '&title=' + this.state.title + "&token=" + token + "&type=" . this.state.type;
         // console.log(loginUrl);
         // console.log(formData);
-        let postUrl = global.webServer + "app/new_thread" ;
+        let postUrl = global.webServer + "app/user_report" ;
         fetch(postUrl, {
             method: 'POST',
             headers: {

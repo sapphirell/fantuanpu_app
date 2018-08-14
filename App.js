@@ -17,6 +17,7 @@ import message from './src/view/message';
 import {YellowBox} from "react-native";
 import friends from "./src/view/firends";
 import user_forum from "./src/view/user_forum";
+import user_score from "./src/view/user_score";
 import not_logged from "./src/view/not_logged";
 import new_thread from "./src/view/new_thread";
 import read_message from "./src/view/read_message";
@@ -31,8 +32,8 @@ YellowBox.ignoreWarnings(['M']);
 YellowBox.ignoreWarnings(['R']);
 YellowBox.ignoreWarnings(['C']);
 YellowBox.ignoreWarnings(['F']);
-// global.webServer = 'http://localhost:8000/';
-global.webServer = 'https://fantuanpu.com/';
+global.webServer = 'http://localhost:8000/';
+// global.webServer = 'https://fantuanpu.com/';
 global.logout = (token) => {
     if (!token) return false;
     AsyncStorage.removeItem("user_token");
@@ -113,6 +114,7 @@ const App = StackNavigator({
         new_thread : {screen : new_thread},
         read_message : {screen : read_message},
         report : {screen : report},
+        user_score : {screen : user_score},
     }
     ,{
         //screen模式才可以隐藏导航header,none为全局隐藏
