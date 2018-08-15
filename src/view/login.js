@@ -126,7 +126,7 @@ export default class login extends Component  {
                 </View>
 
                 <View style={{width:width,alignItems:"center"}}>
-                    <TouchableOpacity style={{marignTop:15,width:30,height:30,position:"relative",top:20}} onPress={ () => {
+                    <TouchableOpacity style={{width:30,height:30,position:"relative",top:20}} onPress={ () => {
                         // alert(JSON.stringify(state.params))
                         // alert(state.params.id)
                         // state.params.callback()
@@ -136,6 +136,10 @@ export default class login extends Component  {
                         }
                     } >
                         <Image source={source=require('../../image/next.png')} style={{width:30,height:30}} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{position:"relative", left:100,bottom:5}}>
+                        <Text style={{color:"#FFF",fontSize:15,fontWeight:"700"}}>或注册</Text>
                     </TouchableOpacity>
                 </View>
 

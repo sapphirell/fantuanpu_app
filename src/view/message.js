@@ -26,10 +26,13 @@ import Notice from "../model/Notice";
 let {height, width} = Dimensions.get('window');
 export default class message extends Component  {
     async componentDidMount() {
+        this.get_user_message();
+    }
+    get_user_message = async () => {
         let token = await AsyncStorage.getItem('user_token');
         let formData = "token=" + token;
         let postUrl = global.webServer + "app/get_notice" ;
-
+        this.setState({isRefresh:true});
         fetch(postUrl, {
             method: 'POST',
             headers: {
@@ -42,13 +45,13 @@ export default class message extends Component  {
             .then((responseJson)=>{
                 if (responseJson.ret === 200)
                 {
-                    this.setState({user_notice:responseJson.data})
+                    this.setState({user_notice:responseJson.data,isRefresh:false})
                 }
             })
             .catch((error) => {
                 console.error(error);
             });
-    }
+    };
     dump_note = (note) => {
         note = note.replace(/\<a.*?\>|\<\/a\>|查看|&nbsp;|\s/g,'');
         // console.log(note)
@@ -56,7 +59,7 @@ export default class message extends Component  {
     };
     state = {
         user_notice : [],
-
+        isRefresh:false
     };
 
     render() {
@@ -67,40 +70,51 @@ export default class message extends Component  {
                 <View style={{height:50,backgroundColor:"#ee7489",flexDirection:"row",paddingTop:20}}>
                     <Text style={{color:"#FFF",width:width,textAlign:"center",fontSize:16}}>消息</Text>
                 </View>
-                <FlatList
-                    data={this.state.user_notice}
-                    style={{zIndex:1, borderTopWidth:1,borderColor:"#f4f4f4",paddingTop:5,marginTop:5 }}
-                    keyExtractor = {  (item) => item.note }
-                    renderItem= {
-                        ({item}) => {
-                            return (
-                                <TouchableOpacity style={{
-                                                    flexDirection:"row",
-                                                    marginBottom:15,
-                                                    width:width-10,
-                                                    minHeight:50,
-                                                    padding:10,
-                                                    borderBottomWidth:0.5,
-                                                    borderColor:"#d8c9cd",
-                                                    backgroundColor:"#fff",
-                                                    margin:5}}
-                                                  onPress={() => navigate('read_message',{
-                                                      message: item,
-                                                      callback : () => {  }
-                                                  })}
-                                >
-                                    <Image
-                                        style={{width:25,height:25,marginRight:10}}
-                                        source={source=require('../../image/reply-w.png')} />
-                                    <Text style={{color:"#646464",width:(width-10) * 0.8}} numberOfLines={1}>{this.dump_note(item.note)}</Text>
-                                    <Image
-                                        style={{width:15,height:15,}}
-                                        source={source=require('../../image/left.png')} />
-                                </TouchableOpacity>
-                            )
+                {
+                    JSON.stringify(this.state.user_notice) === '[]' ?
+                    <TouchableOpacity onPress={()=> {this.get_user_message()}}  style={{alignItems:"center",width:width,marginTop:20}}>
+                        <Image source={source=require('../../image/refresh.png')} style={{width:30,height:30}} />
+                    </TouchableOpacity>
+                    :
+                    <FlatList
+                        data={this.state.user_notice}
+                        style={{zIndex:1, borderTopWidth:1,borderColor:"#f4f4f4",paddingTop:5,marginTop:5, minHeight:50}}
+                        keyExtractor = {  (item) => item.note }
+                        refreshing={this.state.isRefresh}
+                        onRefresh={this.get_user_message}
+                        renderItem= {
+                            ({item}) => {
+                                return (
+                                    <TouchableOpacity
+                                        style={{
+                                                flexDirection:"row",
+                                                marginBottom:15,
+                                                width:width-10,
+                                                minHeight:50,
+                                                padding:10,
+                                                borderBottomWidth:0.5,
+                                                borderColor:"#d8c9cd",
+                                                backgroundColor:"#fff",
+                                                margin:5}}
+                                        onPress={() => navigate('read_message',{
+                                              message: item,
+                                              callback : () => {  }
+                                        })}
+                                    >
+                                        <Image
+                                            style={{width:25,height:25,marginRight:10}}
+                                            source={source=require('../../image/reply-w.png')} />
+                                        <Text style={{color:"#646464",width:(width-10) * 0.8}} numberOfLines={1}>{this.dump_note(item.note)}</Text>
+                                        <Image
+                                            style={{width:15,height:15,}}
+                                            source={source=require('../../image/left.png')} />
+                                    </TouchableOpacity>
+                                )
+                            }
                         }
-                    }
-                />
+            />
+                }
+
             </SmartView>
         );
     }

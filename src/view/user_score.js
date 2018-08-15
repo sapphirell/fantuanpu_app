@@ -108,54 +108,98 @@ export default class user_score extends Component {
                 {
                     this.state.user ? (
                         this.state.selected === 1 ?
+
                             <View>
+                                <Text style={{width:width,textAlign:"center"}}>
+                                    * 下列积分均与充值无关。
+                                </Text>
                                 <View style={styles.item}>
                                     <Text style={styles.title}>{this.state.user.user_count.extcredits.extcredits2}</Text>
                                     <Text style={styles.content}>
                                         {this.state.user.user_count.extcredits2}
                                     </Text>
+                                    <TouchableOpacity style={styles.question} onPress={()=>{
+                                        this.setState({show_notice:"扑币由日常活动获取，例如发帖、回帖、签到等。",notice_fn:()=>{this.setState({show_notice:false,notice_fn:false})}})
+                                    }}>
+                                        <Image source={source=require('../../image/question.png')} style={{width:20,height:20}} />
+                                    </TouchableOpacity>
                                 </View>
                                 <View style={styles.item}>
                                     <Text style={styles.title}>{this.state.user.user_count.extcredits.extcredits1}</Text>
                                     <Text style={styles.content}>
                                         {this.state.user.user_count.extcredits1}
                                     </Text>
+                                    <TouchableOpacity style={styles.question} onPress={()=>{
+                                        this.setState({show_notice:"参与特别的活动可以获取酸奶。",notice_fn:()=>{this.setState({show_notice:false,notice_fn:false})}})
+                                    }}>
+                                        <Image source={source=require('../../image/question.png')} style={{width:20,height:20}} />
+                                    </TouchableOpacity>
                                 </View>
                                 <View style={styles.item}>
                                     <Text style={styles.title}>{this.state.user.user_count.extcredits.extcredits3}</Text>
                                     <Text style={styles.content}>
                                         {this.state.user.user_count.extcredits3}
                                     </Text>
+                                    <TouchableOpacity style={styles.question} onPress={()=>{
+                                        this.setState({show_notice:"如果你发表的主题被社区版主判定为精华主题，那您的项链会增加1.",notice_fn:()=>{this.setState({show_notice:false,notice_fn:false})}})
+                                    }}>
+                                        <Image source={source=require('../../image/question.png')} style={{width:20,height:20}} />
+                                    </TouchableOpacity>
                                 </View>
                                 <View style={styles.item}>
                                     <Text style={styles.title}>{this.state.user.user_count.extcredits.extcredits4}</Text>
                                     <Text style={styles.content}>
                                         {this.state.user.user_count.extcredits4}
                                     </Text>
+                                    <TouchableOpacity style={styles.question} onPress={()=>{
+                                        this.setState({show_notice:"每次签到都会获取一定数量的草莓棉花糖，连续签到会提升获取的数量。",notice_fn:()=>{this.setState({show_notice:false,notice_fn:false})}})
+                                    }}>
+                                        <Image source={source=require('../../image/question.png')} style={{width:20,height:20}} />
+                                    </TouchableOpacity>
                                 </View>
                                 <View style={styles.item}>
                                     <Text style={styles.title}>{this.state.user.user_count.extcredits.extcredits5}</Text>
                                     <Text style={styles.content}>
                                         {this.state.user.user_count.extcredits5}
                                     </Text>
+                                    <TouchableOpacity style={styles.question} onPress={()=>{
+                                        this.setState({show_notice:"在一些特定板块发帖将会获取到灵魂宝石。",notice_fn:()=>{this.setState({show_notice:false,notice_fn:false})}})
+                                    }}>
+                                        <Image source={source=require('../../image/question.png')} style={{width:20,height:20}} />
+                                    </TouchableOpacity>
                                 </View>
                                 <View style={styles.item}>
                                     <Text style={styles.title}>{this.state.user.user_count.extcredits.extcredits6}</Text>
                                     <Text style={styles.content}>
                                         {this.state.user.user_count.extcredits6}
                                     </Text>
+                                    <TouchableOpacity style={styles.question} onPress={()=>{
+                                        this.setState({show_notice:"在一些特定板块发帖将会获取到文点。",notice_fn:()=>{this.setState({show_notice:false,notice_fn:false})}})
+                                    }}>
+                                        <Image source={source=require('../../image/question.png')} style={{width:20,height:20}} />
+                                    </TouchableOpacity>
                                 </View>
                                 <View style={styles.item}>
                                     <Text style={styles.title}>{this.state.user.user_count.extcredits.extcredits7}</Text>
                                     <Text style={styles.content}>
                                         {this.state.user.user_count.extcredits7}
                                     </Text>
+                                    <TouchableOpacity style={styles.question} onPress={()=>{
+                                        this.setState({show_notice:"在一些特定板块发帖将会获取到分享积分。",notice_fn:()=>{this.setState({show_notice:false,notice_fn:false})}})
+                                    }}>
+                                        <Image source={source=require('../../image/question.png')} style={{width:20,height:20}} />
+                                    </TouchableOpacity>
                                 </View>
                                 <View style={styles.item}>
                                     <Text style={styles.title}>{this.state.user.user_count.extcredits.extcredits8}</Text>
                                     <Text style={styles.content}>
                                         {this.state.user.user_count.extcredits8}
                                     </Text>
+                                    <TouchableOpacity style={styles.question} onPress={()=>{
+                                        this.setState({show_notice:"在一些特定板块发帖将会获取到图点。",notice_fn:()=>{this.setState({show_notice:false,notice_fn:false})}})
+                                    }}>
+                                        <Image source={source=require('../../image/question.png')} style={{width:20,height:20}} />
+                                    </TouchableOpacity>
                                 </View>
 
                             </View>
@@ -166,24 +210,28 @@ export default class user_score extends Component {
                                     <Text style={styles.content}>
                                         {this.state.user.user_count.friends}
                                     </Text>
+                                    <View style={styles.question}/>
                                 </View>
                                 <View style={styles.item}>
                                     <Text style={styles.title}>主题数量</Text>
                                     <Text style={styles.content}>
                                         {this.state.user.user_count.threads}
                                     </Text>
+                                    <View style={styles.question}/>
                                 </View>
                                 <View style={styles.item}>
                                     <Text style={styles.title}>回帖数量</Text>
                                     <Text style={styles.content}>
                                         {this.state.user.user_count.posts}
                                     </Text>
+                                    <View style={styles.question}/>
                                 </View>
                                 <View style={styles.item}>
                                     <Text style={styles.title}>在线时间</Text>
                                     <Text style={styles.content}>
-                                        {this.state.user.user_count.oltime} (小时)
+                                        {this.state.user.user_count.oltime} (h)
                                     </Text>
+                                    <View style={styles.question}/>
                                 </View>
                             </View>
                     ) : <View/>
@@ -204,6 +252,7 @@ const styles = StyleSheet.create({
         margin:10,
         padding:10,
     },
-    title : {flex:25,fontSize:15,color:"#3cccc1"},
-    content: {flex:85},
+    title : {flex:45,fontSize:15,color:"#3cccc1",textAlign:"right"},
+    content: {flex:30,flexDirection:"row",textAlign:"right"},
+    question: {flex:60,paddingLeft:15}
 });
