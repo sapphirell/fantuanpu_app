@@ -180,7 +180,13 @@ export default class user_center extends Component {
                 </View>
                 {this.state.is_login ?
                 <ScrollView style={{backgroundColor:"#eeeeee",height:400}}>
-                    <UserCenterButton name="意见反馈" image="report" value={this.state.user_center_data.user_count.extcredits1} onPress={() => {
+                    <UserCenterButton name="私信" image="report" value={this.state.user_center_data.user_count.extcredits1} onPress={() => {
+                        navigate('letter',{
+                            letter: this.state.user_center_data.letter,
+                            // callback : () => { this.getUserCenterData(); }
+                        })
+                    }}/>
+                    <UserCenterButton name="意见反馈" image="report" onPress={() => {
                         navigate('report',{
                             tid: 3601,
                             // callback : () => { this.getUserCenterData(); }

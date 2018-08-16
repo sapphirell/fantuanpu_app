@@ -22,6 +22,8 @@ import not_logged from "./src/view/not_logged";
 import new_thread from "./src/view/new_thread";
 import read_message from "./src/view/read_message";
 import report from "./src/view/report";
+import letter from "./src/view/letter";
+import read_letter from "./src/view/read_letter";
 
 
 
@@ -115,6 +117,8 @@ const App = StackNavigator({
         read_message : {screen : read_message},
         report : {screen : report},
         user_score : {screen : user_score},
+        letter : {screen : letter},
+        read_letter : {screen : read_letter},
     }
     ,{
         //screen模式才可以隐藏导航header,none为全局隐藏
