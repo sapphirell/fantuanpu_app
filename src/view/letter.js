@@ -34,7 +34,7 @@ export default class user_center extends Component {
 
     async componentDidMount () {
         await  this.setState({letter:this.props.navigation.state.params.letter});
-        console.log(this.props.navigation.state.params)
+        // console.log(this.props.navigation.state.params)
     }
     render() {
         const {state , goBack ,navigate} = this.props.navigation;
@@ -84,37 +84,52 @@ export default class user_center extends Component {
                     }
 
                 </View>
-                <FlatList
-                    data={this.state.letter}
-                    extraData={this.state.show_panel}
-                    keyExtractor = {  (item) => item.lastmessage.lastsummary }
-                    style={{padding:5,marginBottom:90, minHeight:50, flex:1}}
-                    // numColumns={5}
-                    // showsHorizontalScrollIndicator= {false}//隐藏水平滚动条
-                    showsVerticalScrollIndicator= {false}//隐藏竖直滚动条
-                    onEndReached = {this.fetchMore}
-                    onEndReachedThreshold = {0.1}
+                {
+                    this.state.letter ?
+                        <FlatList
+                            data={this.state.letter}
+                            extraData={this.state.show_panel}
+                            keyExtractor = {  (item) => item.lastmessage.lastsummary }
+                            style={{padding:5,marginBottom:90, minHeight:50, flex:1}}
+                            // numColumns={5}
+                            // showsHorizontalScrollIndicator= {false}//隐藏水平滚动条
+                            showsVerticalScrollIndicator= {false}//隐藏竖直滚动条
+                            onEndReached = {this.fetchMore}
+                            onEndReachedThreshold = {0.1}
 
-                    onRefresh={this.refreshingData}
-                    refreshing={this.state.isRefresh}
-                    // horizontal={true} //水平布局
-                    renderItem= {({item}) => {
-                        return (
-                            <View>
-                                <TouchableOpacity onPress={()=>{
-                                    navigate('read_letter',{
-                                        plid: item.plid,
-                                        // callback : () => { this.getUserCenterData(); }
-                                    })
-                                }}>
-                                    <Image source={{uri: item.avatar}} style={{width: 80, height: 80,borderRadius:40,}} />
-                                    <Text>{item.subject}</Text>
-                                    <Text>{item.lastmessage.lastauthor}</Text>
-                                    <Text>{item.lastmessage.lastsummary}</Text>
-                                </TouchableOpacity>
-                            </View>
-                        )}}
-                    />
+                            onRefresh={this.refreshingData}
+                            refreshing={this.state.isRefresh}
+                            // horizontal={true} //水平布局
+                            renderItem= {({item}) => {
+                                return (
+                                    <View>
+                                        <TouchableOpacity
+                                            style={{flexDirection:"row",marginBottom:10,padding:10,}}
+                                            onPress={()=>{
+                                            navigate('read_letter',{
+                                                plid: item.plid,
+                                                // callback : () => { this.getUserCenterData(); }
+                                            })
+                                        }}>
+                                            <Image source={{uri: item.avatar}} style={{width: 40, height: 40,borderRadius:20,}} />
+                                            <View style={{width:width-80,paddingLeft:10}}>
+                                                <Text numberOfLines={1} style={{fontSize:16,color:"#505050",marginBottom:5}}>{item.subject}</Text>
+                                                <Text numberOfLines={1}>{item.lastmessage.lastauthor} 最后回复：{item.lastmessage.lastsummary}</Text>
+
+                                            </View>
+
+                                        </TouchableOpacity>
+                                    </View>
+                                )}}
+                        />
+                        :
+                        <View style={{width:width, padding:15, alignItems:"center",flexDirection:"row"}}>
+                            <Image source={source = require('../../image/nomessage.png')} style={{width:18,height:18}} />
+                            <Text style={{color:"#4f4f4f" ,fontSize:16}}>暂无私信</Text>
+                        </View>
+
+                }
+
             </SmartView>
         );
     }

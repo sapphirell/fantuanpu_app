@@ -16,7 +16,9 @@ import {
     AsyncStorage,
     Image, YellowBox,
     Dimensions,
-    FlatList
+    FlatList, Platform,
+    KeyboardAvoidingView,
+    TextInput
 } from 'react-native';
 import Login from './login'
 import UserCenterButton from '../model/UserCenterButton';
@@ -30,13 +32,16 @@ export default class user_center extends Component {
         show_notice :false,
         notice_fn : false,
         letter_message : [],
+        offsetForPlatform:50,
+        keyboardVerticalOffset : Platform.OS === 'ios' ? 50 : -190,//键盘抬起高度
+        textInputHeight : 30 ,// 输入框高度
     };
 
     async componentDidMount () {
         // await  this.setState({letter:this.props.navigation.state.params.plid});
         // console.log(this.props.navigation.state.params)
         let UserToken = await AsyncStorage.getItem("user_token");
-        let FormData = 'token='+UserToken+'&plid='+this.props.navigation.state.params;
+        let FormData = 'token='+UserToken+'&plid='+this.props.navigation.state.params.plid;
         // alert(FormData);
         let ReadLetterUrl =  global.webServer + '/app/read_letter';
         fetch(ReadLetterUrl, {
@@ -48,8 +53,8 @@ export default class user_center extends Component {
         }).then((response) => response.json()).then((responseJson) =>
         {
             this.setState({letter_message : responseJson.data.message});
-
-            console.log(responseJson)
+            console.log(FormData)
+            console.log(responseJson.data.message)
         });
     }
     render() {
@@ -100,36 +105,114 @@ export default class user_center extends Component {
                     }
 
                 </View>
-                <FlatList
-                    data={this.state.letter_message}
-                    extraData={this.state.show_panel}
-                    keyExtractor = {  (item) => item.lastmessage.lastsummary }
-                    style={{padding:5,marginBottom:90, minHeight:50, flex:1}}
-                    // numColumns={5}
-                    // showsHorizontalScrollIndicator= {false}//隐藏水平滚动条
-                    showsVerticalScrollIndicator= {false}//隐藏竖直滚动条
-                    onEndReached = {this.fetchMore}
-                    onEndReachedThreshold = {0.1}
+                <ScrollView style={{height:height-100,backgroundColor:"#f0f0f0"}}>
+                    <FlatList
+                        data={this.state.letter_message}
+                        extraData={this.state.show_panel}
+                        keyExtractor = {  (item) => item.message + item.authorid}
+                        style={{padding:5,marginBottom:90,}}
+                        // numColumns={5}
+                        // showsHorizontalScrollIndicator= {false}//隐藏水平滚动条
+                        showsVerticalScrollIndicator= {false}//隐藏竖直滚动条
+                        onEndReached = {this.fetchMore}
+                        onEndReachedThreshold = {0.1}
 
-                    onRefresh={this.refreshingData}
-                    refreshing={this.state.isRefresh}
-                    // horizontal={true} //水平布局
-                    renderItem= {({item}) => {
-                        return (
-                            <View>
-                                <TouchableOpacity >
-                                    <Image source={{uri: item.avatar}} style={{width: 80, height: 80,borderRadius:40,}} />
-                                    <Text>{item.authorid}</Text>
-                                    <Text>{item.message}</Text>
-                                </TouchableOpacity>
-                            </View>
-                        )}}
-                />
+                        onRefresh={this.refreshingData}
+                        refreshing={this.state.isRefresh}
+                        // horizontal={true} //水平布局
+                        renderItem= {({item}) => {
+                            return (
+                                <View style={{width:width, padding:10,flexDirection:"row"}}>
+                                    <TouchableOpacity >
+                                        <Image source={{uri: item.avatar}} style={{width: 50, height: 50,borderRadius:25,}} />
+                                    </TouchableOpacity>
+                                    <View style={{
+                                        width: 0,
+                                        height: 0,
+                                        borderTopWidth: 7,
+                                        borderTopColor: 'transparent',
+                                        borderRightWidth: 10,
+                                        borderRightColor: '#fff',
+                                        borderLeftWidth: 5,
+                                        borderLeftColor: 'transparent',
+                                        borderBottomWidth: 7,
+                                        borderBottomColor: 'transparent',
+                                        position:"relative",
+                                        left:0,
+                                        top:15
+                                    }} />
+                                    <View style={{width:width-90,padding:10,backgroundColor:"#fff",marginRight:10,borderRadius:5}}>
+
+                                        <Text style={{width:width-110,color:"#484848"}}>{item.message}</Text>
+
+                                        <Text style={{width:width-110,color:"#8a8a8a",marginTop:20}}>{item.dateline}</Text>
+                                    </View>
+                                </View>
+                            )}}
+                    />
+                </ScrollView>
+
+
+                <KeyboardAvoidingView style={styles.floatBar}  behavior="padding" keyboardVerticalOffset={this.state.keyboardVerticalOffset} >
+
+                    <TextInput
+                        multiline={true}
+                        value={this.state.message}
+                        ref={"INPUT"}
+                        underlineColorAndroid="transparent"
+                        onContentSizeChange={(event) => {
+                            if( event.nativeEvent.contentSize.height  > 30 && event.nativeEvent.contentSize.height  < 60 )
+                            {
+                                // maxHeight = event.nativeEvent.contentSize.height > 50 ? 50 :event.nativeEvent.contentSize.height
+                                this.setState({
+                                    textInputHeight: event.nativeEvent.contentSize.height,
+                                    keyboardVerticalOffset : this.state.keyboardVerticalOffset + event.nativeEvent.contentSize.height - 30
+                                })
+                            }
+                        }}
+                        // onChangeText={(text) => {message = text}}
+                        onChangeText={(text) => {
+                            if(Platform.OS==='android'){
+                                //如果是android平台
+                                this.setState({message:text});
+                            }
+                            message = text
+                        }}
+                        style={{width:width-50,paddingVertical: 0,backgroundColor:"#fff",height:this.state.textInputHeight, maxHeight:60,marginTop:7,borderRadius:3,paddingLeft:10,marginLeft:5,borderColor:"#ccc",borderWidth:1,
+                        }}/>
+
+
+                    <TouchableOpacity style={{width:35,marginLeft:3,alignItems:"center"}} onPress={this.submitMessage}>
+                        <Image  source={source=require('../../image/reply.png')}
+                                style={styles.floatButton}/>
+                    </TouchableOpacity>
+
+
+                </KeyboardAvoidingView>
             </SmartView>
         );
     }
 }
 
 const styles = StyleSheet.create({
-
+    smImage : {
+        width: 14, height:14,
+        marginLeft:5,
+        marginRight:5
+    },
+    floatButton : {
+        width: 20, height:20, marginTop:7.5,
+    },
+    floatBar : {
+        backgroundColor:"#fafafa",
+        borderColor:"#ccc",
+        borderTopWidth:1,
+        borderBottomWidth:1,
+        width:width,
+        height:45,
+        bottom:0,
+        // left:(width-180)/2,
+        // borderRadius:5,
+        flexDirection:"row"
+    }
 });

@@ -41,7 +41,8 @@ export default class user_center extends Component {
         if (UserToken)
         {
             //如果有token状态则取用户信息
-            UserCenterData = await AsyncStorage.getItem('user_center_data'+UserToken);
+            // UserCenterData = await AsyncStorage.getItem('user_center_data'+UserToken);
+            UserCenterData = false;
 
             if (!UserCenterData)
             {
