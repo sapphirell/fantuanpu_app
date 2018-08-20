@@ -27,8 +27,10 @@ import SmartView from "../model/SmartView";
 type Props = {};
 YellowBox.ignoreWarnings(['M']);
 let {height, width} = Dimensions.get('window');
+let message;
 export default class user_center extends Component {
     state = {
+        message:'',
         show_notice :false,
         notice_fn : false,
         letter_message : [],
@@ -40,8 +42,20 @@ export default class user_center extends Component {
     async componentDidMount () {
         // await  this.setState({letter:this.props.navigation.state.params.plid});
         // console.log(this.props.navigation.state.params)
+        this.getLetterData();
+    }
+    getLetterData = async () => {
         let UserToken = await AsyncStorage.getItem("user_token");
-        let FormData = 'token='+UserToken+'&plid='+this.props.navigation.state.params.plid;
+        let FormData = 'token='+ UserToken;
+        if (this.props.navigation.state.params.plid)
+        {
+            FormData  += '&plid='+this.props.navigation.state.params.plid ;
+        }
+
+        if (this.props.navigation.state.params.to_uid)
+        {
+            FormData += '&to_uid=' + this.props.navigation.state.params.to_uid;
+        }
         // alert(FormData);
         let ReadLetterUrl =  global.webServer + '/app/read_letter';
         fetch(ReadLetterUrl, {
@@ -52,11 +66,54 @@ export default class user_center extends Component {
             body: FormData
         }).then((response) => response.json()).then((responseJson) =>
         {
-            this.setState({letter_message : responseJson.data.message});
+            if (responseJson.data.message)
+            {
+                this.setState({letter_message : responseJson.data.message,to_uid: responseJson.data.to_uid});
+            }
+
             console.log(FormData)
             console.log(responseJson.data.message)
         });
-    }
+    };
+    submitMessage = async () => {
+        let token = await AsyncStorage.getItem('user_token');
+
+        if ( message === '')
+        {
+            alert ('发帖数据为空'); return false;
+        }
+        if (!token)
+        {
+            alert ('未登录'); return false;
+        }
+        this.refs["INPUT"].blur();
+        let formData = 'to_uid=' + this.state.to_uid +'&message='+ message +"&token=" + token;
+        // alert(formData);return false;
+        let postUrl = global.webServer + "app/send_letter" ;
+        this.setState({'message':''});
+        fetch(postUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData
+        })
+        // .then((response) => console.log(response))
+            .then((response) => response.json())
+            .then((responseJson)=>{
+                console.log(responseJson)
+                if (responseJson.ret === 200)
+                {
+
+                    alert("回复成功!~");
+
+                    this.getLetterData();
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
     render() {
         const {state , goBack ,navigate} = this.props.navigation;
 
@@ -105,51 +162,61 @@ export default class user_center extends Component {
                     }
 
                 </View>
-                <ScrollView style={{height:height-100,backgroundColor:"#f0f0f0"}}>
-                    <FlatList
-                        data={this.state.letter_message}
-                        extraData={this.state.show_panel}
-                        keyExtractor = {  (item) => item.message + item.authorid}
-                        style={{padding:5,marginBottom:90,}}
-                        // numColumns={5}
-                        // showsHorizontalScrollIndicator= {false}//隐藏水平滚动条
-                        showsVerticalScrollIndicator= {false}//隐藏竖直滚动条
-                        onEndReached = {this.fetchMore}
-                        onEndReachedThreshold = {0.1}
+                <ScrollView style={{height:height-100,backgroundColor:"#f0f0f0",paddingTop:20}}>
+                    {
+                        JSON.stringify(this.state.letter_message) !== '[]'
+                        ?
+                        <FlatList
+                            data={this.state.letter_message}
+                            extraData={this.state.show_panel}
+                            keyExtractor = {  (item) => item.message + item.authorid}
+                            style={{padding:5,marginBottom:90,}}
+                            // numColumns={5}
+                            // showsHorizontalScrollIndicator= {false}//隐藏水平滚动条
+                            showsVerticalScrollIndicator= {false}//隐藏竖直滚动条
+                            onEndReached = {this.fetchMore}
+                            onEndReachedThreshold = {0.1}
 
-                        onRefresh={this.refreshingData}
-                        refreshing={this.state.isRefresh}
-                        // horizontal={true} //水平布局
-                        renderItem= {({item}) => {
-                            return (
-                                <View style={{width:width, padding:10,flexDirection:"row"}}>
-                                    <TouchableOpacity >
-                                        <Image source={{uri: item.avatar}} style={{width: 50, height: 50,borderRadius:25,}} />
-                                    </TouchableOpacity>
-                                    <View style={{
-                                        width: 0,
-                                        height: 0,
-                                        borderTopWidth: 7,
-                                        borderTopColor: 'transparent',
-                                        borderRightWidth: 10,
-                                        borderRightColor: '#fff',
-                                        borderLeftWidth: 5,
-                                        borderLeftColor: 'transparent',
-                                        borderBottomWidth: 7,
-                                        borderBottomColor: 'transparent',
-                                        position:"relative",
-                                        left:0,
-                                        top:15
-                                    }} />
-                                    <View style={{width:width-90,padding:10,backgroundColor:"#fff",marginRight:10,borderRadius:5}}>
+                            onRefresh={this.refreshingData}
+                            refreshing={this.state.isRefresh}
+                            // horizontal={true} //水平布局
+                            renderItem= {({item}) => {
+                                return (
+                                    <View style={{width:width, padding:10,flexDirection:"row"}}>
+                                        <TouchableOpacity >
+                                            <Image source={{uri: item.avatar}} style={{width: 50, height: 50,borderRadius:25,}} />
+                                            <Text style={{fontSize:11,width:50,overflow:"hidden",marginTop:10, color:"#505050"}} numberOfLines={1}>{item.username}</Text>
+                                        </TouchableOpacity>
+                                        <View style={{
+                                            width: 0,
+                                            height: 0,
+                                            borderTopWidth: 7,
+                                            borderTopColor: 'transparent',
+                                            borderRightWidth: 10,
+                                            borderRightColor: '#fff',
+                                            borderLeftWidth: 5,
+                                            borderLeftColor: 'transparent',
+                                            borderBottomWidth: 7,
+                                            borderBottomColor: 'transparent',
+                                            position:"relative",
+                                            left:0,
+                                            top:15
+                                        }} />
+                                        <View style={{width:width-90,padding:10,backgroundColor:"#fff",marginRight:10,borderRadius:5}}>
 
-                                        <Text style={{width:width-110,color:"#484848"}}>{item.message}</Text>
+                                            <Text style={{width:width-110,color:"#484848"}}>{item.message}</Text>
 
-                                        <Text style={{width:width-110,color:"#8a8a8a",marginTop:20}}>{item.dateline}</Text>
+                                            <Text style={{width:width-110,color:"#8a8a8a",marginTop:20}}>{item.dateline}</Text>
+                                        </View>
                                     </View>
-                                </View>
-                            )}}
-                    />
+                                )}}
+                        />
+                        :
+                        <View>
+                            <Text style={{color:"#828282",fontSize:15, textAlign:"center",width:width}}>暂时还没有互动消息~</Text>
+                        </View>
+                    }
+
                 </ScrollView>
 
 

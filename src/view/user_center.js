@@ -59,8 +59,8 @@ export default class user_center extends Component {
                 {
                     this.setState({user_center_data : responseJson.data,is_login:true,user_token:UserToken});
                     // alert(JSON.stringify(responseJson.data));
-                    AsyncStorage.setItem('user_center_data'+UserToken,JSON.stringify(responseJson.data));
-                    // console.log(this.state.user_center_data.user_avatar)
+                    // AsyncStorage.setItem('user_center_data'+UserToken,JSON.stringify(responseJson.data));
+                    console.log(this.state.user_center_data)
                 });
             }
             else
@@ -134,8 +134,8 @@ export default class user_center extends Component {
                     // style={styles.headerView}
                     style={{width:width,height:190,alignItems:"center",paddingTop:35}}
                     source={source=require('../../image/13889176.png')} >
-                    <TouchableOpacity style={{position:"absolute",right:30,top:30}}>
-                        <Image source={source = require('../../image/edit.png')} style={{width:18,height:18}} />
+                    <TouchableOpacity style={{position:"absolute",right:30,top:30}} onPress={()=>this.getUserCenterData()}>
+                        <Image source={source = require('../../image/refresh-.png')} style={{width:18,height:18}} />
                     </TouchableOpacity>
 
                     {this.state.user_center_data && <Image source={{uri: this.state.user_center_data.user_avatar}} style={{width: 80, height: 80,borderRadius:40,}} />}

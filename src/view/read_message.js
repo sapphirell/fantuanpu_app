@@ -104,7 +104,9 @@ export default class message extends Component  {
 
                     </View>
                     :
-                    <View/>
+                    <View>
+                        <Text style={{color:"#828282",fontSize:15, textAlign:"center",width:width}}>暂时还没有互动消息~</Text>
+                    </View>
                 }
             </SmartView>
         );

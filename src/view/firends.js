@@ -154,12 +154,15 @@ export default class friends extends Component  {
                             <TouchableOpacity onPress={()=>{alert(this.state.show_panel)}}>
                                 <Text style={styles.floatPanelButton}>查看信息</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={()=>{
+                                navigate('read_letter',{
+                                    to_uid: this.state.show_panel,
+                                    // callback : () => { this.getUserCenterData(); }
+                                })
+                            }}>
                                 <Text style={styles.floatPanelButton}>发送私信</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
-                                <Text style={styles.floatPanelButton}>解除好友关系</Text>
-                            </TouchableOpacity>
+
                             <TouchableOpacity onPress={()=>this.setState({show_panel:false})}>
                                 <Text style={styles.floatPanelButton}>取消</Text>
                             </TouchableOpacity>
