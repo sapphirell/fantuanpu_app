@@ -21,7 +21,6 @@ const X_HEIGHT = 812;
 
 
 export default class SmartView extends Component  {
-
     async componentDidMount() {
         if(Platform.OS === 'ios')
         {
@@ -43,14 +42,17 @@ export default class SmartView extends Component  {
     render() {
         // console.log(this.props.children);
         return (
-            <View style={{
-                width:width,
-                flex:1,
-                // height:height,
-                backgroundColor:"#ffffff",
-                borderColor:"#ee7489",
-                borderTopWidth:this.state.paddingTop,
-                paddingBottom:this.state.paddingBottom}} >
+            <View
+                style={{
+                    width:width,
+                    flex:1,
+                    // height:height,
+                    backgroundColor:"#ffffff",
+                    borderColor:this.props.borderColor ? this.props.borderColor :"#ee7489",
+                    borderTopWidth:this.state.paddingTop,
+                    paddingBottom:this.state.paddingBottom
+                }}
+            >
                 {this.props.children}
             </View>
         );

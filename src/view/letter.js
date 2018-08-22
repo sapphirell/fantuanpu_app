@@ -89,7 +89,7 @@ export default class user_center extends Component {
                         <FlatList
                             data={this.state.letter}
                             extraData={this.state.show_panel}
-                            keyExtractor = {  (item) => item.lastmessage.lastsummary }
+                            keyExtractor = {  (item) => item.plid}
                             style={{padding:5,marginBottom:90, minHeight:50, flex:1}}
                             // numColumns={5}
                             // showsHorizontalScrollIndicator= {false}//隐藏水平滚动条

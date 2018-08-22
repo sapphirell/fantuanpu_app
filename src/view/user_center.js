@@ -60,7 +60,7 @@ export default class user_center extends Component {
                     this.setState({user_center_data : responseJson.data,is_login:true,user_token:UserToken});
                     // alert(JSON.stringify(responseJson.data));
                     // AsyncStorage.setItem('user_center_data'+UserToken,JSON.stringify(responseJson.data));
-                    console.log(this.state.user_center_data)
+                    // console.log(this.state.user_center_data)
                 });
             }
             else

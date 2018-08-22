@@ -24,6 +24,7 @@ import read_message from "./src/view/read_message";
 import report from "./src/view/report";
 import letter from "./src/view/letter";
 import read_letter from "./src/view/read_letter";
+import user_view from "./src/view/user_view";
 
 
 
@@ -46,6 +47,7 @@ global.version = "1.0";
 
 const Tab = TabNavigator({
     // "论坛" : {screen: forum},
+    user_view : {screen:user_view},
     "主页": { screen: user_forum,
         navigationOptions: {
             tabBarIcon: () => ( <Image source={require('./image/look.png')} style={{width:25,height:25,margin:10}}/> ),
