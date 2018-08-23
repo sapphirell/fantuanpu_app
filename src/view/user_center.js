@@ -170,7 +170,16 @@ export default class user_center extends Component {
                         <Image source={source=require('../../image/score.png')} style={styles.listButton}/>
                         <Text style={styles.listButtonText}>积分</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{alignItems:"center"}}>
+                    <TouchableOpacity
+                        style={{alignItems:"center"}}
+                        onPress={
+                            () => {
+                                navigate('my_thread',{
+                                    uid:this.state.user_center_data.user_info.uid
+                                    // callback : () => { this.getUserCenterData(); }
+                                })}
+                        }
+                    >
                         <Image source={source=require('../../image/my_thread.png')} style={styles.listButton}/>
                         <Text style={styles.listButtonText}>帖子</Text>
                     </TouchableOpacity>

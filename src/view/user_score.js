@@ -233,6 +233,7 @@ export default class user_score extends Component {
                                     </Text>
                                     <View style={styles.question}/>
                                 </View>
+
                             </View>
                     ) : <View/>
 

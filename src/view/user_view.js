@@ -38,7 +38,7 @@ export default class user_center extends Component {
     child;
     state = {
         user_data : false,
-        view_uid:2,
+        view_uid:0,
         page:1,
         message:'',
         tab:1,
@@ -63,6 +63,7 @@ export default class user_center extends Component {
                 this.setState({paddingTop:15, paddingBottom:0})
             }
         }
+        await this.setState({view_uid:this.props.navigation.state.params.view_uid});
         this.getUserData(this.state.view_uid);
     }
     getUserData = async (view_uid) => {
@@ -212,7 +213,7 @@ export default class user_center extends Component {
                         source={require('../../image/C3B36AF37E86E726820C83C088D1777F.jpg')} resizeMode='cover'>
 
                         {
-                            this.state.user_data &&
+                            this.state.user_data && this.state.view_uid &&
                                 <View>
                                     <View style={{marginTop:70,marginLeft:30,flexDirection:"row"}}>
                                         <Image source={{uri: this.state.user_data.user.avatar}} style={{width: 80, height: 80,borderRadius:40,marginRight:15}} />
@@ -220,7 +221,12 @@ export default class user_center extends Component {
                                         <View  style={{margin:10,marginTop:40,flexDirection:"row"}}>
                                             {
                                                 this.state.user_data.relation ?
-                                                    <TouchableOpacity>
+                                                    <TouchableOpacity onPress={
+                                                        () => {
+                                                            navigate('read_letter',{
+                                                                to_uid: this.state.view_uid,
+                                                            })
+                                                        }}>
                                                         <Text  style={{color:"#fff", paddingTop:5,paddingBottom:5,paddingLeft:10,paddingRight:10,borderWidth:1,fontSize:15,
                                                             borderColor:"#ee7489",backgroundColor:"#ee7489",borderRadius:3,overflow:"hidden"}}>私信</Text>
                                                     </TouchableOpacity>
@@ -267,7 +273,16 @@ export default class user_center extends Component {
                             renderItem= {
                                 ({item}) => {
                                     return (
-                                        <TouchableOpacity style={{marginBottom:15,padding:10}} >
+                                        <TouchableOpacity
+                                            style={{marginBottom:15,padding:10}}
+                                            onPress={
+                                                () => {
+                                                    navigate('thread_view',{
+                                                        tid: item.tid,
+                                                        // callback : () => { this.getUserCenterData(); }
+                                                    })
+                                                }}
+                                        >
                                             <Text style={{color:"#4f4f4f",fontSize:15}} numberOfLines={1}>{item.subject}</Text>
                                             <Text style={{color:"#ccc",paddingTop:10}}>{item.dateline}</Text>
                                         </TouchableOpacity>
@@ -281,40 +296,67 @@ export default class user_center extends Component {
                             <View>
                                 <View style={styles.score_row}>
                                     <View style={styles.score_block}>
-                                        <Text style={styles.score_title}>积分1</Text>
-                                        <Text style={styles.score_value}>100</Text>
+                                        <Text style={styles.score_title}>{this.state.user_data.user_count.extcredits.extcredits1}</Text>
+                                        <Text style={styles.score_value}>{this.state.user_data.user_count.extcredits1}</Text>
                                     </View>
                                     <View style={styles.score_block}>
-                                        <Text style={styles.score_title}>积分1</Text>
-                                        <Text style={styles.score_value}>100</Text>
+                                        <Text style={styles.score_title}>{this.state.user_data.user_count.extcredits.extcredits2}</Text>
+                                        <Text style={styles.score_value}>{this.state.user_data.user_count.extcredits2}</Text>
                                     </View>
                                     <View style={styles.score_block}>
-                                        <Text style={styles.score_title}>积分1</Text>
-                                        <Text style={styles.score_value}>100</Text>
+                                        <Text style={styles.score_title}>{this.state.user_data.user_count.extcredits.extcredits3}</Text>
+                                        <Text style={styles.score_value}>{this.state.user_data.user_count.extcredits3}</Text>
                                     </View>
                                     <View style={styles.score_block}>
-                                        <Text style={styles.score_title}>积分1</Text>
-                                        <Text style={styles.score_value}>100</Text>
+                                        <Text style={styles.score_title}>{this.state.user_data.user_count.extcredits.extcredits4}</Text>
+                                        <Text style={styles.score_value}>{this.state.user_data.user_count.extcredits4}</Text>
                                     </View>
                                 </View>
                                 <View style={styles.score_row}>
                                     <View style={styles.score_block}>
-                                        <Text style={styles.score_title}>积分1</Text>
-                                        <Text style={styles.score_value}>100</Text>
+                                        <Text style={styles.score_title}>{this.state.user_data.user_count.extcredits.extcredits5}</Text>
+                                        <Text style={styles.score_value}>{this.state.user_data.user_count.extcredits5}</Text>
                                     </View>
                                     <View style={styles.score_block}>
-                                        <Text style={styles.score_title}>积分1</Text>
-                                        <Text style={styles.score_value}>100</Text>
+                                        <Text style={styles.score_title}>{this.state.user_data.user_count.extcredits.extcredits6}</Text>
+                                        <Text style={styles.score_value}>{this.state.user_data.user_count.extcredits6}</Text>
                                     </View>
                                     <View style={styles.score_block}>
-                                        <Text style={styles.score_title}>积分1</Text>
-                                        <Text style={styles.score_value}>100</Text>
+                                        <Text style={styles.score_title}>{this.state.user_data.user_count.extcredits.extcredits7}</Text>
+                                        <Text style={styles.score_value}>{this.state.user_data.user_count.extcredits7}</Text>
                                     </View>
                                     <View style={styles.score_block}>
-                                        <Text style={styles.score_title}>积分1</Text>
-                                        <Text style={styles.score_value}>100</Text>
+                                        <Text style={styles.score_title}>{this.state.user_data.user_count.extcredits.extcredits8}</Text>
+                                        <Text style={styles.score_value}>{this.state.user_data.user_count.extcredits8}</Text>
                                     </View>
                                 </View>
+
+                                <View style={styles.count_row}>
+                                    <Text style={styles.count_title}>好友数量</Text>
+                                    <Text style={styles.count_value}>{this.state.user_data.user_count.friends}</Text>
+                                </View>
+                                <View style={styles.count_row}>
+                                    <Text style={styles.count_title}>主题数量</Text>
+                                    <Text style={styles.count_value}>{this.state.user_data.user_count.threads}</Text>
+                                </View>
+                                <View style={styles.count_row}>
+                                    <Text style={styles.count_title}>回帖数量</Text>
+                                    <Text style={styles.count_value}>{this.state.user_data.user_count.posts}</Text>
+                                </View>
+                                <View style={styles.count_row}>
+                                    <Text style={styles.count_title}>在线时间</Text>
+                                    <Text style={styles.count_value}>{this.state.user_data.user_count.oltime} (h)</Text>
+                                </View>
+                                <View style={styles.count_row}>
+                                    <Text style={styles.count_title}>注册时间</Text>
+                                    <Text style={styles.count_value}>{this.state.user_data.user.regdate}</Text>
+                                </View>
+                                <View style={styles.count_row}>
+                                    <Text style={styles.count_title}>UID</Text>
+                                    <Text style={styles.count_value}>{this.state.user_data.user.uid}</Text>
+                                </View>
+
+
                             </View>
                     }
                 </ScrollView>
@@ -343,4 +385,7 @@ const styles = StyleSheet.create({
         color :"#42b0cc",
         fontSize:19
     },
+    count_row :{flexDirection:"row",padding:10,},
+    count_title : {fontSize:12,color:"#ccc", flex:3,textAlign:"center",    lineHeight:19},
+    count_value : {fontSize:19,color:"#ee938f", flex:7,textAlign:"left",paddingLeft:15,    lineHeight:19}
 });

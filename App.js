@@ -25,6 +25,7 @@ import report from "./src/view/report";
 import letter from "./src/view/letter";
 import read_letter from "./src/view/read_letter";
 import user_view from "./src/view/user_view";
+import my_thread from "./src/view/my_thread";
 
 
 
@@ -47,7 +48,7 @@ global.version = "1.0";
 
 const Tab = TabNavigator({
     // "论坛" : {screen: forum},
-    user_view : {screen:user_view},
+
     "主页": { screen: user_forum,
         navigationOptions: {
             tabBarIcon: () => ( <Image source={require('./image/look.png')} style={{width:25,height:25,margin:10}}/> ),
@@ -121,6 +122,8 @@ const App = StackNavigator({
         user_score : {screen : user_score},
         letter : {screen : letter},
         read_letter : {screen : read_letter},
+        user_view : {screen:user_view},
+        my_thread : {screen:my_thread},
     }
     ,{
         //screen模式才可以隐藏导航header,none为全局隐藏

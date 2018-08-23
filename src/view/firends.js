@@ -151,7 +151,11 @@ export default class friends extends Component  {
                             backgroundColor:"#ff6888db",
                             borderRadius:5
                         }}>
-                            <TouchableOpacity onPress={()=>{alert(this.state.show_panel)}}>
+                            <TouchableOpacity onPress={()=>{
+                                navigate('user_view',{
+                                    view_uid: this.state.show_panel,
+                                })
+                            }}>
                                 <Text style={styles.floatPanelButton}>查看信息</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={()=>{
