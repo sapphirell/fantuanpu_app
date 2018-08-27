@@ -34,6 +34,7 @@ export default class user_center extends Component {
 
     };
     async getUserCenterData ()  {
+
         UserToken = await AsyncStorage.getItem("user_token");
 
         //如果token不存在则登录状态为false
@@ -42,19 +43,19 @@ export default class user_center extends Component {
         {
             //如果有token状态则取用户信息
             // UserCenterData = await AsyncStorage.getItem('user_center_data'+UserToken);
-            UserCenterData = false;
+            let UserCenterData = false;
 
             if (!UserCenterData)
             {
-                UserCenterUrl = global.webServer + '/app/user_center';
-                FormData = 'token='+UserToken+'&form=app&rand='+Math.random();
+                let UserCenterUrl = global.webServer + '/app/user_center';
+                let body = 'token='+UserToken+'&form=app&rand='+Math.random();
                 // alert(FormData);
                 fetch(UserCenterUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: FormData
+                    body: body
                 }).then((response) => response.json()).then((responseJson) =>
                 {
                     this.setState({user_center_data : responseJson.data,is_login:true,user_token:UserToken});
@@ -74,8 +75,8 @@ export default class user_center extends Component {
 
     async componentDidMount() {
         const {state , goBack ,navigate} = this.props.navigation;
-        UserToken = await AsyncStorage.getItem("user_token");
-        UserCenterData = await AsyncStorage.getItem('user_center_data'+UserToken);
+        let UserToken = await AsyncStorage.getItem("user_token");
+        let UserCenterData = await AsyncStorage.getItem('user_center_data'+UserToken);
 
         if (UserToken)
         {
@@ -149,20 +150,22 @@ export default class user_center extends Component {
                         }}>
                         {this.state.user_center_data.user_info && this.state.user_center_data.user_info.username}
                     </Text>
-                    <Text style={{
-                        fontSize:19,
-                        color:"#fff",
-                        textShadowOffset:{width:5},
-                        textShadowRadius:2,
-                        textShadowColor:'grey'
-                    }}>签名档</Text>
+                    {
+                        this.state.is_login &&  <Text style={{
+                            fontSize:19,
+                            color:"#fff",
+                            textShadowOffset:{width:5},
+                            textShadowRadius:2,
+                            textShadowColor:'grey'
+                        }}>签名档</Text>
+                    }
                 </ImageBackground>
                 <View style={{flexDirection:"row",backgroundColor:"#fff",width:width-20,marginLeft:10,marginRight:10,
                     borderRadius:5,marginTop:10,marginBottom:5,
                     alignItems:"flex-start",justifyContent:"space-around",paddingTop:15,paddingBottom:10}}>
                     <TouchableOpacity style={{alignItems:"center"}} onPress={
                         () => {
-                            navigate('user_score',{
+                            this.state.is_login && navigate('user_score',{
                                 score: this.state.user_center_data,
                                 // callback : () => { this.getUserCenterData(); }
                             })}
@@ -174,7 +177,7 @@ export default class user_center extends Component {
                         style={{alignItems:"center"}}
                         onPress={
                             () => {
-                                navigate('my_thread',{
+                                this.state.is_login && navigate('my_thread',{
                                     uid:this.state.user_center_data.user_info.uid
                                     // callback : () => { this.getUserCenterData(); }
                                 })}
@@ -191,13 +194,13 @@ export default class user_center extends Component {
                 {this.state.is_login ?
                 <ScrollView style={{backgroundColor:"#eeeeee",height:400}}>
                     <UserCenterButton name="私信" image="report" value={this.state.user_center_data.user_count.extcredits1} onPress={() => {
-                        navigate('letter',{
+                        this.state.is_login && navigate('letter',{
                             letter: this.state.user_center_data.letter,
                             // callback : () => { this.getUserCenterData(); }
                         })
                     }}/>
                     <UserCenterButton name="意见反馈" image="report" onPress={() => {
-                        navigate('report',{
+                        this.state.is_login && navigate('report',{
                             tid: 3601,
                             // callback : () => { this.getUserCenterData(); }
                         })
