@@ -246,11 +246,12 @@ export default class my_thread extends Component {
                                                             onPress={
                                                                 () => {
                                                                     navigate('thread_view',{
-                                                                        tid: thread.tid,
+                                                                        tid: thread.item.tid,
                                                                         // callback : () => { this.getUserCenterData(); }
                                                                     })
                                                                 }}
                                                         >
+                                                            <Text>{thread.tid}</Text>
                                                             <Text style={{color:"#4f4f4f",fontSize:15}} numberOfLines={1}>{thread.item.subject}</Text>
                                                         </TouchableOpacity>
                                                     )

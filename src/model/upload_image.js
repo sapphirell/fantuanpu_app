@@ -5,10 +5,12 @@ import {
     Image,
     TouchableOpacity,
     View,
-    Text, Dimensions
+    Text,
+    Dimensions,
 
 } from 'react-native';
-import root from '../model/root'
+
+// import FormData from "form-data"
 import ImagePicker from "react-native-image-picker";
 let {height, width} = Dimensions.get('window');
 export default class upload_image extends Component  {
@@ -21,8 +23,9 @@ export default class upload_image extends Component  {
         return new Promise(function (resolve, reject) {
             let formData = new FormData();
             let file = {uri: params.path, type: 'multipart/form-data', name: 'image.jpg'};
-            console.log(file)
+            alert('uploading')
             formData.append("image", file);
+            // console.log(JSON.stringify(formData))
             fetch('https://image.fantuanpu.com/upload_file', {
                 method: 'POST',
                 headers: {
@@ -69,6 +72,10 @@ export default class upload_image extends Component  {
                     path:response.uri    //本地文件地址
                 };
                 this.props.update_upload_status('uploading...');
+
+
+                console.log(response.uri )
+
                 this.uploadImage(params )
                     .then( res=>{
                         this.props.update_upload_status('success',"https://image.fantuanpu.com/"+res.data.url);

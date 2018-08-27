@@ -336,8 +336,15 @@ export default class thread_view extends Component {
                                             {item.position !== 1 &&
                                                 <View style={{width:width,paddingLeft:20}}>
                                                     <View style={{flexDirection:"row",width:width}} >
-                                                        <Image source={{uri: item.avatar}}
-                                                               style={{width: 35, height: 35, borderRadius: 17.5,marginRight:10}}/>
+                                                        <TouchableOpacity onPress={()=>{
+                                                            navigate('user_view',{
+                                                                view_uid: item.authorid,
+                                                            })
+                                                        }}>
+                                                            <Image source={{uri: item.avatar}}
+                                                                   style={{width: 35, height: 35, borderRadius: 17.5,marginRight:10}}/>
+                                                        </TouchableOpacity>
+
                                                         <View style={{marginLeft:5,width:width-50,}}>
                                                             <Text style={{textAlign:"left",width:width}}>{item.author}</Text>
                                                             <View style={{marginTop:5,flexDirection:"row",width:width}}>
@@ -394,16 +401,16 @@ export default class thread_view extends Component {
                             }
                             message = text
                         }}
-                        style={{width:250,paddingVertical: 0,backgroundColor:"#fff",height:this.state.textInputHeight, maxHeight:60,marginTop:7,borderRadius:3,paddingLeft:10,marginLeft:5,borderColor:"#ccc",borderWidth:1,
+                        style={{flex:6,paddingVertical: 0,backgroundColor:"#fff",height:this.state.textInputHeight, maxHeight:60,marginTop:7,borderRadius:3,paddingLeft:10,marginLeft:5,borderColor:"#ccc",borderWidth:1,
                     }}/>
 
 
-                    <TouchableOpacity style={{width:35,marginLeft:3,alignItems:"center"}} onPress={this.submitMessage}>
+                    <TouchableOpacity style={{width:35,marginLeft:3,alignItems:"center", flex:1}} onPress={this.submitMessage}>
                         <Image  source={source=require('../../image/reply.png')}
                                 style={styles.floatButton}/>
                     </TouchableOpacity>
 
-                    <UploadImage  style={{width:25,height:25,marginLeft:3,paddingTop:5,alignItems:"center",}}  update_upload_status={this.update_upload_status} />
+                    <UploadImage  style={{width:25,height:25,marginLeft:3,paddingTop:5,alignItems:"center", flex:1}}  update_upload_status={this.update_upload_status} />
                 </KeyboardAvoidingView>
             </SmartView>
         )
