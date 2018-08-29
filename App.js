@@ -30,6 +30,7 @@ import my_thread from "./src/view/my_thread";
 
 
 
+
 YellowBox.ignoreWarnings(['Warning:']);
 YellowBox.ignoreWarnings(['T']);
 YellowBox.ignoreWarnings(['M']);
@@ -37,7 +38,7 @@ YellowBox.ignoreWarnings(['R']);
 YellowBox.ignoreWarnings(['C']);
 YellowBox.ignoreWarnings(['F']);
 global.webServer = 'http://localhost:8000/';
-// global.webServer = 'https://fantuanpu.com/';
+global.webServer = 'https://fantuanpu.com/';
 global.logout = (token) => {
     if (!token) return false;
     AsyncStorage.removeItem("user_token");
@@ -48,6 +49,7 @@ global.version = "1.0";
 
 const Tab = TabNavigator({
     // "论坛" : {screen: forum},
+    // "论坛" : {screen: test},
 
     "主页": { screen: user_forum,
         navigationOptions: {

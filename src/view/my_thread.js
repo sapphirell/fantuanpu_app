@@ -37,9 +37,10 @@ const X_HEIGHT = 812;
 export default class my_thread extends Component {
     child;
     state = {
+        api_json : false,
         user_data : false,
         date_map:false,
-        page:1,
+        page:0,
         message:'',
         tab:1,
         show_notice :false,
@@ -67,13 +68,21 @@ export default class my_thread extends Component {
         await this.setState({view_uid:this.props.navigation.state.params.view_uid});
         this.getUserThread();
     }
+    isInArray = (arr,value) => {
+        for(var i = 0; i < arr.length; i++){
+            if(value === arr[i]){
+                return true;
+            }
+        }
+        return false;
+    };
     getUserThread = async () => {
-        // alert(1)
+
         var page = this.state.page + 1;
-        UserToken = await AsyncStorage.getItem("user_token");
+        let UserToken = await AsyncStorage.getItem("user_token");
         let forumData =  "&page=" + page + '&token=' + UserToken;
         let dataUrl = global.webServer + 'app/get_my_thread';
-
+        // console.log(forumData)
         fetch(dataUrl, {
             method: 'POST',
             headers: {
@@ -85,32 +94,54 @@ export default class my_thread extends Component {
             // user_data = this.state.user_data;
             // user_data.thread = user_data.thread.concat(responseJson.data.thread);
             // this.setState({user_data: user_data,page:page});
-            if(this.state.date_map)
+            var tmp_api_json = this.state.api_json;
+            console.log("请求为："+forumData)
+            if(tmp_api_json)
             {
 
-                // responseJson.thread.map((item,key)=>{
-                //     this.state.user_data
-                // })
-                // this.state.date_map.map((item,key)=>{
-                //
-                // })
+
+                for(var json_key in responseJson.data.thread) {
+                    for(var api_key in this.state.api_json) {
+                        if (json_key === api_key)
+                        {
+                            tmp_api_json[api_key].concat(responseJson.data.thread[json_key])
+                        }
+                        else
+                        {
+                            tmp_api_json[json_key] = responseJson.data.thread[json_key]
+                        }
+                    }
+                }
+                this.setState({api_json:tmp_api_json})
+                console.log(tmp_api_json)
             }
             else
             {
-                let tmpDate = [];
-                let tmpThread = [];
-                Object  .keys(responseJson.data.thread)
-                        .forEach( (key)=>{
-                            tmpDate.push(key);
-                            // tmpThread.push(responseJson.data.thread[key])
-                        });
-                // console.log(tmpDate)
-                // console.log(tmpThread)
-                this.setState({user_data:responseJson.data.thread,date_map:tmpDate})
+                this.setState({ api_json : responseJson.data.thread});
+                tmp_api_json =  responseJson.data.thread;
             }
+            console.log(tmp_api_json)
+            let tmpDate = this.state.date_map ? this.state.date_map  : [];
+            let tmpThread = this.state.user_data ? this.state.user_data :[];
+            console.log()
+            //扩充新的date_map列表
+            Object.keys(tmp_api_json)
+                .forEach( (key)=>{
+                    if (!this.isInArray(tmpDate,key))
+                    {
+                        tmpDate.push(key);
+                    }
+                    // console.log(tmpThread)
+                    // tmpThread.push(this.state.api_json[key])
+                    tmpThread[key] = this.state.api_json[key];
+                });
+            console.log(tmpThread)
+            this.setState({
+                user_data:tmpThread,
+                date_map:tmpDate,
+                page:page
+            });
 
-            // console.log(JSON.stringify(responseJson.data.thread))
-            // console.log(this.state.user_data[20140727]);
         });
     };
     _onScroll = () => {
@@ -233,10 +264,10 @@ export default class my_thread extends Component {
                             ({item}) => {
                                 return (
                                     <View>
-                                        <Text>{item}</Text>
+                                        <Text style={{fontSize:18,color:"#969696"}}>{item}</Text>
                                         <FlatList
                                             data={this.state.user_data[item]}
-                                            style={{zIndex:1, paddingTop:5,marginTop:5 }}
+                                            style={{zIndex:1, paddingTop:0,marginBottom:10 }}
                                             keyExtractor = {  (thread) => thread.tid + thread.subject }
                                             renderItem= {
                                                 (thread) => {
