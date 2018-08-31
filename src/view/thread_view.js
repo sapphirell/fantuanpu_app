@@ -69,13 +69,11 @@ const imageTextList = (data) => {
                                         )
                                 }
                             </View>
-
-
                         )
                     }
-                ) :
-                    <Text>帖子不存在</Text>
-
+                )
+                :
+                <Text>帖子正在加载ヾ(◍°∇°◍)ﾉﾞ</Text>
             }
         </View>
 
@@ -254,12 +252,12 @@ export default class thread_view extends Component {
                             // marginTop:10
                         }}>
                         <Image
-                            source={source=require('../../image/arrow-left.png')}
+                            source={source=require('../../image/left-w.png')}
                             style={{width: 14, height: 14,borderRadius:5, marginLeft:10}} />
 
-                        <Text
-                            style={{fontSize:16, paddingBottom:5,color:"#fff"}}
-                        >返回</Text>
+                        {/*<Text*/}
+                            {/*style={{fontSize:16, paddingBottom:5,color:"#fff"}}*/}
+                        {/*>返回</Text>*/}
 
                     </TouchableOpacity>
                     {
@@ -300,7 +298,7 @@ export default class thread_view extends Component {
                         >
                             <Text style={{width:width-80, fontSize:16,paddingLeft:2,marginBottom:8}}>[{this.state.thread_data && this.state.thread_data.author}] : {this.state.thread_data && this.state.thread_data.subject}</Text>
                             <View style={{flexDirection:"row",paddingBottom:15,paddingLeft:2,}}>
-                                <Text style={{ color:"#545454",fontSize:13}}>2018-09-04</Text>
+                                <Text style={{ color:"#545454",fontSize:13}}>{this.state.thread_data.dateline}</Text>
                                 <Image
                                     source={source=require('../../image/post.png')}
                                     style={styles.smImage}
@@ -349,7 +347,7 @@ export default class thread_view extends Component {
                                                             <Text style={{textAlign:"left",width:width}}>{item.author}</Text>
                                                             <View style={{marginTop:5,flexDirection:"row",width:width}}>
                                                                 <Text>{item.postdate}</Text>
-                                                                <TouchableOpacity style={{flexDirection:"row",width:40}}
+                                                                <TouchableOpacity style={{flexDirection:"row",width:60}}
                                                                                   onPress={()=>{
                                                                                       this.refs["INPUT"].focus();
                                                                                       // item.map();
@@ -376,7 +374,9 @@ export default class thread_view extends Component {
 
                 </ScrollView>
                 {/*<View style={{position:"absolute",bottom:50,width:width,height:50,backgroundColor:"#ccc"}}/>*/}
-                <KeyboardAvoidingView style={styles.floatBar}  behavior="padding" keyboardVerticalOffset={this.state.keyboardVerticalOffset} >
+                <KeyboardAvoidingView style={styles.floatBar}  behavior="padding"
+                                      // keyboardVerticalOffset={this.state.keyboardVerticalOffset}
+                >
 
                     <TextInput
                         multiline={true}
@@ -410,7 +410,7 @@ export default class thread_view extends Component {
                                 style={styles.floatButton}/>
                     </TouchableOpacity>
 
-                    <UploadImage  style={{width:25,height:25,marginLeft:3,paddingTop:5,alignItems:"center", flex:1}}  update_upload_status={this.update_upload_status} />
+                    <UploadImage  style={{width:25,height:25,marginRight:5,paddingTop:5,alignItems:"center", flex:1}}  update_upload_status={this.update_upload_status} />
                 </KeyboardAvoidingView>
             </SmartView>
         )
@@ -436,8 +436,8 @@ const styles = StyleSheet.create({
         width: 20, height:20, marginTop:7.5,
     },
     floatBar : {
-        backgroundColor:"#fafafa",
-        borderColor:"#ccc",
+        backgroundColor:"#fff",
+        borderColor:"#fff",
         borderTopWidth:1,
         borderBottomWidth:1,
         width:width,
@@ -445,6 +445,11 @@ const styles = StyleSheet.create({
         bottom:0,
         // left:(width-180)/2,
         // borderRadius:5,
-        flexDirection:"row"
+        flexDirection:"row",
+        shadowOffset: {width: 2, height: -3},
+        shadowOpacity: 0.5,
+        shadowRadius: 3,
+        shadowColor: "#ff6888",
+        elevation: 2,
     }
 });

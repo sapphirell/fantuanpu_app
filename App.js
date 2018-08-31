@@ -37,7 +37,7 @@ YellowBox.ignoreWarnings(['M']);
 YellowBox.ignoreWarnings(['R']);
 YellowBox.ignoreWarnings(['C']);
 YellowBox.ignoreWarnings(['F']);
-global.webServer = 'http://localhost:8000/';
+// global.webServer = 'http://localhost:8000/';
 global.webServer = 'https://fantuanpu.com/';
 global.logout = (token) => {
     if (!token) return false;
@@ -84,12 +84,12 @@ const Tab = TabNavigator({
 
 
 },{
-    tabBarPosition : 'bottom',
+    // tabBarPosition : 'bottom',
     // animationEnabled: true, // 切换页面时是否有动画效果
     swipeEnabled: true, // 是否可以左右滑动切换tab
     tabBarOptions : {
-        activeTintColor : '#000',
-        inactiveTintColor : '#ccc',
+        activeTintColor : '#fff',
+        inactiveTintColor : '#c58776',
         labelStyle : {
             fontSize :14,
             marginBottom:5
@@ -100,7 +100,7 @@ const Tab = TabNavigator({
         },
 
         style : {
-            backgroundColor:'#ffffff78',
+            backgroundColor:'#ff6888',
             height:60,
             paddingBottom:0,
             marginBottom:0,

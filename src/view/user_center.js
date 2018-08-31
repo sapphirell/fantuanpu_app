@@ -193,7 +193,7 @@ export default class user_center extends Component {
                 </View>
                 {this.state.is_login ?
                 <ScrollView style={{backgroundColor:"#eeeeee",height:400}}>
-                    <UserCenterButton name="私信" image="report" value={this.state.user_center_data.user_count.extcredits1} onPress={() => {
+                    <UserCenterButton name="私信" image="report" value={10} onPress={() => {
                         this.state.is_login && navigate('letter',{
                             letter: this.state.user_center_data.letter,
                             // callback : () => { this.getUserCenterData(); }

@@ -78,7 +78,9 @@ const ThreadList = (data) => {
     // alert(JSON.stringify(data.data))
     // return (<View/>);
     return (
-        <View style={{ paddingBottom:data.isLogin ? 157 : 0,backgroundColor:"#fafafa",width:width,height:height }}>
+        <View style={{
+            // paddingBottom:data.isLogin ? 157 : 0,
+            backgroundColor:"#ffffff",width:width,height:height }}>
             <FlatList
                 data={data.data}
                 style={{zIndex:1}}
@@ -104,12 +106,21 @@ const ThreadList = (data) => {
                                         })
                                     }}
 
-                                style={{backgroundColor:"#fff",marginLeft:5,marginRight:8,marginTop:5,width:width-10,padding:5,
+                                style={{backgroundColor:"#fff",marginLeft:10,marginRight:10,marginTop:5,width:width-20,padding:5,marginBottom:5,
                                 // borderTopLeftRadius:5,borderTopRightRadius:5,
                                 // borderRadius:5,
-                                borderLeftWidth:1,borderTopWidth:1,borderRightWidth:1,
-                                borderColor:"#e5e2ee"
-                            }}>
+                                // borderLeftWidth:1,borderTopWidth:1,borderRightWidth:1,
+                                // borderColor:"#e5e2ee"
+                                    height:90,
+                                    //以下是阴影属性：
+                                    shadowOffset: {width: 0, height: 5},
+                                    shadowOpacity: 0.5,
+                                    shadowRadius: 5,
+                                    shadowColor: "#cacaca",
+                                    //注意：这一句是可以让安卓拥有灰色阴影
+                                    elevation: 2,
+
+                                }}>
                                 <View style={{overflow:"hidden" ,paddingTop:5}} >
                                     <View style={{width:width-10,flexDirection:"row"}}>
                                         {item.avatar && item.avatar.indexOf("noavatar") == -1 ?
@@ -132,21 +143,31 @@ const ThreadList = (data) => {
                                             {item.subject}
                                         </Text>
                                     </View>
+                                    <View style={{flexDirection:"row",paddingTop:10, margin:15}}>
+                                        <Text
+                                            numberOfLines={1}
+                                            style={{fontSize:10,overflow:"hidden" ,textAlign:"left",paddingTop:5,
+                                                marginRight:10
+                                            }}
+                                        >
+                                            {item.last_post_date}
+                                        </Text>
+                                        {/*<Text>{item.tid}</Text>*/}
+                                        <Text
+                                            numberOfLines={1}
+                                            style={{fontSize:10,overflow:"hidden" ,textAlign:"left",paddingTop:5,  marginRight:10}}
+                                        >
+                                            跟帖 {item.replies}
+                                        </Text>
+                                        <Text
+                                            numberOfLines={1}
+                                            style={{fontSize:10,overflow:"hidden" ,textAlign:"left",paddingTop:5,  marginRight:10}}
+                                        >
+                                            查看 {item.views}
+                                        </Text>
+                                    </View>
+                                    </View>
 
-                                    <Text
-                                        numberOfLines={1}
-                                        style={{fontSize:10,width:width-10,overflow:"hidden" ,textAlign:"left",paddingTop:5}}
-                                    >
-                                        {item.last_post_date}
-                                    </Text>
-                                    {/*<Text>{item.tid}</Text>*/}
-                                    <Text
-                                        numberOfLines={1}
-                                        style={{fontSize:10,width:width*0.8,overflow:"hidden" ,textAlign:"left",paddingTop:5}}
-                                    >
-                                        跟帖
-                                    </Text>
-                                </View>
 
 
                             </TouchableOpacity>
@@ -222,16 +243,16 @@ export default class user_forum extends Component  {
         // console.log(this.state.forum_data)
         return (
             <View style={{paddingTop:20,width:width,backgroundColor:"#fff"}}>
-                {
-                    this.state.isLogin ?
+                {/*{*/}
+                    {/*this.state.isLogin ?*/}
 
-                    <View style={styles.myLike}>
+                    {/*<View style={styles.myLike}>*/}
 
-                        <MyLike myLikeData={this.state.myLikeData} />
-                    </View>
-                :
-                    <View style={{height:0}}/>
-                }
+                        {/*<MyLike myLikeData={this.state.myLikeData} />*/}
+                    {/*</View>*/}
+                {/*:*/}
+                    {/*<View style={{height:0}}/>*/}
+                {/*}*/}
                 { this.state.isLogin &&
                     <TouchableOpacity
                         onPress={

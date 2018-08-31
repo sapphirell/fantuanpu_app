@@ -42,14 +42,14 @@ export default class login extends Component  {
         //     id:123
         // })
         // 检查是否填写
-        // if(!this.state.email || !this.state.password)
-        // {
-        //     alert('尚未填写账号或密码');
-        //     return false;
-        // }
+        if(!this.state.email || !this.state.password)
+        {
+            alert('尚未填写账号或密码');
+            return false;
+        }
         loginUrl = global.webServer + 'do-login';
         formData = 'email='+this.state.email+'&password='+this.state.password+'&form=app';
-        formData = 'email=1745247379@qq.com&password=56921ff6&form=app';
+        // formData = 'email=1745247379@qq.com&password=56921ff6&form=app';
         // formData = 'email=1745247379@qq.com&password=asdasdasd&form=app';
         // formData = 'email=imy@fantuanpu.com&password=asdasdasd&form=app';
         // console.log(loginUrl);

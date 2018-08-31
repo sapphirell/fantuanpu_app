@@ -185,7 +185,7 @@ export default class my_thread extends Component {
                         top:0,
                         zIndex:99,
                         paddingTop:18 + this.state.paddingTop,
-                        height:60,
+                        height:Platform.OS === 'ios'? 60 : 50,
                         flexDirection:"row",
                         flexWrap:"wrap",
                         backgroundColor:"#ee748900"
@@ -198,9 +198,9 @@ export default class my_thread extends Component {
                             flexDirection:"row",
                             width:70,
                             marginRight:width-180,
-                            // marginTop:10
+                            marginTop:Platform.OS === 'ios' ? 0 : 15
                         }}>
-                        <Image source={source=require('../../image/arrow-left.png')} style={{width: 16, height: 16,borderRadius:5, marginLeft:10}} />
+                        <Image source={source=require('../../image/left-w.png')} style={{width: 16, height: 16,borderRadius:5, marginLeft:10}} />
                     </TouchableOpacity>
                     {
                         this.state.upload_status === 'uploading...' &&

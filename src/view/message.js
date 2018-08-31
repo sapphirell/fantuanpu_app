@@ -67,9 +67,15 @@ export default class message extends Component  {
         // console.log(this.state.forum_data)
         return (
             <SmartView style={{width:width,height:height}}>
-                <View style={{height:50,backgroundColor:"#ee7489",flexDirection:"row",paddingTop:20}}>
-                    <Text style={{color:"#FFF",width:width,textAlign:"center",fontSize:16}}>消息</Text>
-                </View>
+                {
+                    Platform.OS === 'ios' ?
+                        <View style={{height:50,backgroundColor:"#ee7489",flexDirection:"row",paddingTop:20}}>
+                            <Text style={{color:"#FFF",width:width,textAlign:"center",fontSize:16}}>消息</Text>
+                        </View>
+                        :
+                        <View/>
+                }
+
                 {
                     JSON.stringify(this.state.user_notice) === '[]' ?
                     <TouchableOpacity onPress={()=> {this.get_user_message()}}  style={{alignItems:"center",width:width,marginTop:20}}>

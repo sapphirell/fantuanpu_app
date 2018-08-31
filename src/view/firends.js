@@ -91,8 +91,12 @@ export default class friends extends Component  {
         if (is_login)
         {
             let forumData =  "token=" +  is_login + "&page=" + page;
+            if (this.state.keywords)
+            {
+                forumData += "&keywords=" + this.state.keywords
+            }
             let dataUrl = global.webServer + 'app/user_friends';
-
+            console.log(forumData)
             let my_friends = await fetch(dataUrl, {
                 method: 'POST',
                 headers: {
@@ -129,7 +133,8 @@ export default class friends extends Component  {
         page:0,
         show_panel:false,
         re_shadow:false,
-        search_focus:false
+        search_focus:false,
+        keywords:false,
     };
 
     render() {
@@ -189,6 +194,7 @@ export default class friends extends Component  {
                     underlineColorAndroid="transparent"
                     maxLength={30}
                     placeholder={'搜索用户名...'}
+                    onChangeText={text => this.setState({keywords:text})}
                     onFocus={()=>{
                          this.setState({search_focus:true});
                     }}
@@ -201,7 +207,10 @@ export default class friends extends Component  {
                 </TextInput>
                 {
                     this.state.search_focus &&
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={async ()=>{
+                        let friendData = await this.getFriendsList(1)
+                        this.setState({my_friends : friendData,page:2});
+                    }}>
                         <Image source={source=require('../../image/return.png')} style={{width:30,height:30,position:"absolute",bottom:16,right:25}} />
                     </TouchableOpacity>
 
@@ -227,8 +236,7 @@ export default class friends extends Component  {
                             renderItem= {
                                 ({item}) => {
                                     return (
-                                        <TouchableOpacity style={{paddingLeft:20,flexDirection:"row", margin:10,
-                                        }} onPress={()=>{
+                                        <TouchableOpacity style={{paddingLeft:20,flexDirection:"row", margin:10,}} onPress={()=>{
                                             this.setState({show_panel:item.fuid});
                                         }}>
 

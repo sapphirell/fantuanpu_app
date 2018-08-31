@@ -132,12 +132,12 @@ export default class message extends Component  {
                             // marginRight:width-130
                         }}>
                         <Image
-                            source={source=require('../../image/arrow-left.png')}
+                            source={source=require('../../image/left-w.png')}
                             style={{width: 14, height: 14,borderRadius:5, marginLeft:10}} />
 
-                        <Text
-                            style={{fontSize:16, paddingBottom:5,color:"#fff"}}
-                        >返回</Text>
+                        {/*<Text*/}
+                            {/*style={{fontSize:16, paddingBottom:5,color:"#fff"}}*/}
+                        {/*>返回</Text>*/}
 
                     </TouchableOpacity>
                     <Text style={{width:width-130,textAlign:"center",fontWeight:"700",color:"#fff",fontSize:16,position:"relative",bottom:2}}>
