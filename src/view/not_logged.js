@@ -15,11 +15,13 @@ import {
     ScrollView,
     AsyncStorage,
     Image, YellowBox,
-    Dimensions
+    Dimensions,
+    Platform
 } from 'react-native';
 import Login from './login'
 
-
+const X_WIDTH = 375;
+const X_HEIGHT = 812;
 type Props = {};
 YellowBox.ignoreWarnings(['M']);
 let {height, width} = Dimensions.get('window');
@@ -30,8 +32,10 @@ export default class not_logged extends Component {
         user_token : false,
         login_status : false,//子组件登录状态通知
         hitokoto:false,//一言
+        paddingTop:20
     };
     void = () => {};
+
     async getUcData()  {
         UserToken = await AsyncStorage.getItem("user_token");
         if (UserToken)
@@ -80,6 +84,18 @@ export default class not_logged extends Component {
     }
 
     async componentDidMount() {
+            if(Platform.OS === 'ios')
+            {
+                if ( (height === X_HEIGHT && width === X_WIDTH) || (height === X_WIDTH && width === X_HEIGHT) )
+                {
+                    //对iphone X 适配
+                    this.setState({paddingTop:44, paddingBottom:20})
+                }
+                else
+                {
+                    this.setState({paddingTop:10, paddingBottom:0})
+                }
+            }
         this.getHitokoto();
     }
 
@@ -114,7 +130,9 @@ export default class not_logged extends Component {
                 >
                     <Text style={{width:80,color:"#fff", padding:10,borderWidth:1,borderRadius:5,borderColor:"#fff",textAlign:"center"}}>登录</Text>
                 </TouchableOpacity>
-
+                <TouchableOpacity style={{marginTop:this.state.paddingTop}} onPress={()=>goBack()}>
+                    <Text style={{color:"#fff",fontSize:13}}>随便看看？</Text>
+                </TouchableOpacity>
             </ImageBackground>
         );
     }

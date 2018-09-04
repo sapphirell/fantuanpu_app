@@ -21,8 +21,10 @@ import {
 } from 'react-native';
 import root from '../model/root'
 import Notice from '../model/Notice'
+import SmartView from "../model/SmartView";
 let {height, width} = Dimensions.get('window');
-
+const X_WIDTH = 375;
+const X_HEIGHT = 812;
 type Props = {};
 export default class login extends Component  {
     // static navigationOptions = {
@@ -36,7 +38,23 @@ export default class login extends Component  {
         password:'',
         show_notice :false,
         notice_fn : false,
+        paddingTop:20
     };
+
+    componentDidMount() {
+        if(Platform.OS === 'ios')
+        {
+            if ( (height === X_HEIGHT && width === X_WIDTH) || (height === X_WIDTH && width === X_HEIGHT) )
+            {
+                //对iphone X 适配
+                this.setState({paddingTop:44, paddingBottom:20})
+            }
+            else
+            {
+                this.setState({paddingTop:20, paddingBottom:0})
+            }
+        }
+    }
     userLogin = (navigate,goBack,callBack) => {
         // navigate('user_center',{
         //     id:123
@@ -99,12 +117,9 @@ export default class login extends Component  {
                 style={styles.container}
                 source={require('../../image/login_bg.jpg')} resizeMode='cover'>
                 { this.state.show_notice && <Notice message={this.state.show_notice} fn={this.state.notice_fn} />}
-                {/*<ImageBackground*/}
-                    {/*style={styles.loginBox}*/}
-                    {/*source={require('../../image/login_form.png')}*/}
-                {/*>*/}
-                    {/**/}
-                {/*</ImageBackground>*/}
+                <TouchableOpacity style={{marginTop:this.state.paddingTop,width: 18, height: 18,}} onPress={()=>goBack()}>
+                    <Image source={source=require('../../image/false.png')} style={{width: 18, height: 18,borderRadius:5, marginLeft:10}} />
+                </TouchableOpacity>
                 <View style={{marginTop:170}}>
                     <TextInput
                         style={styles.TextInputTop}
@@ -131,8 +146,8 @@ export default class login extends Component  {
                         // state.params.callback()
                         // console.log(123)
                         //     console.log(JSON.stringify(state.params))
-                            this.userLogin(navigate,goBack,state.params.callback)
-                        }
+                        this.userLogin(navigate,goBack,state.params.callback)
+                    }
                     } >
                         <Image source={source=require('../../image/next.png')} style={{width:30,height:30}} />
                     </TouchableOpacity>
@@ -143,6 +158,8 @@ export default class login extends Component  {
                 </View>
 
             </ImageBackground>
+
+
         );
     }
 }

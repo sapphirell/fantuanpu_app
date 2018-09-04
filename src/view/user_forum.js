@@ -242,7 +242,7 @@ export default class user_forum extends Component  {
         // console.log(this.state.thread_list)
         // console.log(this.state.forum_data)
         return (
-            <View style={{paddingTop:20,width:width,backgroundColor:"#fff"}}>
+            <View style={{paddingTop:Platform.OS === 'ios' ?20:0,width:width,backgroundColor:"#fff"}}>
                 {/*{*/}
                     {/*this.state.isLogin ?*/}
 
@@ -266,6 +266,7 @@ export default class user_forum extends Component  {
                         shadowOpacity: 0.5,
                         shadowRadius: 3,
                         shadowColor: "#ff6888",
+                        elevation: 4,
                         width:50,height:50,borderRadius:25,position:"absolute",backgroundColor:"#ee7489",zIndex:99}}>
                         <Image
                             style={{width:35,height:35,borderRadius:15,marginTop:7.5}}

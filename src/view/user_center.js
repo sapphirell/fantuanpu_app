@@ -154,7 +154,7 @@ export default class user_center extends Component {
                         this.state.is_login &&  <Text style={{
                             fontSize:19,
                             color:"#fff",
-                            textShadowOffset:{width:5},
+                            textShadowOffset:{width:1},
                             textShadowRadius:2,
                             textShadowColor:'grey'
                         }}>签名档</Text>

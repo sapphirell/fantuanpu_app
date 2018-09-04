@@ -24,6 +24,21 @@ import Notice from '../model/Notice'
 let {height, width} = Dimensions.get('window');
 export default class message extends Component  {
     async componentDidMount() {
+        let dataUrl = global.webServer + '/app/all_forum';
+        let data = await fetch(dataUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        }).then((response)=> {return response.json()});
+        // console.log(data.data.thread_list);
+        if (data.ret !== 200)
+            alert(data.msg);
+        else
+        {
+            this.setState({forum_list :data.data});
+
+        }
 
     }
 

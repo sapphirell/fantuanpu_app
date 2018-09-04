@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import {
     Image,
-    AsyncStorage
+    AsyncStorage,
+    Platform
 } from  'react-native';
 
 import {
     StackNavigator,
     TabNavigator,
+
 } from 'react-navigation';
 
 import login from './src/view/login';
@@ -89,7 +91,7 @@ const Tab = TabNavigator({
     swipeEnabled: true, // 是否可以左右滑动切换tab
     tabBarOptions : {
         activeTintColor : '#fff',
-        inactiveTintColor : '#c58776',
+        inactiveTintColor : Platform.OS === 'ios' ? "#cacaca" :'#c58776',
         labelStyle : {
             fontSize :14,
             marginBottom:5
@@ -100,12 +102,16 @@ const Tab = TabNavigator({
         },
 
         style : {
-            backgroundColor:'#ff6888',
+            backgroundColor: Platform.OS === 'ios' ? '#5c5c5c' : "#ff6888",
             height:60,
             paddingBottom:0,
             marginBottom:0,
-            borderTopWidth:0
+            borderTopWidth:0,
             // fontSize:10
+            shadowOffset: {width: 0, height: -3},
+            shadowOpacity: 0.5,
+            shadowRadius: 3,
+            shadowColor: "#cbcbcb",
         },
         sceneStyle:{ paddingBottom: 0}
     }
