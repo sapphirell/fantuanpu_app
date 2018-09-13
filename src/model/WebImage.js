@@ -42,7 +42,7 @@ export default class WebImage extends Component {
                 source={{
                     uri:  this.state.uri,
                 }}
-                style={{width:this.state.width,height:this.state.height, }}
+                style={{width:this.state.width,height:this.state.height,zIndex:1 }}
             />
         )
     };

@@ -39,14 +39,15 @@ YellowBox.ignoreWarnings(['M']);
 YellowBox.ignoreWarnings(['R']);
 YellowBox.ignoreWarnings(['C']);
 YellowBox.ignoreWarnings(['F']);
-// global.webServer = 'http://localhost:8000/';
-global.webServer = 'https://fantuanpu.com/';
+global.webServer = 'http://localhost:8000/';
+// global.webServer = 'https://fantuanpu.com/';
 global.logout = (token) => {
     if (!token) return false;
     AsyncStorage.removeItem("user_token");
     AsyncStorage.removeItem("user_center_data" + token);
 };
-
+global.iphoneXPaddingTop = 44;
+global.iphoneCommonPaddingTop = 5;
 global.version = "1.0";
 
 const Tab = TabNavigator({

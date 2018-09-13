@@ -23,7 +23,7 @@ export default class upload_image extends Component  {
         return new Promise(function (resolve, reject) {
             let formData = new FormData();
             let file = {uri: params.path, type: 'multipart/form-data', name: 'image.jpg'};
-            alert('uploading')
+            // alert('uploading')
             formData.append("image", file);
             // console.log(JSON.stringify(formData))
             fetch('https://image.fantuanpu.com/upload_file', {

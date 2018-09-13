@@ -108,7 +108,7 @@ export default class user_center extends Component {
         // console.log(event.nativeEvent.contentOffset.y)
     };
     render() {
-        const {state , goBack ,navigate} = this.props.navigation;
+        const {state , goBack ,navigate, push} = this.props.navigation;
 
 
         // console.log(this.state.user_center_data.user_info);
@@ -277,7 +277,7 @@ export default class user_center extends Component {
                                             style={{marginBottom:15,padding:10}}
                                             onPress={
                                                 () => {
-                                                    navigate('thread_view',{
+                                                    push('thread_view',{
                                                         tid: item.tid,
                                                         // callback : () => { this.getUserCenterData(); }
                                                     })

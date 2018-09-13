@@ -27,11 +27,11 @@ export default class SmartView extends Component  {
             if ( (height === X_HEIGHT && width === X_WIDTH) || (height === X_WIDTH && width === X_HEIGHT) )
             {
                 //对iphone X 适配
-                this.setState({paddingTop:44, paddingBottom:20})
+                this.setState({paddingTop:global.iphoneXPaddingTop, paddingBottom:20})
             }
             else
             {
-                this.setState({paddingTop:10, paddingBottom:0})
+                this.setState({paddingTop:global.iphoneCommonPaddingTop, paddingBottom:0})
             }
         }
     }
