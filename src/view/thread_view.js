@@ -23,6 +23,8 @@ import Login from './login'
 import WebImage from '../model/WebImage'
 import UploadImage from '../model/upload_image'
 import SmartView from '../model/SmartView'
+import Notice from '../model/Notice'
+import ImageTextList from '../model/ImageTextList'
 
 import {StatusBar} from 'react-native';
 console.log('statusBarHeight: ', StatusBar.currentHeight);
@@ -30,56 +32,7 @@ console.log('statusBarHeight: ', StatusBar.currentHeight);
 
 let {height, width} = Dimensions.get('window');
 //图文列表
-const imageTextList = (data) => {
-    if(data)
-    {
-        // data.dataArr= data.message.split(/(\[img.+?\[\/img\])/g);
-        // console.log(data.message);
-        regArr = data.message.split(/(\[img.+?\[\/img\])|(\[quote[\w\W]+?\[\/quote\])|(\[blockquote[\w\W]+?\[\/blockquote\])/);
-        dataArr = [];
-        regArr.map((data,key)=>{
-            if(data !== undefined && data !== "" ) {
-                dataArr.push(data)
-            }
-        });
-        data.dataArr = dataArr;
-        // console.log(data.dataArr);
-        data.regImg = new RegExp(/^\[img.+?\[\/img\]$/);
-        data.regQuote = new RegExp(/^\[.*?quote.*?\][\w\W]*?\[\/.*?quote\]$/);
 
-
-    }
-    // return (<View><Text>?</Text></View>);
-
-    return (
-        <View style={{width:width}}>
-            {
-                data ? data.dataArr.map(
-                    (content) => {
-                        // console.log(content)
-                        return (
-                            <View key={ typeof(content)=== 'string' ? content  + Math.random() : content.toString()+ Math.random() }  >
-                                {
-                                    data.regImg.test(content) === true ?
-                                        <WebImage style={{zIndex:1}} uri = { content.replace(/\[img.*?\]/,'').replace(/\[\/img\]/,'')} />
-                                        :
-                                        (data.regQuote.test(content) === true ?
-                                                <Text key={Math.random()} style={{width:width,paddingRight:30,fontStyle:"italic",fontSize:11,color:"#ccc"}}> 回复 @ {content.replace(/\[blockquote[\w\W]*?\]/,'').replace(/\[\/blockquote\]/,'').replace(/\[quote[\w\W]*?\]/,'').replace(/\[\/quote\]/,'')}</Text>
-                                                :
-                                                <Text key={Math.random()} style={{width:width,paddingRight:30,}}>{content}</Text>
-                                        )
-                                }
-                            </View>
-                        )
-                    }
-                )
-                :
-                <Text>帖子正在加载ヾ(◍°∇°◍)ﾉﾞ</Text>
-            }
-        </View>
-
-    );
-};
 
 let message ;
 export default class thread_view extends Component {
@@ -101,6 +54,59 @@ export default class thread_view extends Component {
 
 
     }
+    imageTextList = (data) => {
+        if(data)
+        {
+            // data.dataArr= data.message.split(/(\[img.+?\[\/img\])/g);
+            // console.log(data.message);
+            regArr = data.message.split(/(\[img.+?\[\/img\])|(\[quote[\w\W]+?\[\/quote\])|(\[blockquote[\w\W]+?\[\/blockquote\])/);
+            dataArr = [];
+            regArr.map((data,key)=>{
+                if(data !== undefined && data !== "" ) {
+                    dataArr.push(data)
+                }
+            });
+            data.dataArr = dataArr;
+            // console.log(data.dataArr);
+            data.regImg = new RegExp(/^\[img.+?\[\/img\]$/);
+            data.regQuote = new RegExp(/^\[.*?quote.*?\][\w\W]*?\[\/.*?quote\]$/);
+
+
+        }
+        // return (<View><Text>?</Text></View>);
+
+        return (
+            <View style={{width:width}}>
+
+                {
+                    data ? data.dataArr.map(
+                        (content) => {
+                            // console.log(content)
+                            return (
+
+                                <View key={ typeof(content)=== 'string' ? content  : content.toString() }  >
+
+                                    {
+                                        data.regImg.test(content) === true ?
+                                            <WebImage style={{zIndex:1}} uri = { content.replace(/\[img.*?\]/,'').replace(/\[\/img\]/,'')} />
+                                            :
+                                            (data.regQuote.test(content) === true ?
+                                                    <Text key={Math.random()} style={{width:width,paddingRight:30,fontStyle:"italic",fontSize:11,color:"#ccc"}}> 回复 @ {content.replace(/\[blockquote[\w\W]*?\]/,'').replace(/\[\/blockquote\]/,'').replace(/\[quote[\w\W]*?\]/,'').replace(/\[\/quote\]/,'')}</Text>
+                                                    :
+                                                    <Text key={Math.random()} style={{width:width,paddingRight:30,}}>{content}</Text>
+                                            )
+                                    }
+                                </View>
+                            )
+                        }
+                        )
+                        :
+                        <Text>帖子正在加载ヾ(◍°∇°◍)ﾉﾞ</Text>
+                }
+            </View>
+
+        );
+    };
     getThreadData = async (forumData) => {
         let dataUrl = global.webServer + '/app/view_thread';
         let data = await fetch(dataUrl, {
@@ -223,6 +229,8 @@ export default class thread_view extends Component {
         textInputHeight : 30 ,// 输入框高度
         upload_status : 'free',
         show_more : false, //是否显示更多菜单
+        show_notice :false,
+        notice_fn : false,
     };
 
     render() {
@@ -232,7 +240,7 @@ export default class thread_view extends Component {
 
         return (
             <SmartView style={styles.container} colorType="back" >
-
+                { this.state.show_notice && <Notice message={this.state.show_notice} fn={this.state.notice_fn} />}
                 <StatusBar
                     animated={true} //指定状态栏的变化是否应以动画形式呈现。目前支持这几种样式：backgroundColor, barStyle和hidden
                     hidden={false}  //是否隐藏状态栏。
@@ -321,10 +329,10 @@ export default class thread_view extends Component {
                     this.state.show_more &&
                     <View style={{position:"absolute",width:100,height:80,backgroundColor:"#ffffff", top:50,right:10,zIndex:99999,
                         borderRadius:2,
-                        shadowOffset: {width: 0, height: 5},
+                        shadowOffset: {width: 0, height: 3},
                         shadowOpacity: 0.5,
                         shadowRadius: 2,
-                        shadowColor: "#000000a1",
+                        shadowColor: "#0000004d",
                         //注意：这一句是可以让安卓拥有灰色阴影
                         elevation: 2,
                         paddingTop:5
@@ -335,7 +343,10 @@ export default class thread_view extends Component {
                             <Text style={{textAlign:"center",color:"#3c3c3c", margin:10}}>喜欢</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{width:150,flexDirection:"row"}} onPress={()=>{
-                            Clipboard.setString('中文')
+                            Clipboard.setString(global.webServer + 'thread-' + this.state.tid + '-1.html')
+                            this.setState({show_notice:"帖子链接已经复制到您的剪贴板~",notice_fn: () => {
+                                    this.setState({show_notice:false,notice_fn:false,show_more:false})
+                                }})
                         }}>
                             <Image source={source=require('../../image/link.png')}
                                    style={{width: 18, height: 18,borderRadius:5, margin:10}}/>
@@ -392,8 +403,9 @@ export default class thread_view extends Component {
                                 />
                                 <Text style={{ color:"#545454"}}>{ this.state.thread_data && this.state.thread_data.replies}</Text>
                             </View>
+
                             {
-                                this.state.post_data && imageTextList(this.state.post_data[0])
+                                this.state.post_data && this.imageTextList(this.state.post_data[0])
                             }
                         </View>
                     }
@@ -438,7 +450,7 @@ export default class thread_view extends Component {
                                                         </View>
                                                     </View>
                                                     <View style={{marginTop:10}}>
-                                                        { imageTextList(item) }
+                                                        { this.imageTextList(item) }
                                                     </View>
                                                 </View>
                                             }
@@ -480,7 +492,7 @@ export default class thread_view extends Component {
                         }}
                         style={{paddingVertical: 0,backgroundColor:"#fff",borderStyle : 'dashed',height:this.state.textInputHeight, maxHeight:60,marginTop:7,borderRadius:3,
                             width:width-85,
-                            marginRight:10,
+                            marginRight:10,paddingLeft:5,
                             marginLeft:5,borderColor:"#ccc",borderWidth:1,
                     }}/>
 
