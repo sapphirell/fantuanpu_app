@@ -244,7 +244,7 @@ export default class thread_view extends Component {
                 <StatusBar
                     animated={true} //指定状态栏的变化是否应以动画形式呈现。目前支持这几种样式：backgroundColor, barStyle和hidden
                     hidden={false}  //是否隐藏状态栏。
-                    backgroundColor={'green'} //状态栏的背景色
+                    backgroundColor={'black'} //状态栏的背景色
                     // translucent={true}//指定状态栏是否透明。设置为true时，应用会在状态栏之下绘制（即所谓“沉浸式”——被状态栏遮住一部分）。常和带有半透明背景色的状态栏搭配使用。
                     barStyle={'light-content'} // enum('default', 'light-content', 'dark-content')
                 >
@@ -463,46 +463,47 @@ export default class thread_view extends Component {
 
                 </ScrollView>
                 {/*<View style={{position:"absolute",bottom:50,width:width,height:50,backgroundColor:"#ccc"}}/>*/}
-                <KeyboardAvoidingView style={styles.floatBar}  behavior="padding"
-                                      // keyboardVerticalOffset={this.state.keyboardVerticalOffset}
+                <KeyboardAvoidingView style={styles.floatBar}
+                                      behavior="padding"
+                                      keyboardVerticalOffset={this.state.keyboardVerticalOffset}
                 >
-
-                    <TextInput
-                        multiline={true}
-                        value={this.state.message}
-                        ref={"INPUT"}
-                        underlineColorAndroid="transparent"
-                        onContentSizeChange={(event) => {
-                            if( event.nativeEvent.contentSize.height  > 30 && event.nativeEvent.contentSize.height  < 60 )
-                            {
-                                // maxHeight = event.nativeEvent.contentSize.height > 50 ? 50 :event.nativeEvent.contentSize.height
-                                this.setState({
-                                    textInputHeight: event.nativeEvent.contentSize.height,
-                                    keyboardVerticalOffset : this.state.keyboardVerticalOffset + event.nativeEvent.contentSize.height - 30
-                                })
-                            }
-                        }}
-                        // onChangeText={(text) => {message = text}}
-                        onChangeText={(text) => {
-                            if(Platform.OS==='android'){
-                                //如果是android平台
-                                this.setState({message:text});
-                            }
-                            message = text
-                        }}
-                        style={{paddingVertical: 0,backgroundColor:"#fff",borderStyle : 'dashed',height:this.state.textInputHeight, maxHeight:60,marginTop:7,borderRadius:3,
-                            width:width-85,
-                            marginRight:10,paddingLeft:5,
-                            marginLeft:5,borderColor:"#ccc",borderWidth:1,
-                    }}/>
-
-                    <View style={{width:60,flexDirection:"row",marginRight:10,}}>
-                        <TouchableOpacity style={{width:35,marginLeft:3,alignItems:"center", flex:1}} onPress={this.submitMessage}>
+                    <View style={{width:width,flexDirection:"row"}}>
+                        <TextInput
+                            multiline={true}
+                            value={this.state.message}
+                            ref={"INPUT"}
+                            underlineColorAndroid="transparent"
+                            onContentSizeChange={(event) => {
+                                if( event.nativeEvent.contentSize.height  > 30 && event.nativeEvent.contentSize.height  < 60 )
+                                {
+                                    // maxHeight = event.nativeEvent.contentSize.height > 50 ? 50 :event.nativeEvent.contentSize.height
+                                    this.setState({
+                                        textInputHeight: event.nativeEvent.contentSize.height,
+                                        keyboardVerticalOffset : this.state.keyboardVerticalOffset + event.nativeEvent.contentSize.height - 30
+                                    })
+                                }
+                            }}
+                            // onChangeText={(text) => {message = text}}
+                            onChangeText={(text) => {
+                                if(Platform.OS==='android'){
+                                    //如果是android平台
+                                    this.setState({message:text});
+                                }
+                                message = text
+                            }}
+                            style={{paddingVertical: 0,backgroundColor:"#fff",borderStyle : 'dashed',height:this.state.textInputHeight, maxHeight:60,marginTop:7,borderRadius:3,
+                                width:width-85,
+                                marginRight:10,paddingLeft:5,
+                                marginLeft:5,borderColor:"#ccc",borderWidth:1,
+                            }}/>
+                        <TouchableOpacity style={{width:35,height:35,marginLeft:3}} onPress={this.submitMessage}>
                             <Image  source={source=require('../../image/reply.png')}
                                     style={styles.floatButton}/>
                         </TouchableOpacity>
-                        <UploadImage  style={{width:25,height:25,marginRight:5,paddingTop:5,alignItems:"center", flex:1}}  update_upload_status={this.update_upload_status} />
+                        <UploadImage  style={{width:25,height:25,marginRight:5,paddingTop:5,alignItems:"center"}}  update_upload_status={this.update_upload_status} />
+
                     </View>
+
 
                 </KeyboardAvoidingView>
             </SmartView>
