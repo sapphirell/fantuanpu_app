@@ -132,6 +132,40 @@ export default class thread_view extends Component {
             })
         }
     };
+
+    add_my_like_thread = async () => {
+        if (!this.state.tid)
+        {
+            this.setState({show_notice:"帖子尚未加载完成，请稍后~",notice_fn: () => {
+                    this.setState({show_notice:false,notice_fn:false,show_more:false})
+                }})
+        }
+
+        let dataUrl = global.webServer + '/app/add_my_like';
+        let forumData = 'like_id='+this.state.tid+'&form=app&token='+this.state;
+        let data = await fetch(dataUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: forumData
+        }).then((response)=> {
+            return response.json()
+
+        });
+        // alert(this.props.navigation.state.params.tid)
+        console.log(data);
+        if (data.ret !== 200)
+            alert(data.msg);
+        else
+        {
+            this.setState({show_notice:"已经添加至\'我的喜欢\'",notice_fn: () => {
+                    this.setState({show_notice:false,notice_fn:false,show_more:false})
+                }})
+        }
+
+        return false;
+    }
     update_upload_status = (status,url) => {
         if (url)
         {
@@ -337,7 +371,9 @@ export default class thread_view extends Component {
                         elevation: 2,
                         paddingTop:5
                     }}>
-                        <TouchableOpacity style={{width:150,flexDirection:"row"}}>
+                        <TouchableOpacity style={{width:150,flexDirection:"row"}} onPress={()=>{
+                            this.add_my_like_thread();
+                        }}>
                             <Image source={source=require('../../image/like-red.png')}
                                    style={{width: 18, height: 18,borderRadius:5, margin:10}}/>
                             <Text style={{textAlign:"center",color:"#3c3c3c", margin:10}}>喜欢</Text>

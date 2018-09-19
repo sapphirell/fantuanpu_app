@@ -130,8 +130,15 @@ export default class not_logged extends Component {
                 >
                     <Text style={{width:80,color:"#fff", padding:10,borderWidth:1,borderRadius:5,borderColor:"#fff",textAlign:"center"}}>登录</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{marginTop:this.state.paddingTop}} onPress={()=>goBack()}>
-                    <Text style={{color:"#fff",fontSize:13}}>随便看看？</Text>
+                <TouchableOpacity style={{marginTop:this.state.paddingTop,position:"absolute", bottom:50, left:(width-70)/2,
+                    borderWidth:0,
+                    borderRadius:5,
+                    padding:10,
+                    paddingTop:5,
+                    paddingBottom:5,
+                    backgroundColor:"#8e95c4"
+                }} onPress={()=>goBack()}>
+                    <Text style={{color:"#FFF",fontSize:12}}>随便看看</Text>
                 </TouchableOpacity>
             </ImageBackground>
         );
