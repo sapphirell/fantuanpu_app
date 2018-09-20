@@ -36,7 +36,7 @@ export default class user_center extends Component {
     };
     async getUserCenterData ()  {
 
-        UserToken = await AsyncStorage.getItem("user_token");
+        let UserToken = await AsyncStorage.getItem("user_token");
 
         //如果token不存在则登录状态为false
         // UserToken ? this.setState({is_login : true}) : '';
@@ -151,15 +151,15 @@ export default class user_center extends Component {
                         }}>
                         {this.state.user_center_data.user_info && this.state.user_center_data.user_info.username}
                     </Text>
-                    {
-                        this.state.is_login &&  <Text style={{
-                            fontSize:19,
-                            color:"#fff",
-                            textShadowOffset:{width:1},
-                            textShadowRadius:2,
-                            textShadowColor:'grey'
-                        }}>签名档</Text>
-                    }
+                    {/*{*/}
+                        {/*this.state.is_login &&  <Text style={{*/}
+                            {/*fontSize:19,*/}
+                            {/*color:"#fff",*/}
+                            {/*textShadowOffset:{width:1},*/}
+                            {/*textShadowRadius:2,*/}
+                            {/*textShadowColor:'grey'*/}
+                        {/*}}>签名档</Text>*/}
+                    {/*}*/}
                 </ImageBackground>
                 <View style={{flexDirection:"row",backgroundColor:"#fff",width:width-20,marginLeft:10,marginRight:10,
                     borderRadius:5,marginTop:10,marginBottom:5,
@@ -187,7 +187,13 @@ export default class user_center extends Component {
                         <Image source={source=require('../../image/my_thread.png')} style={styles.listButton}/>
                         <Text style={styles.listButtonText}>帖子</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{alignItems:"center"}}>
+                    <TouchableOpacity style={{alignItems:"center"}}
+                                      onPress={
+                                          () => {
+                                              this.state.is_login && navigate('my_like',{
+                                                  uid:this.state.user_center_data.user_info.uid
+                                              })}
+                                      }>
                         <Image source={source=require('../../image/like.png')} style={styles.listButton}/>
                         <Text style={styles.listButtonText}>喜欢</Text>
                     </TouchableOpacity>
@@ -210,38 +216,47 @@ export default class user_center extends Component {
                             name="版本检查"
                             image="report"
                         onPress={async ()=>{
-                            fetch(global.webServer + 'app/version', {
+                            await fetch(global.webServer + 'app/version', {
                                 method: 'POST',
                                 headers: {
-                                    'Content-Type': 'multipart/form-data;charset=utf-8',
+                                    'Content-Type': 'application/x-www-form-urlencoded',
                                 },
-                            }).then((response) => response.json())
-                                .then((responseData)=> {
-                                    if (responseData.data === global.version)
-                                    {
-                                        this.setState({
-                                            show_notice : "您的版本为最新(" + responseData.data +")",
-                                            notice_fn : () => {
-                                                this.setState({show_notice:false,notice_fn:false})
-                                            }
-                                        });
-                                    }
-                                    else
-                                    {
-                                        this.setState({
-                                            show_notice :  "当前您安装的版本为 " + global.version + "。 最新版本为" + responseData.data,
-                                            notice_fn : () => {
-                                                this.setState({show_notice:false,notice_fn:false})
-                                            }
-                                        });
+                            }).then((response)=> {console.log(response.json()) });
+                            // await  fetch(global.webServer + 'app/version', {
+                            //     method: 'POST',
+                            //     headers: {
+                            //         'Content-Type': 'multipart/form-data;charset=utf-8',
+                            //     },
+                            // })
 
-                                    }
-
-                                })
-                                .catch((err)=> {
-                                    console.log('err', err);
-                                    reject(err);
-                                });
+                                // .then((response) => response.json())
+                                // .then((responseData)=> {
+                                //     // console.log(responseData)
+                                //     if (responseData.data === global.version)
+                                //     {
+                                //         this.setState({
+                                //             show_notice : "您的版本为最新(" + responseData.data +")",
+                                //             notice_fn : () => {
+                                //                 this.setState({show_notice:false,notice_fn:false})
+                                //             }
+                                //         });
+                                //     }
+                                //     else
+                                //     {
+                                //         this.setState({
+                                //             show_notice :  "当前您安装的版本为 " + global.version + "。 最新版本为" + responseData.data,
+                                //             notice_fn : () => {
+                                //                 this.setState({show_notice:false,notice_fn:false})
+                                //             }
+                                //         });
+                                //
+                                //     }
+                                //
+                                // })
+                                // .catch((err)=> {
+                                //     console.log('err', err);
+                                //     reject(err);
+                                // });
 
                             return this.void
                         }}

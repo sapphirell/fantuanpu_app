@@ -140,9 +140,9 @@ export default class thread_view extends Component {
                     this.setState({show_notice:false,notice_fn:false,show_more:false})
                 }})
         }
-
+        let UserToken = await AsyncStorage.getItem("user_token");
         let dataUrl = global.webServer + '/app/add_my_like';
-        let forumData = 'like_id='+this.state.tid+'&form=app&token='+this.state;
+        let forumData = 'like_id='+this.state.tid+'&form=app&token='+UserToken;
         let data = await fetch(dataUrl, {
             method: 'POST',
             headers: {
@@ -156,7 +156,9 @@ export default class thread_view extends Component {
         // alert(this.props.navigation.state.params.tid)
         console.log(data);
         if (data.ret !== 200)
-            alert(data.msg);
+            this.setState({show_notice: data.msg,notice_fn: () => {
+                this.setState({show_notice:false,notice_fn:false,show_more:false})
+            }})
         else
         {
             this.setState({show_notice:"已经添加至\'我的喜欢\'",notice_fn: () => {

@@ -66,12 +66,9 @@ export default class user_center extends Component {
                             // marginRight:width-130
                         }}>
                         <Image
-                            source={source=require('../../image/arrow-left.png')}
+                            source={source=require('../../image/left-w.png')}
                             style={{width: 14, height: 14,borderRadius:5, marginLeft:10}} />
 
-                        <Text
-                            style={{fontSize:16, paddingBottom:5,color:"#fff"}}
-                        >返回</Text>
 
                     </TouchableOpacity>
                     {
@@ -90,7 +87,7 @@ export default class user_center extends Component {
                             data={this.state.letter}
                             extraData={this.state.show_panel}
                             keyExtractor = {  (item) => item.plid}
-                            style={{padding:5,marginBottom:90, minHeight:50, flex:1}}
+                            style={{padding:5,marginBottom:90, minHeight:50, height:height-100}}
                             // numColumns={5}
                             // showsHorizontalScrollIndicator= {false}//隐藏水平滚动条
                             showsVerticalScrollIndicator= {false}//隐藏竖直滚动条

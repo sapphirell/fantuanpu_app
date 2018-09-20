@@ -13,7 +13,8 @@ import {
     ImageBackground,
     AsyncStorage,//持久化存储
     FlatList, Dimensions,ScrollView,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    StatusBar
 
 } from 'react-native';
 import root from '../model/root'
@@ -51,6 +52,7 @@ export default class message extends Component  {
         forum_list:['红茶馆','视频与音乐'],
         show_notice: false,
         notice_fn:false,
+        keyboardVerticalOffset : Platform.OS === 'ios' ? 10 : -190,//键盘抬起高度
     };
     update_upload_status = (status,url) => {
         if (url)
@@ -125,6 +127,14 @@ export default class message extends Component  {
         return (
             <SmartView style={{width:width,height:height,backgroundColor:"#fff"}}>
                 { this.state.show_notice && <Notice message={this.state.show_notice} fn={this.state.notice_fn} />}
+                <StatusBar
+                    animated={true} //指定状态栏的变化是否应以动画形式呈现。目前支持这几种样式：backgroundColor, barStyle和hidden
+                    hidden={false}  //是否隐藏状态栏。
+                    backgroundColor={'green'} //状态栏的背景色
+                    // translucent={true}//指定状态栏是否透明。设置为true时，应用会在状态栏之下绘制（即所谓“沉浸式”——被状态栏遮住一部分）。常和带有半透明背景色的状态栏搭配使用。
+                    barStyle={'light-content'} // enum('default', 'light-content', 'dark-content')
+                >
+                </StatusBar>
                 <View
                     style={{
                         width:width,
@@ -155,7 +165,7 @@ export default class message extends Component  {
                         {/*>返回</Text>*/}
 
                     </TouchableOpacity>
-                    <Text style={{width:width-130,textAlign:"center",fontWeight:"700",color:"#fff",fontSize:16,position:"relative",bottom:2}}>
+                    <Text style={{width:width-130,textAlign:"center",fontWeight:"700",color:"#fff",fontSize:14,position:"relative",bottom:2}}>
                         发表主题
                     </Text>
                     <TouchableOpacity style={{}} onPress={()=>this.postThread(goBack)} >
@@ -180,7 +190,7 @@ export default class message extends Component  {
                         }}
                         options={this.state.forum_list}
                         onSelect={(index, value)=>{
-                            this.setState({type: value})
+                            this.setState({fname: value})
                         }}
                         defaultValue="选择发帖板块"
                     />
@@ -208,7 +218,9 @@ export default class message extends Component  {
                 </ScrollView>
                 <KeyboardAvoidingView
                     // style={{position:"relative",zIndex:99,bottom:30,}}
-                    style={styles.floatBar}  behavior="padding" keyboardVerticalOffset={50} >
+                    style={styles.floatBar}  behavior="padding"
+                    keyboardVerticalOffset={this.state.keyboardVerticalOffset}
+                >
                     <UploadImage style={{alignItems:"flex-start"}} update_upload_status={this.update_upload_status} />
 
                 </KeyboardAvoidingView>
@@ -240,7 +252,8 @@ const styles = StyleSheet.create({
         borderColor:"#eee",
         marginBottom:10,
         fontSize:16,
-        height:height-200,
-        lineHeight:15
+        height:height-150,
+        lineHeight:15,
+        flex:1
     }
 });

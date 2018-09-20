@@ -59,7 +59,8 @@ export default class message extends Component  {
     };
     state = {
         user_notice : [],
-        isRefresh:false
+        isRefresh:false,
+        refreshed : false
     };
 
     render() {
@@ -77,48 +78,51 @@ export default class message extends Component  {
                 }
 
                 {
-                    JSON.stringify(this.state.user_notice) === '[]' ?
-                    <TouchableOpacity onPress={()=> {this.get_user_message()}}  style={{alignItems:"center",width:width,marginTop:20}}>
+                    this.state.refreshed ?
+                        (JSON.stringify(this.state.user_notice) === '[]' ?
+                            <Text style={{fontSize:15,width:width,color:"#525252", textAlign:"center",marginTop:10}}>暂无消息~</Text>
+                            :<FlatList
+                                data={this.state.user_notice}
+                                style={{zIndex:1, borderTopWidth:1,borderColor:"#f4f4f4",paddingTop:5,marginTop:5, minHeight:50,}}
+                                keyExtractor = {  (item) => item.note }
+                                refreshing={this.state.isRefresh}
+                                onRefresh={this.get_user_message}
+                                renderItem= {
+                                    ({item}) => {
+                                        return (
+                                            <TouchableOpacity
+                                                style={{
+                                                    flexDirection:"row",
+                                                    marginBottom:15,
+                                                    width:width-10,
+                                                    minHeight:50,
+                                                    padding:10,
+                                                    borderBottomWidth:0.5,
+                                                    borderColor:"#d8c9cd",
+                                                    backgroundColor:"#fff",
+                                                    margin:5}}
+                                                onPress={() => navigate('read_message',{
+                                                    message: item,
+                                                    callback : () => {  }
+                                                })}
+                                            >
+                                                <Image
+                                                    style={{width:25,height:25,marginRight:10}}
+                                                    source={source=require('../../image/reply-w.png')} />
+                                                <Text style={{color:"#646464",width:(width-10) * 0.8}} numberOfLines={1}>{this.dump_note(item.note)}</Text>
+                                                <Image
+                                                    style={{width:15,height:15,}}
+                                                    source={source=require('../../image/left.png')} />
+                                            </TouchableOpacity>
+                                        )
+                                    }
+                                }
+                            />)
+                        :
+                    <TouchableOpacity onPress={()=> {this.get_user_message();this.setState({refreshed:true})}}  style={{alignItems:"center",width:width,marginTop:20}}>
                         <Image source={source=require('../../image/refresh.png')} style={{width:30,height:30}} />
                     </TouchableOpacity>
-                    :
-                    <FlatList
-                        data={this.state.user_notice}
-                        style={{zIndex:1, borderTopWidth:1,borderColor:"#f4f4f4",paddingTop:5,marginTop:5, minHeight:50}}
-                        keyExtractor = {  (item) => item.note }
-                        refreshing={this.state.isRefresh}
-                        onRefresh={this.get_user_message}
-                        renderItem= {
-                            ({item}) => {
-                                return (
-                                    <TouchableOpacity
-                                        style={{
-                                                flexDirection:"row",
-                                                marginBottom:15,
-                                                width:width-10,
-                                                minHeight:50,
-                                                padding:10,
-                                                borderBottomWidth:0.5,
-                                                borderColor:"#d8c9cd",
-                                                backgroundColor:"#fff",
-                                                margin:5}}
-                                        onPress={() => navigate('read_message',{
-                                              message: item,
-                                              callback : () => {  }
-                                        })}
-                                    >
-                                        <Image
-                                            style={{width:25,height:25,marginRight:10}}
-                                            source={source=require('../../image/reply-w.png')} />
-                                        <Text style={{color:"#646464",width:(width-10) * 0.8}} numberOfLines={1}>{this.dump_note(item.note)}</Text>
-                                        <Image
-                                            style={{width:15,height:15,}}
-                                            source={source=require('../../image/left.png')} />
-                                    </TouchableOpacity>
-                                )
-                            }
-                        }
-            />
+
                 }
 
             </SmartView>

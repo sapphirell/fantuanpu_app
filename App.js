@@ -28,6 +28,7 @@ import letter from "./src/view/letter";
 import read_letter from "./src/view/read_letter";
 import user_view from "./src/view/user_view";
 import my_thread from "./src/view/my_thread";
+import my_like from "./src/view/my_like";
 
 
 
@@ -39,7 +40,7 @@ YellowBox.ignoreWarnings(['M']);
 YellowBox.ignoreWarnings(['R']);
 YellowBox.ignoreWarnings(['C']);
 YellowBox.ignoreWarnings(['F']);
-global.webServer = 'http://localhost:8000/';
+global.webServer = 'http://127.0.0.1:8000/';
 // global.webServer = 'https://fantuanpu.com/';
 global.logout = (token) => {
     if (!token) return false;
@@ -49,11 +50,11 @@ global.logout = (token) => {
 global.iphoneXPaddingTop = 44;
 global.iphoneCommonPaddingTop = 5;
 global.version = "1.0";
+let nav = {};
 
 const Tab = TabNavigator({
     // "论坛" : {screen: forum},
     // "论坛" : {screen: test},
-
     "主页": { screen: user_forum,
         navigationOptions: {
             tabBarIcon: () => ( <Image source={require('./image/look.png')} style={{width:25,height:25,margin:10}}/> ),
@@ -61,8 +62,6 @@ const Tab = TabNavigator({
             inactiveTintColor : '#6d6d6d',
         }
     },
-
-
     "消息" : { screen: message,
         navigationOptions: {
             tabBarIcon: () => ( <Image source={require('./image/message.png')} style={{width:25,height:25,margin:10}}/> ),
@@ -84,8 +83,6 @@ const Tab = TabNavigator({
             inactiveTintColor : '#6d6d6d',
         }
     },
-
-
 },{
     // tabBarPosition : 'bottom',
     // animationEnabled: true, // 切换页面时是否有动画效果
@@ -101,7 +98,6 @@ const Tab = TabNavigator({
         indicatorStyle: {
             height: 0  // 如TabBar下面显示有一条线，可以设高度为0后隐藏
         },
-
         style : {
             backgroundColor: Platform.OS === 'ios' ? '#5c5c5c' : "#ff6888",
             height:60,
@@ -133,6 +129,7 @@ const App = StackNavigator({
         read_letter : {screen : read_letter},
         user_view : {screen:user_view},
         my_thread : {screen:my_thread},
+        my_like : {screen:my_like},
     }
     ,{
         //screen模式才可以隐藏导航header,none为全局隐藏
