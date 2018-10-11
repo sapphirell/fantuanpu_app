@@ -40,8 +40,8 @@ YellowBox.ignoreWarnings(['M']);
 YellowBox.ignoreWarnings(['R']);
 YellowBox.ignoreWarnings(['C']);
 YellowBox.ignoreWarnings(['F']);
-global.webServer = 'http://127.0.0.1:8000/';
-// global.webServer = 'https://fantuanpu.com/';
+// global.webServer = 'http://127.0.0.1:8000/';
+global.webServer = 'https://fantuanpu.com/';
 global.logout = (token) => {
     if (!token) return false;
     AsyncStorage.removeItem("user_token");
