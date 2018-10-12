@@ -108,7 +108,7 @@ export default class thread_view extends Component {
         );
     };
     getThreadData = async (forumData) => {
-        let dataUrl = global.webServer + '/app/view_thread';
+        let dataUrl = global.webServer + '/app/view_thread?page=' + this.state.page;
         let data = await fetch(dataUrl, {
             method: 'POST',
             headers: {
@@ -117,7 +117,7 @@ export default class thread_view extends Component {
             body: forumData
         }).then((response)=> {return response.json()});
         // alert(this.props.navigation.state.params.tid)
-        // console.log(data.data);
+        // console.log(data.data.thread.thread_post);
         if (data.ret !== 200)
             alert(data.msg);
         else
@@ -129,10 +129,35 @@ export default class thread_view extends Component {
                 fid : data.data.thread.thread_subject.fid,
                 tid : data.data.thread.thread_subject.tid,
                 subject : data.data.thread.thread_subject.subject,
+                page : this.state.page +1
             })
         }
     };
 
+    getMorePost = async () => {
+        let page_url = global.webServer + 'app/post_next_page';
+        let postData =  {
+            'page' : this.state.page,
+            'tid' : this.state.tid,
+            'need' : 'json'
+        };
+        // console.log(postData)
+        let posts = await fetch(page_url, {
+            method: 'POST',
+            headers: {
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData) //不是很懂为什么这里要这样了，而且只有这一个方法
+        }).then((response)=> {return response.json()}).catch(function(error) {
+            console.log('There has been a problem with your fetch operation: ' + error.message);
+            // ADD THIS THROW error
+            throw error;
+        });;
+
+        this.setState({post_data:this.state.post_data.concat(posts.data),page:this.state.page+1});
+        console.log(posts);
+    };
     add_my_like_thread = async () => {
         if (!this.state.tid)
         {
@@ -250,6 +275,54 @@ export default class thread_view extends Component {
         // }, time) ;
 
     };
+    headView = () => {
+        return (
+            <View>
+                {JSON.stringify(this.state.thread_data) == '{}' ?
+                    <Image
+                        source={source=require('../../image/noavatar_middle.gif')}
+                        style={{width: 50, height: 50,borderRadius:25}}
+                    />
+                    :
+                    <Image/>
+                }
+                {
+                    <View
+                        style={{flexDirection:"row",width:width-90,flexWrap:"wrap",marginLeft:8}}
+                    >
+
+                        <Text style={{width:width-80, fontSize:16,paddingLeft:2,marginBottom:8}}>
+                            {this.state.thread_data && this.state.thread_data.subject}
+                        </Text>
+
+
+                        <View style={{flexDirection:"row",paddingBottom:15,paddingLeft:2,}}>
+                            <Text style={{ color:"#545454",fontSize:13}}>{this.state.thread_data.dateline}</Text>
+                            <Image
+                                source={source=require('../../image/post-b.png')}
+                                style={styles.smImage}
+                            />
+                            <Text style={{ color:"#545454"}}>{this.state.forum_data && this.state.forum_data.name }</Text>
+                            <Image
+                                source={source=require('../../image/history.png')}
+                                style={styles.smImage}
+                            />
+                            <Text style={{ color:"#545454"}}>{ this.state.thread_data && this.state.thread_data.views}</Text>
+                            <Image
+                                source={source=require('../../image/message-b.png')}
+                                style={styles.smImage}
+                            />
+                            <Text style={{ color:"#545454"}}>{ this.state.thread_data && this.state.thread_data.replies}</Text>
+                        </View>
+
+                        {
+                            this.state.post_data && this.imageTextList(this.state.post_data[0])
+                        }
+                    </View>
+                }
+            </View>
+        )
+    }
     state = {
         is_login : false,
         tid:0,
@@ -267,12 +340,12 @@ export default class thread_view extends Component {
         show_more : false, //是否显示更多菜单
         show_notice :false,
         notice_fn : false,
+        page:1,
     };
 
     render() {
         const { state , navigate, goBack ,props ,push} = this.props.navigation;
         // console.log(this.state.post_data);
-        let _keyExtractor = (item) =>  item.dateline +Math.random();
 
         return (
             <SmartView style={styles.container} colorType="back" >
@@ -392,115 +465,63 @@ export default class thread_view extends Component {
                         </TouchableOpacity>
                     </View>
                 }
-                <ScrollView style={{
-                    height:height,
-                    margin:5,
-                    marginTop:0,
-                    paddingTop:10,
-                    // width:width-20,
-                    // flexDirection:"row",
-                    width:width,paddingRight:30,
-                    flexWrap:"wrap",
-                    // padding:15,
-                }}>
 
-                    {JSON.stringify(this.state.thread_data) == '{}' ?
-                        <Image
-                            source={source=require('../../image/noavatar_middle.gif')}
-                            style={{width: 50, height: 50,borderRadius:25}}
-                        />
-                        :
-                        <Image/>
-                    }
+                {
+                    this.state.post_data &&
+                    <FlatList
+                        data={this.state.post_data}
+                        ListHeaderComponent={() => this.headView(1)}
+                        style={{zIndex:1, borderTopWidth:1,borderColor:"#f4f4f4",paddingTop:5,marginTop:5 }}
+                        keyExtractor = {  (item) => item.pid.toString() }
+                        onEndReached={this.getMorePost}
+                        onEndReachedThreshold={0.01}
+                        extraData={this.state}
+                        renderItem= {
+                            ({item}) => {
+                                return (
+                                    <View style={{marginBottom:15}} >
+                                        {item.position !== 1 &&
+                                            <View style={{width:width,paddingLeft:20}}>
+                                                <View style={{flexDirection:"row",width:width}} >
+                                                    <TouchableOpacity onPress={()=>{
+                                                        push('user_view',{
+                                                            view_uid: item.authorid,
+                                                        })
+                                                    }}>
+                                                        <Image source={{uri: item.avatar}}
+                                                               style={{width: 35, height: 35, borderRadius: 17.5,marginRight:10}}/>
+                                                    </TouchableOpacity>
 
-                    {
-                        <View
-                            style={{flexDirection:"row",width:width-90,flexWrap:"wrap",marginLeft:8}}
-                        >
-                           
-                            <Text style={{width:width-80, fontSize:16,paddingLeft:2,marginBottom:8}}>
-                                {this.state.thread_data && this.state.thread_data.subject}
-                            </Text>
-                       
-                    
-                            <View style={{flexDirection:"row",paddingBottom:15,paddingLeft:2,}}>
-                                <Text style={{ color:"#545454",fontSize:13}}>{this.state.thread_data.dateline}</Text>
-                                <Image
-                                    source={source=require('../../image/post-b.png')}
-                                    style={styles.smImage}
-                                />
-                                <Text style={{ color:"#545454"}}>{this.state.forum_data && this.state.forum_data.name }</Text>
-                                <Image
-                                    source={source=require('../../image/history.png')}
-                                    style={styles.smImage}
-                                />
-                                <Text style={{ color:"#545454"}}>{ this.state.thread_data && this.state.thread_data.views}</Text>
-                                <Image
-                                    source={source=require('../../image/message-b.png')}
-                                    style={styles.smImage}
-                                />
-                                <Text style={{ color:"#545454"}}>{ this.state.thread_data && this.state.thread_data.replies}</Text>
-                            </View>
-
-                            {
-                                this.state.post_data && this.imageTextList(this.state.post_data[0])
-                            }
-                        </View>
-                    }
-
-                    {
-                        this.state.post_data &&
-                        <FlatList
-                            data={this.state.post_data}
-                            style={{zIndex:1, borderTopWidth:1,borderColor:"#f4f4f4",paddingTop:5,marginTop:5 }}
-                            keyExtractor = {  (item) => item.message + item.tid }
-                            renderItem= {
-                                ({item}) => {
-                                    return (
-                                        <View style={{marginBottom:15}} >
-                                            {item.position !== 1 &&
-                                                <View style={{width:width,paddingLeft:20}}>
-                                                    <View style={{flexDirection:"row",width:width}} >
-                                                        <TouchableOpacity onPress={()=>{
-                                                            push('user_view',{
-                                                                view_uid: item.authorid,
-                                                            })
-                                                        }}>
-                                                            <Image source={{uri: item.avatar}}
-                                                                   style={{width: 35, height: 35, borderRadius: 17.5,marginRight:10}}/>
-                                                        </TouchableOpacity>
-
-                                                        <View style={{marginLeft:5,width:width-50,}}>
-                                                            <Text style={{textAlign:"left",width:width}}>{item.author}</Text>
-                                                            <View style={{marginTop:5,flexDirection:"row",width:width}}>
-                                                                <Text>{item.postdate}</Text>
-                                                                <TouchableOpacity style={{flexDirection:"row",width:60}}
-                                                                                  onPress={()=>{
-                                                                                      this.refs["INPUT"].focus();
-                                                                                      // item.map();
-                                                                                      this.setState({'message':"[quote]"+item.message+"[/quote]"})
-                                                                                  }}>
-                                                                    <Image source={source=require('../../image/reply-b.png')}
-                                                                           style={{width:12,height:12,marginLeft:7,position:"relative",top:2}} />
-                                                                    <Text style={{fontSize:12,color:"#b0b0b0",marginLeft:3,position:"relative",top:2}}>回复</Text>
-                                                                </TouchableOpacity>
-                                                            </View>
+                                                    <View style={{marginLeft:5,width:width-50,}}>
+                                                        <Text style={{textAlign:"left",width:width}}>{item.author}</Text>
+                                                        <View style={{marginTop:5,flexDirection:"row",width:width}}>
+                                                            <Text>{item.postdate}</Text>
+                                                            <TouchableOpacity style={{flexDirection:"row",width:60}}
+                                                                              onPress={()=>{
+                                                                                  this.refs["INPUT"].focus();
+                                                                                  // item.map();
+                                                                                  this.setState({'message':"[quote]"+item.message+"[/quote]"})
+                                                                              }}>
+                                                                <Image source={source=require('../../image/reply-b.png')}
+                                                                       style={{width:12,height:12,marginLeft:7,position:"relative",top:2}} />
+                                                                <Text style={{fontSize:12,color:"#b0b0b0",marginLeft:3,position:"relative",top:2}}>回复</Text>
+                                                            </TouchableOpacity>
                                                         </View>
                                                     </View>
-                                                    <View style={{marginTop:10}}>
-                                                        { this.imageTextList(item) }
-                                                    </View>
                                                 </View>
-                                            }
-                                        </View>
-                                    )
-                                }
+                                                <View style={{marginTop:10}}>
+                                                    { this.imageTextList(item) }
+                                                </View>
+                                            </View>
+                                        }
+                                    </View>
+                                )
                             }
-                        />
-                    }
+                        }
+                    />
+                }
 
-                </ScrollView>
-                {/*<View style={{position:"absolute",bottom:50,width:width,height:50,backgroundColor:"#ccc"}}/>*/}
+
                 <KeyboardAvoidingView style={styles.floatBar}
                                       behavior="padding"
                                       keyboardVerticalOffset={this.state.keyboardVerticalOffset}
