@@ -30,8 +30,8 @@
 		88B971D2C0CF4C948742208F /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68AD601DD201430E8B54596D /* MaterialCommunityIcons.ttf */; };
 		8CAD7A0F3BD343139AE653E7 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31FCADB4DDA54D5C9DC7ECC5 /* FontAwesome.ttf */; };
 		96286370F528473282564507 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA11471E101349D78407674E /* EvilIcons.ttf */; };
-		A470E6DE216F295C0044FBBA /* assets in Resources */ = {isa = PBXBuildFile; fileRef = A470E6DC216F295C0044FBBA /* assets */; };
-		A470E6DF216F295C0044FBBA /* index.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = A470E6DD216F295C0044FBBA /* index.jsbundle */; };
+		A478928721742DEF00454A05 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = A478928621742DEF00454A05 /* assets */; };
+		A478928921742DF800454A05 /* index.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = A478928821742DF800454A05 /* index.jsbundle */; };
 		A4A758BC210816D100AC365E /* ios in Resources */ = {isa = PBXBuildFile; fileRef = A4A758BB210816D100AC365E /* ios */; };
 		A4A75B8821085BBF00AC365E /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4A75B7721085B9500AC365E /* libRNImagePicker.a */; };
 		A4A871BCEDB44CA4B19CB400 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1E8183ECB830439ABF0F2E38 /* Octicons.ttf */; };
@@ -346,8 +346,8 @@
 		68AD601DD201430E8B54596D /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		A470E6DC216F295C0044FBBA /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = bundle/assets; sourceTree = "<group>"; };
-		A470E6DD216F295C0044FBBA /* index.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.jsbundle; path = bundle/index.jsbundle; sourceTree = "<group>"; };
+		A478928621742DEF00454A05 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = bundle/assets; sourceTree = "<group>"; };
+		A478928821742DF800454A05 /* index.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.jsbundle; path = bundle/index.jsbundle; sourceTree = "<group>"; };
 		A4A758BB210816D100AC365E /* ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ios; path = "../node_modules/react-native-image-picker/ios"; sourceTree = "<group>"; };
 		AA11471E101349D78407674E /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		AB1607B5DADF4CFDA55647A8 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
@@ -466,8 +466,8 @@
 		13B07FAE1A68108700A75B9A /* fantuanpu */ = {
 			isa = PBXGroup;
 			children = (
-				A470E6DC216F295C0044FBBA /* assets */,
-				A470E6DD216F295C0044FBBA /* index.jsbundle */,
+				A478928821742DF800454A05 /* index.jsbundle */,
+				A478928621742DEF00454A05 /* assets */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -666,6 +666,7 @@
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = Y5B6QGQ6SW;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -1026,7 +1027,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A470E6DE216F295C0044FBBA /* assets in Resources */,
+				A478928721742DEF00454A05 /* assets in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				40054588F116404C8DAEBE76 /* Entypo.ttf in Resources */,
@@ -1037,7 +1038,7 @@
 				4323AF4361EF4AF49149D1A8 /* Foundation.ttf in Resources */,
 				5C9DB1D47C3A4154ADA6BC3B /* Ionicons.ttf in Resources */,
 				88B971D2C0CF4C948742208F /* MaterialCommunityIcons.ttf in Resources */,
-				A470E6DF216F295C0044FBBA /* index.jsbundle in Resources */,
+				A478928921742DF800454A05 /* index.jsbundle in Resources */,
 				2F3749F791B54D30A33FB678 /* MaterialIcons.ttf in Resources */,
 				A4A871BCEDB44CA4B19CB400 /* Octicons.ttf in Resources */,
 				A7549AC7EC8F4B19A8B0B279 /* SimpleLineIcons.ttf in Resources */,
@@ -1093,6 +1094,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = Y5B6QGQ6SW;
@@ -1103,7 +1107,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 				INFOPLIST_FILE = fantuanpu/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1112,6 +1116,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fantuanpu.fantuanpu;
 				PRODUCT_NAME = fantuanpu;
+				PROVISIONING_PROFILE_SPECIFIER = hoc;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1120,6 +1126,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y5B6QGQ6SW;
 				HEADER_SEARCH_PATHS = (
@@ -1129,7 +1138,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 				INFOPLIST_FILE = fantuanpu/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1138,6 +1147,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fantuanpu.fantuanpu;
 				PRODUCT_NAME = fantuanpu;
+				PROVISIONING_PROFILE_SPECIFIER = hoc;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

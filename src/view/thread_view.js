@@ -154,8 +154,10 @@ export default class thread_view extends Component {
             // ADD THIS THROW error
             throw error;
         });;
-
-        this.setState({post_data:this.state.post_data.concat(posts.data),page:this.state.page+1});
+        if(JSON.stringify(posts.data) != '[]')
+        {
+            this.setState({post_data:this.state.post_data.concat(posts.data),page:this.state.page+1});
+        }
         console.log(posts);
     };
     add_my_like_thread = async () => {
